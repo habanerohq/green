@@ -4,6 +4,28 @@ module Habanero
     
     included do
       has_many :sorbets
+
+      validates :name, :uniqueness => true
+    end
+    
+    module InstanceMethods
+      def qualified_name
+        name # todo: qualify as class name etc.
+      end
+
+      def chill!
+        Object.const_set(qualified_name, Module.new)
+      end
+      
+      def klass
+        begin
+          qualified_name.constantize
+        rescue NameError => e
+          chill!
+        end
+
+        qualified_name.constantize
+      end
     end
   end
 end
