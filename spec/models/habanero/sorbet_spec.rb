@@ -51,7 +51,12 @@ describe Habanero::Sorbet do
       sorbet.save!
       ActiveRecord::Base.connection.table_exists?(sorbet.table_name).should == true
     end
-    
-    pending "doesn't try to create a table when one already exists"
+
+    it "doesn't try to create a table when one already exists" do
+      ActiveRecord::Base.connection.table_exists?(sorbet.table_name).should == false
+      ActiveRecord::Base.connection.create_table sorbet.table_name
+      
+      expect { sorbet.save! }.to_not raise_error(ActiveRecord::StatementInvalid)
+    end
   end
 end
