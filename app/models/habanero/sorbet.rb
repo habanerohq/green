@@ -1,5 +1,5 @@
 module Habanero
   class Sorbet < ActiveRecord::Base
-    include Habanero::SorbetIce
+    include SorbetIce
   end
 end

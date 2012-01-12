@@ -12,7 +12,7 @@ describe Habanero::Namespace do
     end
 
     it "has a unique name" do
-      namespace.save
+      namespace.save!
       Habanero::Namespace.new(:name => 'TestNamespace').should_not be_valid
     end
   end

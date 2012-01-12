@@ -1,3 +1,5 @@
-class Habanero::Namespace < ActiveRecord::Base
-  include Habanero::NamespaceIce
+module Habanero
+  class Namespace < ActiveRecord::Base
+    include NamespaceIce
+  end
 end

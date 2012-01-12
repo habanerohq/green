@@ -10,10 +10,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120112003202) do
+ActiveRecord::Schema.define(:version => 20120112021340) do
 
   create_table "habanero_ingredients", :force => true do |t|
     t.integer "sorbet_id"
+    t.string  "name"
   end
 
   add_index "habanero_ingredients", ["sorbet_id"], :name => "index_habanero_ingredients_on_sorbet_id"
