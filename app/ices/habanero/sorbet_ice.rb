@@ -23,11 +23,16 @@ module Habanero
       end
       
       def mix!
-        connection.create_table table_name
+        connection.create_table(table_name) unless connection.table_exists?(table_name)
       end
 
       def chill!
         namespace.klass.const_set(name, Class.new(ActiveRecord::Base))
+
+        begin
+          klass.send :include, "#{qualified_name}Ice".constantize
+        rescue NameError => e
+        end
       end
       
       def klass

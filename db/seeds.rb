@@ -5,3 +5,20 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
+
+namespace = Habanero::Namespace.create(:name => 'Habanero')
+
+Habanero::Sorbet.create(
+  :namespace => namespace,
+  :name => 'Namespace'
+)
+
+Habanero::Sorbet.create(
+  :namespace => namespace,
+  :name => 'Sorbet'
+)
+
+Habanero::Sorbet.create(
+  :namespace => namespace,
+  :name => 'Ingredient'
+)

@@ -51,5 +51,7 @@ describe Habanero::Sorbet do
       sorbet.save!
       ActiveRecord::Base.connection.table_exists?(sorbet.table_name).should == true
     end
+    
+    pending "doesn't try to create a table when one already exists"
   end
 end
