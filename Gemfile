@@ -31,6 +31,8 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'ruby-debug'
 
+gem 'awesome_nested_set'
+
 group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'

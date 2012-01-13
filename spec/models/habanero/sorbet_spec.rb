@@ -9,11 +9,12 @@ describe Habanero::Sorbet do
 
   before(:each) do
     sorbet.namespace = namespace
-    sorbet.super_sorbet = super_sorbet
+    sorbet.parent = super_sorbet
   end
 
   describe "structure" do
     let(:ingredient) { Habanero::Ingredient.new }
+    let(:thingo) { Habanero::Sorbet.new(:name => 'Foo') }
 
     it "has many ingredients" do
       sorbet.ingredients << ingredient
@@ -38,7 +39,15 @@ describe Habanero::Sorbet do
     end
     
     it "has a super sorbet" do
-      sorbet.super_sorbet.should equal super_sorbet
+      sorbet.parent.should equal super_sorbet
+    end
+    
+    it "has a base" do
+      sorbet.save!
+      thingo.parent = sorbet
+      
+      # base calls self_and_ancestors which results in differing object_ids
+      thingo.base.id.should equal sorbet.id
     end
   end
 
