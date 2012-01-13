@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120112021340) do
+ActiveRecord::Schema.define(:version => 20120113014443) do
 
   create_table "habanero_ingredients", :force => true do |t|
     t.integer "sorbet_id"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20120112021340) do
   create_table "habanero_sorbets", :force => true do |t|
     t.integer "namespace_id"
     t.string  "name"
+    t.integer "super_id"
   end
 
 end

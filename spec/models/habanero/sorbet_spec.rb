@@ -3,9 +3,13 @@ require 'spec_helper'
 describe Habanero::Sorbet do
   let(:sorbet) { Habanero::Sorbet.new :name => 'TestSorbet' }
   let(:namespace) { Habanero::Namespace.new :name => 'TestNamespace' }
-  
+  let(:super_sorbet) { Habanero::Sorbet.new :name => 'Base', 
+                                            :namespace => Habanero::Namespace.new(:name => 'ActiveRecord')
+  }
+
   before(:each) do
     sorbet.namespace = namespace
+    sorbet.super_sorbet = super_sorbet
   end
 
   describe "structure" do
@@ -32,6 +36,10 @@ describe Habanero::Sorbet do
     it "has a table name" do
       sorbet.table_name.should == 'test_namespace_test_sorbets'
     end
+    
+    it "has a super sorbet" do
+      sorbet.super_sorbet.should equal super_sorbet
+    end
   end
 
   describe "chilling" do
@@ -52,6 +60,16 @@ describe Habanero::Sorbet do
       second_id = sorbet.klass.object_id
       
       first_id.should_not == second_id
+    end
+    
+    it "should not redefine an edge class" do
+      super_sorbet.chill!
+      ActiveRecord::Base.connection.should be_an ActiveRecord::ConnectionAdapters::AbstractAdapter
+    end
+    
+    it "defines a class with configured super sorbet" do
+      sorbet.chill!
+      sorbet.klass.superclass.should equal ActiveRecord::Base
     end
   end
 

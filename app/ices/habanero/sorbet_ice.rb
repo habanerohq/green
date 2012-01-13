@@ -5,12 +5,15 @@ module Habanero
     included do
       belongs_to :namespace
       validates :namespace, :presence => true
+      
+      belongs_to :super_sorbet, :class_name => 'Sorbet', :foreign_key => :super_id
 
       has_many :ingredients
       
       validates :name, :uniqueness => { :scope => :namespace_id }
       
       before_create :mix! # failed create leaves empty table?
+      after_create :chill!
     end
     
     module InstanceMethods
@@ -27,16 +30,19 @@ module Habanero
       end
 
       def chill!
-        begin
-          namespace.klass.send :remove_const, name
-        rescue NameError
-        end
+        if super_sorbet # don't redefine edge classes ;)
+          begin
+            namespace.klass.send :remove_const, name
+          rescue NameError
+          end
 
-        namespace.klass.const_set(name, Class.new(ActiveRecord::Base))
+          super_sorbet.chill!
+          namespace.klass.const_set(name, Class.new(super_sorbet.klass))
 
-        begin
-          klass.send :include, "#{qualified_name}Ice".constantize
-        rescue NameError => e
+          begin
+            klass.send :include, "#{qualified_name}Ice".constantize
+          rescue NameError => e
+          end
         end
       end
       
