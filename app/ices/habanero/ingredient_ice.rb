@@ -4,7 +4,7 @@ module Habanero
 
     included do
       belongs_to :sorbet
-      validates :sorbet, :presence => true
+#      validates :sorbet, :presence => true
 
       after_create :add_columns
       after_save :change_columns
@@ -19,7 +19,9 @@ module Habanero
     protected
 
       def add_columns
-        connection.add_column sorbet.table_name, qualified_name, :string
+        unless connection.columns(sorbet.table_name).map(&:name).include?(qualified_name)
+          connection.add_column sorbet.table_name, qualified_name, :string
+        end
       end
 
       def change_columns
