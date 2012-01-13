@@ -43,6 +43,16 @@ describe Habanero::Sorbet do
     it "defines a subclass of ActiveRecord::Base" do
       sorbet.klass.superclass.should be ActiveRecord::Base
     end
+    
+    it "redefines a class when chill! is called" do
+      sorbet.chill!
+      first_id = sorbet.klass.object_id
+      
+      sorbet.chill!
+      second_id = sorbet.klass.object_id
+      
+      first_id.should_not == second_id
+    end
   end
 
   describe "mixing" do

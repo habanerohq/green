@@ -27,6 +27,11 @@ module Habanero
       end
 
       def chill!
+        begin
+          namespace.klass.send :remove_const, name
+        rescue NameError
+        end
+
         namespace.klass.const_set(name, Class.new(ActiveRecord::Base))
 
         begin

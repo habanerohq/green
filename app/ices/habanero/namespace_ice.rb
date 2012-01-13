@@ -20,7 +20,7 @@ module Habanero
       def klass
         begin
           qualified_name.constantize
-        rescue NameError => e
+        rescue NameError
           chill!
         end
 

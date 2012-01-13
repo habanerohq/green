@@ -16,7 +16,7 @@ describe Habanero::Namespace do
       Habanero::Namespace.new(:name => 'TestNamespace').should_not be_valid
     end
   end
-  
+
   describe "chilling" do
     it "defined a module for the namespace" do
       namespace.chill!
