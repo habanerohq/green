@@ -4,9 +4,12 @@ describe Habanero::Ingredient do
   let(:sorbet) { Habanero::Sorbet.new :name => 'TestSorbet' }
   let(:namespace) { Habanero::Namespace.new :name => 'TestNamespace' }
   let(:ingredient) { Habanero::Ingredient.new :name => 'Foo Bar' }
+  let(:super_sorbet) { Habanero::Sorbet.new :name => 'Base', 
+                                            :namespace => Habanero::Namespace.new(:name => 'ActiveRecord') }
 
   before(:each) do
     sorbet.namespace = namespace
+    sorbet.parent = super_sorbet
     
     ingredient.sorbet = sorbet
     sorbet.ingredients << ingredient
