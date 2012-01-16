@@ -13,11 +13,6 @@ module Habanero
       validates :name, :uniqueness => { :scope => :namespace_id }
 
       before_create :mix! # failed create leaves empty table?
-      # --- table
-      # create
-        # before_create
-        # create
-        # after_create
       after_create :chill!
     end
 
@@ -67,6 +62,10 @@ module Habanero
         if parent
           parent.self_and_ancestors.detect(&:parent)
         end || self
+      end
+      
+      def all_ingredients
+        self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
       end
     end
   end

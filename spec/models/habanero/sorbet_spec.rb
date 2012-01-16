@@ -13,8 +13,21 @@ describe Habanero::Sorbet do
   end
 
   describe "structure" do
-    let(:ingredient) { Habanero::Ingredient.new }
-    let(:thingo) { Habanero::Sorbet.new(:name => 'Foo') }
+    let(:ingredient) { Habanero::Ingredient.new :name => 'SorbetIngredient' }
+    let(:foo) { Habanero::Sorbet.new(:name => 'Foo') }
+    let(:foo_ingredient) { Habanero::Ingredient.new :name => 'FooIngredient' }
+    let(:bar) { Habanero::Sorbet.new(:name => 'Bar') }
+    let(:bar_ingredient) { Habanero::Ingredient.new :name => 'BarIngredient' }
+    
+    
+    before(:each) do
+      foo.namespace = namespace
+      bar.namespace = namespace
+      
+      sorbet.ingredients << ingredient
+      foo.ingredients << foo_ingredient
+      bar.ingredients << bar_ingredient
+    end
 
     it "has many ingredients" do
       sorbet.ingredients << ingredient
@@ -44,10 +57,18 @@ describe Habanero::Sorbet do
     
     it "has a base" do
       sorbet.save!
-      thingo.parent = sorbet
+      foo.parent = sorbet
       
       # base calls self_and_ancestors which results in differing object_ids
-      thingo.base.id.should equal sorbet.id
+      foo.base.id.should equal sorbet.id
+    end
+    
+    it "includes ingredients from all supers" do
+      foo.parent = sorbet
+      bar.parent = foo
+      [sorbet, super_sorbet, foo, bar].each(&:save!)
+      
+      bar.all_ingredients.should == [ingredient, foo_ingredient, bar_ingredient]
     end
   end
 
