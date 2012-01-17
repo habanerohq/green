@@ -15,9 +15,9 @@ module Habanero
         unless Habanero.autoload_blacklist.include?(name)
           klass_name = (name == 'Object' ? const_name : "#{name}::#{const_name}")
           if e.missing_name?(klass_name)
-            if sorbet = Habanero::Sorbet.namespaced(name.to_s).where(:name => const_name).first
+            if sorbet = Sorbet.namespaced(name.to_s).where(:name => const_name).first
               return sorbet.chill!
-            elsif namespace = Habanero::Namespace.where(:name => klass_name).first
+            elsif namespace = Namespace.where(:name => klass_name).first
               return namespace.chill!
             end
           end
