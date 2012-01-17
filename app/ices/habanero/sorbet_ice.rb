@@ -16,6 +16,8 @@ module Habanero
       #after_create :chill!
       
       scope :namespaced, lambda { |n| includes(:namespace).where('habanero_namespaces.name = ?', n) }
+      
+      self.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt)
     end
 
     module InstanceMethods
@@ -38,7 +40,7 @@ module Habanero
           namespace.klass.const_set(name, Class.new(parent.klass)) # defining the class
 
           klass.reset_column_information
-          ingredients.each { |i| i.try(:adapt, klass) } # adapthibng the class
+          ingredients.each { |i| i.adapt(klass) }
 
           begin
             klass.send :include, "#{qualified_name}Ice".constantize
@@ -61,6 +63,10 @@ module Habanero
 
       def all_ingredients
         self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
+      end
+      
+      def adapt
+        ingredients.each { |i| i.try(:adapt, klass) } # adapthibng the class
       end
     end
   end
