@@ -4,11 +4,14 @@ module Habanero
 
     included do
       belongs_to :sorbet
-#      validates :sorbet, :presence => true
 
       after_create :add_columns
       after_save :change_columns
       after_destroy :remove_columns
+      
+      validates :name,
+                :presence => true,
+                :uniqueness => { :scope => 'sorbet_id' }
     end
 
     module InstanceMethods
