@@ -15,6 +15,10 @@ module Habanero
       def qualified_name
         name.attrify
       end
+      
+      def adapt(klass)
+        # nothing to do here yet
+      end
 
     protected
 

@@ -13,7 +13,9 @@ module Habanero
       validates :name, :uniqueness => { :scope => :namespace_id }
 
       before_create :mix! # failed create leaves empty table?
-      after_create :chill!
+      #after_create :chill!
+      
+      scope :namespaced, lambda { |n| includes(:namespace).where('habanero_namespaces.name = ?', n) }
     end
 
     module InstanceMethods
@@ -33,37 +35,30 @@ module Habanero
 
       def chill!
         if parent # don't redefine edge classes ;)
-          begin
-            namespace.klass.send :remove_const, name
-          rescue NameError
-          end
+          namespace.klass.const_set(name, Class.new(parent.klass)) # defining the class
 
-          parent.chill!
-          namespace.klass.const_set(name, Class.new(parent.klass))
+          klass.reset_column_information
+          ingredients.each { |i| i.try(:adapt, klass) } # adapthibng the class
 
           begin
             klass.send :include, "#{qualified_name}Ice".constantize
           rescue NameError => e
           end
+
+          klass
         end
       end
 
       def klass
-        begin
-          qualified_name.constantize
-        rescue NameError => e
-          chill!
-        end
-
         qualified_name.constantize
       end
-      
+
       def base
         if parent
           parent.self_and_ancestors.detect(&:parent)
         end || self
       end
-      
+
       def all_ingredients
         self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
       end

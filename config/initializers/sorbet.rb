@@ -1,3 +1,2 @@
-Rails.configuration.to_prepare do
-  Habanero::Sorbet.includes(:namespace, :parent).each(&:chill!) if Habanero::Sorbet.table_exists?
-end
+Habanero.autoload_blacklist = [ 'Habanero::Ingredient', 'Habanero::Namespace', 'Habanero::Sorbet' ]
+Module.send :include, Habanero::ConstMissing
