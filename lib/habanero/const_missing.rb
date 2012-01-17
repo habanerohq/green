@@ -12,7 +12,7 @@ module Habanero
       begin
         const_missing_without_sorbet(*args) # give rails a chance to autoload files
       rescue NameError => e
-        unless Habanero.autoload_blacklist.include?(name)
+        unless Habanero.config.autoload_blacklist.include?(name)
           klass_name = (name == 'Object' ? const_name : "#{name}::#{const_name}")
           if e.missing_name?(klass_name)
             if sorbet = Sorbet.namespaced(name.to_s).where(:name => const_name).first
