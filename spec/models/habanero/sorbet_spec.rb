@@ -74,7 +74,7 @@ describe Habanero::Sorbet do
 
   describe "chilling" do
     it "defines a class with qualified name" do
-      sorbet.klass
+      sorbet.chill! # flakey
       defined?(TestNamespace::TestSorbet).should_not be nil
     end
 
