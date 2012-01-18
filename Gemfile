@@ -32,6 +32,7 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'awesome_nested_set'
+gem 'acts_as_list'
 
 group :development, :test do
   gem 'rspec'

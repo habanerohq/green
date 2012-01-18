@@ -5,20 +5,24 @@ module Habanero
     included do
       belongs_to :sorbet
 
+      acts_as_nested_set
+
       after_create :add_columns
       after_save :change_columns
       after_destroy :remove_columns
-      
+
       validates :name,
                 :presence => true,
                 :uniqueness => { :scope => 'sorbet_id' }
+
+      Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first.try(:adapt)
     end
 
     module InstanceMethods
       def qualified_name
         name.attrify
       end
-      
+
       def adapt(klass)
         # nothing to do here yet
       end
