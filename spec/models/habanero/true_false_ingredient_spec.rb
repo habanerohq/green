@@ -1,10 +1,16 @@
 require 'spec_helper'
 require 'models/habanero/ingredient_examples_helper'
 
-describe Habanero::Ingredient do
+module Habanero
+  class TrueFalseIngredient < Ingredient
+    include TrueFalseIngredientIce
+  end
+end
+
+describe Habanero::TrueFalseIngredient do
   include Habanero::IngredientExamplesHelper
-    
-  let (:klass) { Habanero::Ingredient }
+
+  let (:klass) { Habanero::TrueFalseIngredient }
   let (:ingredient) { test_ingredient(klass) }
 
   it_behaves_like "any ingredient"

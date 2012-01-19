@@ -27,11 +27,15 @@ module Habanero
         # nothing to do here yet
       end
 
+      def column_type
+        :string
+      end
+
     protected
 
       def add_columns
         unless connection.columns(sorbet.table_name).map(&:name).include?(qualified_name)
-          connection.add_column sorbet.table_name, qualified_name, :string
+          connection.add_column sorbet.table_name, qualified_name, column_type
         end
       end
 

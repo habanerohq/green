@@ -36,7 +36,11 @@ module Habanero
 
       def chill!
         if parent # don't redefine edge classes ;)
-          namespace.klass.const_set(name, Class.new(parent.klass))
+          begin
+            qualified_name.constantize
+          rescue NameError
+            namespace.klass.const_set(name, Class.new(parent.klass))
+          end
 
           klass.reset_column_information
           adapt

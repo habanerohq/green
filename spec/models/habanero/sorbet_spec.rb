@@ -82,7 +82,8 @@ describe Habanero::Sorbet do
       sorbet.klass.superclass.should be ActiveRecord::Base
     end
     
-    it "redefines a class when chill! is called" do
+    pending "redefines a class when chill! is called" do
+      #do we still need this?
       sorbet.chill!
       first_id = sorbet.klass.object_id
       
