@@ -10,8 +10,7 @@ end
 describe Habanero::DateTimeIngredient do
   include Habanero::IngredientExamplesHelper
 
-  let (:klass) { Habanero::DateTimeIngredient }
-  let (:ingredient) { test_ingredient(klass) }
+  let (:ingredient) { test_ingredient(Habanero::DateTimeIngredient) }
 
   it_behaves_like "any ingredient"
   it_behaves_like "any simple ingredient"

@@ -10,8 +10,7 @@ end
 describe Habanero::DecimalIngredient do
   include Habanero::IngredientExamplesHelper
 
-  let (:klass) { Habanero::DecimalIngredient }
-  let (:ingredient) { test_ingredient(klass) }
+  let (:ingredient) { test_ingredient(Habanero::DecimalIngredient) }
 
   it_behaves_like "any ingredient"
   it_behaves_like "any simple ingredient"

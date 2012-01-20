@@ -10,8 +10,7 @@ end
 describe Habanero::BlobIngredient do
   include Habanero::IngredientExamplesHelper
 
-  let (:klass) { Habanero::BlobIngredient }
-  let (:ingredient) { test_ingredient(klass) }
+  let (:ingredient) { test_ingredient(Habanero::BlobIngredient) }
 
   it_behaves_like "any ingredient"
   it_behaves_like "any simple ingredient"

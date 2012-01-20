@@ -41,19 +41,37 @@ module Habanero
         ActiveRecord::Base.connection.columns(ingredient.sorbet.table_name).map(&:name).should_not include 'test_ingredient'
       end
     end
+
+    def meta_ingredient(name)
+      n = Habanero::Namespace.create!(:name => 'Habanero')
+      Habanero::Sorbet.create!(
+        :name => name,
+        :namespace => n,
+        :parent => Habanero::Sorbet.create!(
+          :name => 'Ingredient', 
+          :namespace => n,
+          :parent => Habanero::Sorbet.create!(
+            :namespace => n,
+            :name => 'Base'
+          )
+        )
+      )
+    end
     
-    def test_ingredient(klass)
-      s = Habanero::Sorbet.new(
+    def test_ingredient(klass, attrs = {})
+      s = Habanero::Sorbet.create!(
         :name => 'Test Sorbet',
         :namespace => Habanero::Namespace.new(:name => 'Test Namespace'),
         :parent => Habanero::Sorbet.new(
           :name => 'Base', 
-          :namespace => Habanero::Namespace.new(:name => 'ActiveRecord')
+          :namespace => Habanero::Namespace.new(:name => 'Habanero')
         )
       )
-      i = klass.new(
-        :name => "Test Ingredient",
-        :sorbet => s
+      i = klass.create!(
+        {
+          :name => "Test Ingredient",
+          :sorbet => s
+        }.merge(attrs)
       )
       s.ingredients << i
       i

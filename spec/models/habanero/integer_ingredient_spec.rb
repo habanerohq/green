@@ -10,8 +10,7 @@ end
 describe Habanero::IntegerIngredient do
   include Habanero::IngredientExamplesHelper
 
-  let (:klass) { Habanero::IntegerIngredient }
-  let (:ingredient) { test_ingredient(klass) }
+  let (:ingredient) { test_ingredient(Habanero::IntegerIngredient) }
 
   it_behaves_like "any ingredient"
   it_behaves_like "any simple ingredient"

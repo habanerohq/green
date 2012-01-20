@@ -10,8 +10,7 @@ end
 describe Habanero::TrueFalseIngredient do
   include Habanero::IngredientExamplesHelper
 
-  let (:klass) { Habanero::TrueFalseIngredient }
-  let (:ingredient) { test_ingredient(klass) }
+  let (:ingredient) { test_ingredient(Habanero::TrueFalseIngredient) }
 
   it_behaves_like "any ingredient"
   it_behaves_like "any simple ingredient"
