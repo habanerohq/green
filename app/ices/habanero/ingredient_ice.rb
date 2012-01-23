@@ -20,7 +20,7 @@ module Habanero
 
     module InstanceMethods
       def qualified_name
-        name.attrify
+        [parent.try(:qualified_name), name.attrify].compact.join('_')
       end
 
       def adapt(klass)
