@@ -39,43 +39,4 @@ describe Habanero::RelationIngredient do
       cols.detect{|c| c.name == 'ordered'}.type.should == :boolean
     end
   end  
-  
-  describe 'has a composite structure' do
-    let (:other) { Habanero::Sorbet.new(
-        :name => 'Other Sorbet',
-        :namespace => Habanero::Namespace.new(:name => 'Other Namespace'),
-        :parent => Habanero::Sorbet.new(
-          :name => 'Base', 
-          :namespace => Habanero::Namespace.new(:name => 'Habanero')
-        )
-      )
-    }
-    
-    let (:meta_association) {
-      Habanero::Sorbet.create!(
-        :name => 'AssociationIngredient',
-        :namespace => Habanero::Namespace.find_by_name('Habanero'),
-        :parent => Habanero::Sorbet.find_by_name('Ingredient'),
-        :ingredients => [
-          Habanero::StringIngredient.new(:name => 'Relation')
-        ]
-      )
-    }
-
-=begin
-# relation is not being added as a column to ingredients table !!!???
-    let (:association) { Habanero::AssociationIngredient.new(:name => 'Other Sorbets', :relation => 'has_many', :sorbet => ingredient.sorbet) }
-    let (:inverse) { Habanero::AssociationIngredient.new(:name => 'Test Sorbet', :relation => 'belongs_to', :sorbet => other) }
-    
-    before(:each) do
-      other.save!
-      ingredient.children << association
-      ingredient.children << inverse
-      ingredient.save!
-    end
-=end
-
-    it 'has associates' do
-    end
-  end
 end
