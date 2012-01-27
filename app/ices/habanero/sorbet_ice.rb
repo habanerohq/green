@@ -30,6 +30,7 @@ module Habanero
 
       def mix!
         if parent
+#          puts "create_table #{table_name}" unless connection.table_exists?(table_name) # write this to a log!
           connection.create_table(table_name) unless connection.table_exists?(table_name)
         end
       end

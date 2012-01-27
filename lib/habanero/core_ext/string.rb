@@ -1,5 +1,5 @@
 class String
   def attrify
-    titleize.gsub(/\s/, '').underscore
+    titleize.gsub('/', '').gsub(/\s/, '').underscore
   end
 end

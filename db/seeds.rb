@@ -1,10 +1,4 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Emanuel', :city => cities.first)
+# Phase 1 - Namespace, Sorbet & Ingredient Definition
 
 active_record = Habanero::Sorbet.create!(
   :namespace => Habanero::Namespace.new(:name => 'ActiveRecord'),
@@ -13,87 +7,58 @@ active_record = Habanero::Sorbet.create!(
 
 namespace = Habanero::Namespace.create!(:name => 'Habanero')
 
-# Habanero::Ingredient
 ingredient = Habanero::Sorbet.create!(:name => 'Ingredient', :namespace => namespace, :parent => active_record)
 
-# Habanero::StringIngredient
 Habanero::Sorbet.create!(:name => 'StringIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'IntegerIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'TrueFalseIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'TextIngredient', :namespace => namespace, :parent => ingredient)
 
-# need to define all ingredients for Habanero::Ingredient before this point
 ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Name')
 ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Type')
+ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Derived')
+ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Limit')
+ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Precision')
+ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Scale')
+ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Default')
+ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Nullable')
+ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Sortable')
+ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Sort Direction')
+ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Ordered')
+ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Relation')
 ingredient.save!
 
-# Habanero::TrueFalseIngredient
-Habanero::Sorbet.create!(
-  :name => 'TrueFalseIngredient',
-  :namespace => namespace,
-  :parent => ingredient
-)
+sorbet = Habanero::Sorbet.create!(:name => 'Sorbet', :namespace => namespace, :parent => active_record)
+namespace_sorbet = Habanero::Sorbet.create!(:name => 'Namespace', :namespace => namespace, :parent => active_record)
 
-# Habanero::RelationIngredient
-Habanero::Sorbet.create!(
-  :name => 'RelationIngredient',
-  :namespace => namespace,
-  :parent => ingredient,
-  
-  :ingredients => [
-    Habanero::TrueFalseIngredient.new(:name => 'Ordered')
+Habanero::Sorbet.create!(:name => 'BlobIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'CurrencyIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'DateIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'DateTimeIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'DecimalIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'NumberIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'PercentageIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'TimeIngredient', :namespace => namespace, :parent => ingredient)
+
+Habanero::Sorbet.create!(:name => 'RelationIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'AssociationIngredient', :namespace => namespace, :parent => ingredient)
+
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => sorbet)
+Habanero::RelationIngredient.create!(
+  :name => 'Sorbet Ingredients',
+  :sorbet => sorbet,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Ingredients', :relation => 'has_many', :sorbet => sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Sorbet', :relation => 'belongs_to', :sorbet => ingredient),
   ]
 )
 
-# Habanero::AssociationIngredient
-Habanero::Sorbet.create!(
-  :name => 'AssociationIngredient',
-  :namespace => namespace,
-  :parent => ingredient,
-  
-  :ingredients => [
-    Habanero::StringIngredient.new(:name => 'Relation')
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => namespace_sorbet)
+Habanero::RelationIngredient.create!(
+  :name => 'Namespace Sorbets',
+  :sorbet => namespace_sorbet,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Sorbets', :relation => 'has_many', :sorbet => namespace_sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Namespace', :relation => 'belongs_to', :sorbet => sorbet),
   ]
 )
-
-Habanero::Sorbet.create!( # Habanero::Namespace
-  :namespace => namespace,
-  :name => 'Namespace',
-  :parent => active_record,
-  :ingredients => [
-    Habanero::StringIngredient.new(:name => 'Name')
-  ]
-)
-
-Habanero::Sorbet.create! do |s| # Habanero::Sorbet
-  s.name = 'Sorbet'
-  s.namespace = namespace
-  s.parent = active_record
-  
-  s.ingredients << Habanero::StringIngredient.new(:name => 'Name')
-  s.ingredients << Habanero::RelationIngredient.new(
-    :name => 'Sorbet Ingredients',
-    :children => [
-      Habanero::AssociationIngredient.new(:name => 'Ingredients', :relation => 'has_many', :sorbet => s),
-      Habanero::AssociationIngredient.new(:name => 'Sorbet', :relation => 'belongs_to', :sorbet => ingredient),
-    ]
-  )
-end
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-
-=begin
-
-children = Habanero::Sorbet.create!(
-  :namespace => Habanero::Namespace.new(:name => 'Zomg'),
-  :name => 'Children',
-  :parent => active_record
-)
-
-Habanero::Sorbet.create!(
-  :namespace => Habanero::Namespace.new(:name => 'Zomg'),
-  :name => 'Parent',
-  :parent => active_record,
-  :ingredients => [
-    Habanero::RelationIngredient.new(:name => 'Children', :relation => 'has_many', :sorbet => children)
-  ]
-)
-
-=end

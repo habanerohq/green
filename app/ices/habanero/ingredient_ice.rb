@@ -35,17 +35,20 @@ module Habanero
 
       def add_columns
         unless connection.columns(sorbet.table_name).map(&:name).include?(qualified_name)
+#          puts "add_column #{sorbet.table_name}, #{qualified_name}, #{column_type}" # write this to a log!
           connection.add_column sorbet.table_name, qualified_name, column_type
         end
       end
 
       def change_columns
         if name_was and name_changed?
+#          puts "rename_column #{sorbet.table_name}, #{name_was.attrify}, #{qualified_name}" # write this to a log!
           connection.rename_column sorbet.table_name, name_was.attrify, qualified_name
         end
       end
 
       def remove_columns
+#        puts "remove_column #{sorbet.table_name}, #{qualified_name}" # write this to a log!
         connection.remove_column sorbet.table_name, qualified_name
       end
     end
