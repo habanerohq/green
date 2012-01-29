@@ -3,7 +3,7 @@ module Habanero
     def format_habanero_currency_ingredient(target, ingredient)
       if value = target.send(ingredient.qualified_name)
         ingredient_span(ingredient) do
-          number_to_currency value, :precision => 2
+          number_to_currency value, :precision => ingredient.precision || 2
         end
       end
     end
@@ -11,7 +11,7 @@ module Habanero
     def format_habanero_percentage_ingredient(target, ingredient)
       if value = target.send(ingredient.method_name)
         ingredient_span(ingredient) do
-          number_to_percentage value, :precision => 0
+          number_to_percentage value, :precision => ingredient.precision || 1
         end
       end
     end
