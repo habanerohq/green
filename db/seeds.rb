@@ -1,5 +1,70 @@
-# Phase 1 - Namespace, Sorbet & Ingredient Definition
+# Phase 2 - Sites, Sections & Pages
 
+namespace = Habanero::Namespace.find_by_name('Habanero')
+active_record = Habanero::Sorbet.find_by_name('Base')
+
+site = Habanero::Sorbet.create!(:name => 'Site', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => site)
+
+section = Habanero::Sorbet.create!(:name => 'Section', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => section)
+Habanero::NestIngredient.create!(:name => 'Nest', :sorbet => section)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Site Sections',
+  :sorbet => site,
+  :ordered => true,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Sections', :relation => 'has_many', :sorbet => site),
+    Habanero::AssociationIngredient.new(:name => 'Site', :relation => 'belongs_to', :sorbet => section),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Template Sections',
+  :sorbet => section,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Sections', :relation => 'has_many', :sorbet => section),
+    Habanero::AssociationIngredient.new(:name => 'Template', :relation => 'belongs_to', :sorbet => section),
+  ]
+)
+
+page = Habanero::Sorbet.create!(:name => 'Page', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => page)
+
+l = Habanero::Sorbet.create!(:name => 'Layout', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => l)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Section Pages',
+  :sorbet => section,
+  :ordered => true,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :sorbet => section),
+    Habanero::AssociationIngredient.new(:name => 'Section', :relation => 'belongs_to', :sorbet => page),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Layout Pages',
+  :sorbet => l,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :sorbet => l),
+    Habanero::AssociationIngredient.new(:name => 'Layout', :relation => 'belongs_to', :sorbet => page),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Template Pages',
+  :sorbet => page,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :sorbet => page),
+    Habanero::AssociationIngredient.new(:name => 'Template', :relation => 'belongs_to', :sorbet => page),
+  ]
+)
+
+# Phase 1 - Namespace, Sorbet & Ingredient Definition
+=begin
 active_record = Habanero::Sorbet.create!(
   :namespace => Habanero::Namespace.new(:name => 'ActiveRecord'),
   :name => 'Base'
@@ -42,6 +107,7 @@ Habanero::Sorbet.create!(:name => 'TimeIngredient', :namespace => namespace, :pa
 
 Habanero::Sorbet.create!(:name => 'RelationIngredient', :namespace => namespace, :parent => ingredient)
 Habanero::Sorbet.create!(:name => 'AssociationIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'NestIngredient', :namespace => namespace, :parent => ingredient)
 
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => sorbet)
 Habanero::RelationIngredient.create!(
@@ -62,3 +128,4 @@ Habanero::RelationIngredient.create!(
     Habanero::AssociationIngredient.new(:name => 'Namespace', :relation => 'belongs_to', :sorbet => sorbet),
   ]
 )
+=end
