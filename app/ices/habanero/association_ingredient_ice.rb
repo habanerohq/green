@@ -23,27 +23,34 @@ module Habanero
       def inverse
         siblings.first
       end
-
-      def column_name
-        "#{qualified_name}_id"
-      end
       
       def columns_required?
-        relation == 'belongs_to'
+        relation =~ /belongs_to/
+      end
+
+      def column_name
+        "#{name.attrify}_id"
+      end
+
+      def position_name
+        "#{name.attrify}_position"
+      end
+
+      def column_type
+        :integer
       end
 
       protected
 
       def add_columns
         if columns_required?
-          unless connection.columns(sorbet.table_name).map(&:name).include?(column_name)
-            connection.add_column sorbet.table_name, column_name, :integer
+          unless column_exists?(column_name)
+            add_column column_name, column_type
           end
           
           if parent.ordered?
-            position_column = "#{qualified_name}_position"
-            unless connection.columns(sorbet.table_name).map(&:name).include?(position_column)
-              connection.add_column sorbet.table_name, position_column, :integer
+            unless column_exists?(position_name)
+              add_column position_name, column_type
             end
           end
         end
@@ -51,12 +58,12 @@ module Habanero
 
       def change_columns
         if columns_required? and name_was and name_changed?
-          connection.rename_column sorbet.table_name, "#{name_was.attrify}_id", column_name
+          rename_column "#{name_was.attrify}_id", column_name
         end
       end
 
       def remove_columns
-        connection.remove_column sorbet.table_name, column_name if columns_required?
+        remove_column(column_name) if columns_required?
       end
     end
   end

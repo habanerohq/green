@@ -20,11 +20,15 @@ module Habanero
 
     module InstanceMethods
       def qualified_name
-        [parent.try(:qualified_name), name.attrify].compact.join('_')
+        [parent.try(:qualified_name), name].compact.join('_').attrify
       end
 
       def adapt(klass)
         # nothing to do here yet
+      end
+
+      def column_name
+        qualified_name
       end
 
       def column_type
@@ -34,22 +38,38 @@ module Habanero
     protected
 
       def add_columns
-        unless connection.columns(sorbet.table_name).map(&:name).include?(qualified_name)
-#          puts "add_column #{sorbet.table_name}, #{qualified_name}, #{column_type}" # write this to a log!
-          connection.add_column sorbet.table_name, qualified_name, column_type
+        unless column_exists?(column_name)
+          add_column column_name, column_type
         end
+      end
+
+      def column_exists?(column_name)
+        connection.columns(sorbet.table_name).map(&:name).include?(column_name)
+      end
+
+      def add_column(name, type)
+#        puts "add_column #{sorbet.table_name}, #{name}, #{type}" # write this to a log!
+        connection.add_column sorbet.table_name, name, type
       end
 
       def change_columns
         if name_was and name_changed?
-#          puts "rename_column #{sorbet.table_name}, #{name_was.attrify}, #{qualified_name}" # write this to a log!
-          connection.rename_column sorbet.table_name, name_was.attrify, qualified_name
+          rename_column(name_was.attrify, column_name)
         end
       end
 
+      def rename_column(old_name, new_name)
+#        puts "rename_column #{sorbet.table_name}, #{old_name}, #{new_name}" # write this to a log!
+        connection.rename_column sorbet.table_name, old_name, new_name
+      end
+
       def remove_columns
-#        puts "remove_column #{sorbet.table_name}, #{qualified_name}" # write this to a log!
-        connection.remove_column sorbet.table_name, qualified_name
+        remove_column(column_name)
+      end
+
+      def remove_column(name)
+#        puts "remove_column #{name}" # write this to a log!
+        connection.remove_column sorbet.table_name, name
       end
     end
   end
