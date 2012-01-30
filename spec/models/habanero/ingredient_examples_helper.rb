@@ -13,6 +13,10 @@ module Habanero
       it "has a qualified name" do
         ingredient.qualified_name.should == 'test_ingredient'
       end
+
+      it "has a column name" do
+        ingredient.column_name.should == 'test_ingredient'
+      end
     end
 
     shared_examples_for "any simple ingredient" do
