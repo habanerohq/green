@@ -16,7 +16,7 @@ module Habanero
         klass.send relation, name.attrify, options
 
         if parent.ordered? and relation == 'belongs_to'
-          klass.send :acts_as_list, :scope => name.attrify, :column_name => position_name
+          klass.send :acts_as_list, :scope => name.attrify.to_sym, :column => position_name
         end
       end
       
