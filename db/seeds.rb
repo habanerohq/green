@@ -1,5 +1,69 @@
-# Phase 2 - Sites, Sections & Pages
+# Phase 3 - Basic Scoops, Placements & Regions
 
+namespace = Habanero::Namespace.find_by_name('Habanero')
+active_record = Habanero::Sorbet.find_by_name('Base')
+
+page = Habanero::Sorbet.find_by_name('Page')
+
+scoop = Habanero::Sorbet.create!(:name => 'Scoop', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Type', :sorbet => scoop)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => scoop)
+Habanero::StringIngredient.create!(:name => 'Title', :sorbet => scoop)
+Habanero::TextIngredient.create!(:name => 'Body', :sorbet => scoop)
+Habanero::StringIngredient.create!(:name => 'Body Format', :sorbet => scoop)
+Habanero::StringIngredient.create!(:name => 'Template', :sorbet => scoop)
+
+Habanero::Sorbet.create!(:name => 'ContentScoop', :namespace => namespace, :parent => scoop)
+
+list_scoop = Habanero::Sorbet.create!(:name => 'ListScoop', :namespace => namespace, :parent => scoop)
+Habanero::IntegerIngredient.create!(:name => 'Columns', :sorbet => list_scoop)
+
+placement = Habanero::Sorbet.create!(:name => 'ScoopPlacement', :namespace => namespace, :parent => active_record)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Scoop Placements',
+  :sorbet => page,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Placements', :relation => 'has_many', :sorbet => page),
+    Habanero::AssociationIngredient.new(:name => 'Page', :relation => 'belongs_to', :sorbet => placement),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Scoop Placements',
+  :sorbet => scoop,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Placements', :relation => 'has_many', :sorbet => scoop),
+    Habanero::AssociationIngredient.new(:name => 'Scoop', :relation => 'belongs_to', :sorbet => placement),
+  ]
+)
+
+lay = Habanero::Sorbet.find_by_name('Layout')
+
+region = Habanero::Sorbet.create!(:name => 'Region', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => region)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Layout Regions',
+  :sorbet => lay,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Regions', :relation => 'has_many', :sorbet => lay),
+    Habanero::AssociationIngredient.new(:name => 'Layout', :relation => 'belongs_to', :sorbet => region),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Region Placements',
+  :sorbet => region,
+  :ordered => true,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Placements', :relation => 'has_many', :sorbet => region),
+    Habanero::AssociationIngredient.new(:name => 'Region', :relation => 'belongs_to', :sorbet => placement),
+  ]
+)
+
+# Phase 2 - Sites, Sections & Pages
+=begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
@@ -62,7 +126,7 @@ Habanero::RelationIngredient.create!(
     Habanero::AssociationIngredient.new(:name => 'Template', :relation => 'belongs_to', :sorbet => page),
   ]
 )
-
+=end
 # Phase 1 - Namespace, Sorbet & Ingredient Definition
 =begin
 active_record = Habanero::Sorbet.create!(
