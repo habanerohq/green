@@ -13,9 +13,9 @@ module Habanero
       validates :name, :uniqueness => { :scope => :namespace_id }
 
       before_create :mix! # failed create leaves empty table?
-
+      
       scope :namespaced, lambda { |n| includes(:namespace).where('habanero_namespaces.name = ?', n) }
-
+      
       self.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt)
     end
 
@@ -37,7 +37,11 @@ module Habanero
 
       def chill!
         if parent # don't redefine edge classes ;)
-          namespace.klass.const_set(name, Class.new(parent.klass))
+#          begin
+#            qualified_name.constantize
+#          rescue NameError
+            namespace.klass.const_set(name, Class.new(parent.klass))
+#          end
 
           klass.reset_column_information
           adapt
@@ -46,7 +50,6 @@ module Habanero
             # fixme: syntax errors (at least) in the ice are ignored and results in failing
             #        to include the ice at all, silently
             klass.send :include, "#{qualified_name}Ice".constantize
-          rescue NoMethodError then raise
           rescue NameError
           end
 
@@ -67,7 +70,7 @@ module Habanero
       def all_ingredients
         self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
       end
-
+      
       def adapt
         ingredients.each { |i| i.adapt(klass) }
       end

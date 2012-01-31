@@ -1,2 +1,2 @@
-# todo: this should be done via #hook! or similar
-ActiveSupport::Dependencies.send :include, Habanero::Autoload
+Habanero.config.autoload_blacklist = [ 'Habanero::Ingredient', 'Habanero::Namespace', 'Habanero::Sorbet' ]
+Module.send :include, Habanero::ConstMissing
