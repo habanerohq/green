@@ -11,12 +11,12 @@ module Habanero
     module InstanceMethods
       def adapt(klass)
         options = { :class_name => inverse.sorbet.qualified_name }
-        options.merge!(:order => "#{inverse.qualified_name}_position") if parent.ordered? and relation =~ /many/
+        options.merge!(:order => inverse.position_name) if parent.ordered? and relation =~ /many/
 
-        klass.send relation, qualified_name, options
+        klass.send relation, name.attrify, options
 
         if parent.ordered? and relation == 'belongs_to'
-          klass.send :acts_as_list, :scope => qualified_name, :column_name => "#{qualified_name}_position"
+          klass.send :acts_as_list, :scope => name.attrify, :column_name => position_name
         end
       end
       
