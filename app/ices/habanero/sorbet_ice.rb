@@ -38,7 +38,6 @@ module Habanero
         if parent # don't redefine edge classes ;)
           namespace.klass.const_set(name, Class.new(parent.klass))
 
-          klass.reset_column_information
           adapt
 
           begin

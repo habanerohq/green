@@ -11,6 +11,10 @@ module Habanero
       after_save :change_columns
       after_destroy :remove_columns
 
+      # reset column information on the sorbet when necessary
+      after_save :reset_columns
+      after_destroy :reset_columns
+
       validates :name,
                 :presence => true,
                 :uniqueness => { :scope => 'sorbet_id' }
@@ -47,6 +51,10 @@ module Habanero
 
       def remove_columns
         connection.remove_column sorbet.table_name, qualified_name
+      end
+
+      def reset_columns
+        sorbet.klass.reset_column_information
       end
     end
   end
