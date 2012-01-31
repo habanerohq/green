@@ -30,13 +30,14 @@ module Habanero
 
       def mix!
         if parent
+#          puts "create_table #{table_name}" unless connection.table_exists?(table_name) # write this to a log!
           connection.create_table(table_name) unless connection.table_exists?(table_name)
         end
       end
 
       def chill!
         if parent # don't redefine edge classes ;)
-          namespace.klass.const_set(name, Class.new(parent.klass))
+          set_constant
 
           adapt
 
@@ -68,6 +69,10 @@ module Habanero
 
       def adapt
         ingredients.each { |i| i.adapt(klass) }
+      end
+
+      def set_constant
+        namespace.klass.const_set(name.constify, Class.new(parent.klass))
       end
     end
   end

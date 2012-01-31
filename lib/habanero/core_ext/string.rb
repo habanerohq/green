@@ -1,5 +1,13 @@
 class String
   def attrify
-    titleize.gsub(/\s/, '').underscore.gsub(/\//, '_')
+    constify.unslash.underscore
+  end
+
+  def constify
+    titleize.gsub(/\s/, '')
+  end
+
+  def unslash
+    gsub('/', '')
   end
 end
