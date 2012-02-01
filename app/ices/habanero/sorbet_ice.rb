@@ -16,7 +16,7 @@ module Habanero
 
       scope :namespaced, lambda { |n| includes(:namespace).where('habanero_namespaces.name = ?', n) }
 
-      self.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt)
+      self.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt) if table_exists?
     end
 
     module InstanceMethods

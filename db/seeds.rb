@@ -1,5 +1,25 @@
-# Phase 4 - Composite Scoops & Masks Scoop
+# Phase 5 - Routes
 
+Habanero::Sorbet
+Habanero::Ingredient
+Habanero::Namespace
+
+namespace = Habanero::Namespace.find_by_name('Habanero')
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+
+route = Habanero::Sorbet.create!(:name => 'RouteIngredient', :namespace => namespace, :parent => ingredient)
+
+page = Habanero::Sorbet.find_by_name('Page')
+page.ingredients << Habanero::RouteIngredient.new(:name => 'Route')
+
+section = Habanero::Sorbet.find_by_name('Section')
+section.ingredients << Habanero::RouteIngredient.new(:name => 'Route')
+
+site = Habanero::Sorbet.find_by_name('Site')
+site.ingredients << Habanero::StringIngredient.new(:name => 'Host')
+
+# Phase 4 - Composite Scoops & Masks Scoop
+=begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
@@ -63,7 +83,78 @@ Habanero::RelationIngredient.create!(
     Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :sorbet => mask_scoop),
   ]
 )
+=end
+# Phase 3 - Basic Scoops, Placements & Regions
+=begin
+namespace = Habanero::Namespace.find_by_name('Habanero')
+active_record = Habanero::Sorbet.find_by_name('Base')
 
+# Phase 4 - Composite Scoops & Masks Scoop
+=begin
+namespace = Habanero::Namespace.find_by_name('Habanero')
+active_record = Habanero::Sorbet.find_by_name('Base')
+
+scoop = Habanero::Sorbet.find_by_name('Scoop')
+Habanero::NestIngredient.create!(:name => 'Nest', :sorbet => scoop)
+
+section = Habanero::Sorbet.find_by_name('Section')
+sorbet = Habanero::Sorbet.find_by_name('Sorbet')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Target Sections',
+  :sorbet => sorbet,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Sections', :relation => 'has_many', :sorbet => sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Target', :relation => 'belongs_to', :sorbet => section),
+  ]
+)
+
+mask = Habanero::Sorbet.create!(:name => 'Mask', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => mask)
+Habanero::NestIngredient.create!(:name => 'Nest', :sorbet => mask)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Sorbet Masks',
+  :sorbet => sorbet,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Masks', :relation => 'has_many', :sorbet => sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Sorbet', :relation => 'belongs_to', :sorbet => mask),
+  ]
+)
+
+mask_ingredient = Habanero::Sorbet.create!(:name => 'MaskIngredient', :namespace => namespace, :parent => active_record)
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Mask Mask Ingredients',
+  :sorbet => mask,
+  :ordered => true,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Mask Ingredients', :relation => 'has_many', :sorbet => mask),
+    Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :sorbet => mask_ingredient),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Ingredient Mask Ingredients',
+  :sorbet => ingredient,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Mask Ingredients', :relation => 'has_many', :sorbet => ingredient),
+    Habanero::AssociationIngredient.new(:name => 'Ingredient', :relation => 'belongs_to', :sorbet => mask_ingredient),
+  ]
+)
+
+mask_scoop = Habanero::Sorbet.create!(:name => 'MaskScoop', :namespace => namespace, :parent => scoop)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Mask Mask Scoops',
+  :sorbet => mask,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Mask Scoops', :relation => 'has_many', :sorbet => mask),
+    Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :sorbet => mask_scoop),
+  ]
+)
+=end
 # Phase 3 - Basic Scoops, Placements & Regions
 =begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
