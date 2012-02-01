@@ -77,7 +77,7 @@ module Habanero
       end
 
       def reset_columns
-        sorbet.klass.reset_column_information
+        sorbet.klass.reset_column_information unless parent
       end
     end
   end
