@@ -10,7 +10,20 @@ module Habanero
 
     module InstanceMethods
       def adapt(klass)
-        options = { :class_name => inverse.sorbet.qualified_name }
+        options = {}
+
+        # todo: refactor me :)
+        if polymorphic?
+          if relation == 'belongs_to'
+            options[:polymorphic] = true
+          else
+            options[:as] = inverse.name.attrify
+            options[:class_name] = inverse.sorbet.qualified_name
+          end
+        else
+          options[:class_name] = inverse.sorbet.qualified_name unless relation == 'belongs_to'
+        end
+
         options.merge!(:order => inverse.position_name) if parent.ordered? and relation =~ /many/
 
         klass.send relation, name.attrify, options
@@ -19,11 +32,19 @@ module Habanero
           klass.send :acts_as_list, :scope => name.attrify.to_sym, :column => position_name
         end
       end
-      
+
       def inverse
-        siblings.first
+        if relation == 'belongs_to'
+          siblings.first
+        else
+          siblings.detect { |s| s.relation == 'belongs_to' }
+        end
       end
-      
+
+      def polymorphic?
+        siblings.count > 1
+      end
+
       def columns_required?
         relation =~ /belongs_to/
       end
@@ -44,10 +65,9 @@ module Habanero
 
       def add_columns
         if columns_required?
-          unless column_exists?(column_name)
-            add_column column_name, column_type
-          end
-          
+          add_column column_name, column_type unless column_exists?(column_name)
+          add_column "#{name.attrify}_type", :string if polymorphic?
+
           if parent.ordered?
             unless column_exists?(position_name)
               add_column position_name, column_type
