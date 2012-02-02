@@ -1,29 +1,5 @@
-# Phase 6 - Documentation Ingredients, renaming MaskScoop to DocumentationScoop (which is the first specific use of Masks)
-
-Habanero::Sorbet
-Habanero::Ingredient
-Habanero::Namespace
-
-sorbet = Habanero::Sorbet.find_by_name('Sorbet')
-ingredient = Habanero::Sorbet.find_by_name('Ingredient')
-
-Habanero::TextIngredient.create!(:name => 'Documentation', :sorbet => sorbet)
-Habanero::TextIngredient.create!(:name => 'Documentation', :sorbet => ingredient)
-
-s = Habanero::Sorbet.find_by_name('MaskScoop')
-s.name = 'DocumentationScoop'
-s.save!
-
-r = Habanero::RelationIngredient.find_by_name('Mask Mask Scoops')
-r.name = 'Mask Documentation Scoops'
-r.save!
-
-a = Habanero::AssociationIngredient.find_by_name('Mask Scoops')
-a.name = 'Documentation Scoop'
-a.save!
-
 # Phase 5 - Routes
-=begin
+
 Habanero::Sorbet
 Habanero::Ingredient
 Habanero::Namespace
@@ -41,7 +17,7 @@ section.ingredients << Habanero::RouteIngredient.new(:name => 'Route')
 
 site = Habanero::Sorbet.find_by_name('Site')
 site.ingredients << Habanero::StringIngredient.new(:name => 'Host')
-=end
+
 # Phase 4 - Composite Scoops & Masks Scoop
 =begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
