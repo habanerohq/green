@@ -7,9 +7,13 @@ module Habanero
     end
 
     module InstanceMethods
-      def draw_route(map)
-        # todo: site.host should be optional
-        map.match qualified_path => 'habanero/pages#show', :constraints => { :host => section.site.host }
+      def draw_route(map, options = {})
+        options[:constraints] = { :host => section.site.host } if section.site.host
+        map.match ({ qualified_path => 'habanero/pages#show', :defaults => { :draw_type => self.class.name, :draw_id => id } }).merge(options)
+      end
+      
+      def target_class
+        section.nearest_sorbet.try(:klass)
       end
     end
   end

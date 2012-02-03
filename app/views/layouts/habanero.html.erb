@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body class="page <%= @page.section.names_idified %> <%= @page.name.idify %>">
+
+<div id="infobar">
+  <div class="container">
+    <%= arrangement_for :infobar %>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div id="header">
+    <div class="container">
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="container">
+      <%= arrangement_for :top %>
+      <%= arrangement_for :left %>
+      <%= arrangement_for :sidebar %>
+      <%= arrangement_for :content %>
+      <%= arrangement_for :right %>
+      <%= arrangement_for :bottom %>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <%= arrangement_for :footer %>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -34,6 +34,7 @@ gem 'jquery-rails'
 gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git'
 gem 'awesome_nested_set'
 gem 'acts_as_list'
+gem 'cells'
 
 group :development, :test do
   gem 'rspec'
