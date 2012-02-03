@@ -10,6 +10,15 @@ module Pantry
         @stackables = (@stackables ||= []) + args
       end
     end
+
+    def refers_to(*args)
+      if args.last.is_a?(Hash)
+        make_stackable(args.first)
+        (@stackables_options ||= {})[args.first] = args.last
+      else
+        args.each{|a| make_stackable(a)}
+      end
+    end
     
     def stackables
       @stackables ||= []
