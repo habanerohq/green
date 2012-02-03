@@ -12,7 +12,7 @@ module Habanero
         send(method, form, ingredient)
       else
         # todo: fix the formatting of the form, or port to a builder
-        form.label(ingredient.qualified_name, ingredient.name <<
+        form.label(ingredient.qualified_name, ingredient.name) <<
         form.text_field(ingredient.qualified_name) <<
         '<br/>'.html_safe
       end
