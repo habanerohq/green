@@ -74,6 +74,10 @@ module Habanero
       def set_constant
         namespace.klass.const_set(name.constify, Class.new(parent.klass))
       end
+      
+      def to_s
+        qualified_name
+      end
     end
   end
 end
