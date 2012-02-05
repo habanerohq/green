@@ -2,20 +2,11 @@
   <%= cell_title(@target) %>
 
   <%= cell_content do %>
-    <p><%= @target.documentation %></p>
-
-    <% @target.class.reflect_on_all_associations(:has_many).each do |a| %>
-      <% if @target.send(a.name).any? %>
-        <%= h(3){a.name.to_s} %>
-
-        <% @target.send(a.name).each do |o| %>
-          <% if o.respond_to?(:documentation) %>
-            <%= h(4){o.name} %>
-      
-            <p><%= o.documentation %></p>
-          <% end %>
-        <% end %>
+    <dl>
+      <% @scoop.mask.mask_ingredients.each do |mi| %>
+        <dt><%= mi.ingredient.name %></dt>
+        <dd><%= format_ingredient(@target, mi.ingredient) %></dd>
       <% end %>
-    <% end %>
+    </dl>
   <% end %>
 <% end %>

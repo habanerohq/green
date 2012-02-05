@@ -1,14 +1,44 @@
 # Phase 7 - start building habanero site sorbet2 doco section
 
 sorbet = Habanero::Sorbet.find_by_name('Sorbet')
+Habanero::NestIngredient.create!(:name => 'Sorbet Nest', :sorbet => sorbet)
+
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+Habanero::NestIngredient.create!(:name => 'Ingredient Nest', :sorbet => ingredient)
+
 site = Habanero::Site.create!(:name => 'Habanero')
 sorbet2 = Habanero::Section.create!(:name => 'Sorbet2', :route => '/sorbet2', :site => site)
 ref = Habanero::Section.create!(:name => 'Reference Manual', :route => '/reference', :site => site, :sorbet => sorbet, :parent => sorbet2)
-page = Habanero::Page.create!(:name => 'Reference Page', :section => ref, :route => '/sorbets/:id')
+page = Habanero::Page.create!(:name => 'Sorbet Page', :section => ref, :route => '/sorbets/:id')
+i_page = Habanero::Page.create!(:name => 'Ingredient Page', :section => ref, :route => '/ingredients/:id')
 
-scoop = Habanero::DocumentationScoop.create!(:name => 'Sorbet Document')
-placement = Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop)
+mask = Habanero::Mask.create!(:name => 'Sorbet Document Mask', :sorbet => sorbet)
+scoop = Habanero::DocumentationScoop.create!(:name => 'Sorbet Document', :mask => mask)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Name'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Namespace'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Sorbet Nest'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Documentation'))
+mask.save!
 
+i_mask = Habanero::Mask.create!(:name => 'Ingredient Document Mask', :sorbet => ingredient)
+i_scoop = Habanero::DocumentationScoop.create!(:name => 'Ingredient Document', :mask => i_mask)
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Name'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Type'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Documentation'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Derived'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Limit'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Precision'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Scale'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Default'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Nullable'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Sortable'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Sort Direction'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Ordered'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Relation'))
+i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Sorbet'))
+
+Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop)
+Habanero::ScoopPlacement.create!(:page => i_page, :scoop => i_scoop)
 
 # Phase 6 - Documentation Ingredients, renaming MaskScoop to DocumentationScoop (which is the first specific use of Masks)
 =begin

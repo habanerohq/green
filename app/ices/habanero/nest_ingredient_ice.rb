@@ -19,7 +19,7 @@ module Habanero
     protected
 
       def add_columns
-        unless column_exists?(column_names.first)
+        unless column_exists?(column_names.first.to_s)
           column_names.each { |c| add_column c, column_type }
         end
       end

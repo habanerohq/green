@@ -20,6 +20,10 @@ module Habanero
       def klass
         qualified_name.constantize
       end
+      
+      def to_s
+        name
+      end
     end
   end
 end

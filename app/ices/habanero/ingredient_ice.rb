@@ -38,6 +38,10 @@ module Habanero
       def column_type
         :string
       end
+      
+      def to_s
+        name
+      end
 
     protected
 
