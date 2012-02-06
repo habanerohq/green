@@ -44,7 +44,8 @@ module Pantry
 
       def foreign_joins(classes = [])
         reflect_on_all_associations(:belongs_to).map do |a|
-          { a.name => a.klass.foreign_joins(classes << self) } unless classes.include?(a.klass)
+          cs = classes << self
+          { a.name => a.klass.foreign_joins(cs) } unless cs.include?(a.klass)
         end.compact
       end
       
