@@ -21,7 +21,7 @@ module Habanero
             options[:class_name] = inverse.sorbet.qualified_name
           end
         else
-          options[:class_name] = inverse.sorbet.qualified_name unless relation == 'belongs_to'
+          options[:class_name] = inverse.sorbet.qualified_name
         end
 
         options.merge!(:order => inverse.position_name) if parent.ordered? and relation =~ /many/
