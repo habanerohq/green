@@ -13,7 +13,7 @@ module Habanero
       end
 
       def adapt(klass)
-        klass.send :acts_as_nested_set
+        klass.send :acts_as_nested_set if klass.respond_to?(:acts_as_nested_set_options)
       end
 
     protected
