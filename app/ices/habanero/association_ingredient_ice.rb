@@ -1,3 +1,4 @@
+puts "INCLUDE #{__FILE__}"
 module Habanero
   module AssociationIngredientIce
     extend ActiveSupport::Concern
@@ -10,6 +11,8 @@ module Habanero
 
     module InstanceMethods
       def adapt(klass)
+        return nil if klass.reflect_on_association(name.attrify.to_sym)
+
         options = {}
 
         # todo: refactor me :)
@@ -25,9 +28,9 @@ module Habanero
         end
 
         options.merge!(:order => inverse.position_name) if parent.ordered? and relation =~ /many/
-        
+
         klass.send relation, name.attrify.to_sym, options
-        
+
         if parent.ordered? and relation == 'belongs_to'
           klass.send :acts_as_list, :scope => name.attrify.to_sym, :column => position_name
         end

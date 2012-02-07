@@ -10,7 +10,7 @@ module Habanero
 
     module InstanceMethods
       def qualified_name
-        name # todo: qualify as class name etc.
+        "::#{name}" # todo: qualify as class name etc.
       end
 
       def chill!
@@ -20,7 +20,7 @@ module Habanero
       def klass
         qualified_name.constantize
       end
-      
+
       def to_s
         name
       end
