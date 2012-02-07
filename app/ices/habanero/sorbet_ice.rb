@@ -25,7 +25,7 @@ module Habanero
       end
 
       def table_name
-        base.qualified_name.pluralize.attrify
+        base.qualified_name.gsub(/^::/, '').pluralize.attrify
       end
 
       def mix!
@@ -74,7 +74,7 @@ module Habanero
       def set_constant
         namespace.klass.const_set(name.constify, Class.new(parent.klass))
       end
-      
+
       def to_s
         qualified_name
       end
