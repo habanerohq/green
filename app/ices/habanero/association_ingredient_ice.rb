@@ -1,4 +1,3 @@
-puts "INCLUDE #{__FILE__}"
 module Habanero
   module AssociationIngredientIce
     extend ActiveSupport::Concern
