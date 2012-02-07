@@ -25,7 +25,7 @@ module Habanero
       end
 
       def table_name
-        base.qualified_name.gsub(/^::/, '').pluralize.attrify
+        base.qualified_name.pluralize.attrify
       end
 
       def mix!

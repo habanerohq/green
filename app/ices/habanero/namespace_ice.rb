@@ -10,7 +10,7 @@ module Habanero
 
     module InstanceMethods
       def qualified_name
-        "::#{name}" # todo: qualify as class name etc.
+        name # todo: qualify as class name etc.
       end
 
       def chill!
