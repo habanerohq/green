@@ -20,10 +20,10 @@ module Habanero
             options[:polymorphic] = true
           else
             options[:as] = inverse.name.attrify
-            options[:class_name] = inverse.sorbet.qualified_name
+            options[:class_name] = "::#{inverse.sorbet.qualified_name}"
           end
         else
-          options[:class_name] = inverse.sorbet.qualified_name
+          options[:class_name] = "::#{inverse.sorbet.qualified_name}"
         end
 
         options.merge!(:order => inverse.position_name) if parent.ordered? and relation =~ /many/
