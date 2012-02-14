@@ -1,0 +1,11 @@
+<%= cell_div do %>
+  <%= cell_title(@placement.scoop.to_s) %>
+
+  <%= cell_content do %>
+    <ol>
+      <% @targets.each do |t| %>
+        <li><%= t.to_s %></li>
+      <% end %>
+    </ol>
+  <% end %>
+<% end %>

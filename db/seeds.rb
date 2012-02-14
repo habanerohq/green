@@ -1,5 +1,54 @@
-# Phase 8 - start building habanero site sorbet2 doco section
+# Phase 9 - Invent collection scoops, reconstruct Scoop inheritance hierarchy
 
+namespace = Habanero::Namespace.find_by_name('Habanero')
+
+s = Habanero::Sorbet.find_by_name('Scoop')
+
+sorbet_scoop = Habanero::Sorbet.create!(:name => 'SorbetScoop', :namespace => namespace, :parent => s)
+
+# rename list scoop to collection scoop and make it a child of sorbet scoop
+ls = Habanero::Sorbet.find_by_name('ListScoop')
+ls.name = 'CollectionScoop'
+ls.parent = sorbet_scoop
+ls.save!
+
+# move scoop mask to the level or sorbet scoop
+Habanero::RelationIngredient.find_by_name('Mask Documentation Scoops').destroy
+
+mask = Habanero::Sorbet.find_by_name('Mask')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Mask Sorbet Scoops',
+  :sorbet => mask,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Sorbet Scoops', :relation => 'has_many', :sorbet => mask),
+    Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :sorbet => sorbet_scoop),
+  ]
+)
+
+# make documentation scoop a child of sorbet scoop
+ds = Habanero::Sorbet.find_by_name('DocumentationScoop')
+ds.parent = sorbet_scoop
+ds.save!
+
+# create a new type of scoop -- Document Collection Scoop -- and create some instances for placement
+mask = Habanero::Mask.find_by_name('Sorbet Document Mask')
+sorbet = Habanero::Sorbet.create!(:name => 'DocumentationCollectionScoop', :namespace => namespace, :parent => ls)
+
+s_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Sorbet List', :mask => mask)
+i_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Ingredient List', :mask => mask)
+
+# adjust the placements
+s_placement = Habanero::ScoopPlacement.find(1)
+s_placement.scoop = s_scoop
+s_placement.save!
+
+i_placement = Habanero::ScoopPlacement.find(3)
+i_placement.scoop = i_scoop
+i_placement.save!
+
+# Phase 8 - start building habanero site sorbet2 doco section
+=begin
 sorbet = Habanero::Sorbet.find_by_name('Sorbet')
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 
@@ -50,7 +99,7 @@ Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'l
 Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'show')
 Habanero::ScoopPlacement.create!(:page => i_page, :scoop => i_scoop, :template => 'list')
 Habanero::ScoopPlacement.create!(:page => i_page, :scoop => i_scoop, :template => 'show')
-
+=end
 # Phase 7 - add nests to Sorbets and Ingredients
 =begin
 sorbet = Habanero::Sorbet.find_by_name('Sorbet')
