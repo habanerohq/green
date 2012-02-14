@@ -6,10 +6,10 @@ module Habanero
       def cell_type
         self.class.cell_type
       end
+    end
 
-      def template
-        read_attribute(:template) || 'show'
-      end
+    def to_s
+      name
     end
     
     module ClassMethods
