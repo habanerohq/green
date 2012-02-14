@@ -3,10 +3,10 @@ class HabaneroSitePantry < Pantry::Base
   def initialize
     # ugly hack to ensure that descendants reports all the expected subclasses
     if i = Habanero::Sorbet.find_by_name('Ingredient')
-      i.children.map(&:klass)
+      i.descendants.map(&:klass)
     end
     if i = Habanero::Sorbet.find_by_name('Scoop')
-      i.children.map(&:klass)
+      i.descendants.map(&:klass)
     end
     
     refers_to Habanero::Namespace

@@ -13,7 +13,11 @@ module Habanero
       end
       
       def target_class
-        section.nearest_target.try(:klass)
+        nearest_target.try(:klass)
+      end
+      
+      def nearest_target
+        target || section.nearest_target
       end
     end
   end

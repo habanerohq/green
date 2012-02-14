@@ -34,6 +34,10 @@ module Habanero
       def column_name
         qualified_name
       end
+      
+      def method_name
+        column_name
+      end
 
       def column_type
         :string

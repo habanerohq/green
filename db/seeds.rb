@@ -1,5 +1,26 @@
-# Phase 9 - Invent collection scoops, reconstruct Scoop inheritance hierarchy
+# Phase 11 - Fix the ingredients documentation phase
 
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+i_page = Habanero::Page.find_by_name('Ingredient Page')
+i_page.target = ingredient
+i_page.save!
+
+# Phase 10 - Add a target sorbet to page
+=begin
+page = Habanero::Sorbet.find_by_name('Page')
+sorbet = Habanero::Sorbet.find_by_name('Sorbet')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Target Pages',
+  :sorbet => sorbet,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :sorbet => sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Target', :relation => 'belongs_to', :sorbet => page),
+  ]
+)
+=end
+# Phase 9 - Invent collection scoops, reconstruct Scoop inheritance hierarchy
+=begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
 
 s = Habanero::Sorbet.find_by_name('Scoop')
@@ -46,7 +67,7 @@ s_placement.save!
 i_placement = Habanero::ScoopPlacement.find(3)
 i_placement.scoop = i_scoop
 i_placement.save!
-
+=end
 # Phase 8 - start building habanero site sorbet2 doco section
 =begin
 sorbet = Habanero::Sorbet.find_by_name('Sorbet')

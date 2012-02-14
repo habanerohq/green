@@ -6,7 +6,7 @@ class SorbetPantry < Pantry::Base
     
     # ugly hack to ensure that Habanero::Ingredient#descendants reports all the expected subclasses
     if i = Habanero::Sorbet.find_by_name('Ingredient')
-      i.children.map(&:klass)
+      i.descendants.map(&:klass)
     end
     
     can_stack Habanero::Ingredient, :id_value_methods => [:name, :sorbet]
