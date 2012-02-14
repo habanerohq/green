@@ -3,8 +3,8 @@ module Habanero
     extend ActiveSupport::Concern
 
     module InstanceMethods
-      def nearest_sorbet
-        sorbet || parent.try(:nearest_sorbet)
+      def nearest_target
+        target || parent.try(:nearest_target)
       end
       
       def names_idified

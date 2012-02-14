@@ -13,7 +13,7 @@ module Habanero
       end
       
       def target_class
-        section.nearest_sorbet.try(:klass)
+        section.nearest_target.try(:klass)
       end
     end
   end
