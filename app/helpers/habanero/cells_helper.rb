@@ -4,7 +4,7 @@ module Habanero
     include IngredientsHelper
     
     def cell_div(options={}, &block)
-      options.reverse_merge!(:id => @scoop.name.idify, :class => "cell #{cell_id.idify} #{@scoop.template}")
+      options.reverse_merge!(:id => @placement.scoop.name.idify, :class => "cell #{cell_id.idify} #{@placement.template}")
       content_tag(:div, options, &block)
     end
 
@@ -19,7 +19,7 @@ module Habanero
     end
     
     def h(offset, &block)
-      level = "h#{@scoop.level + offset}"
+      level = "h#{@placement.scoop.level + offset}"
       content_tag(level, &block)
     end
 

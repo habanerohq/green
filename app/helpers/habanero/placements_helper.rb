@@ -7,9 +7,9 @@ module Habanero
     end
 
     def place(placement)
-      render_cell(placement.scoop.cell_type, placement.scoop.template, 
+      render_cell(placement.scoop.cell_type, placement.template, 
         :page => @page, 
-        :scoop => placement.scoop,
+        :placement => placement,
         :target => @target
       )
     end
