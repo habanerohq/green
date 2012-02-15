@@ -17,6 +17,10 @@ module Habanero
       select :parent, object.class.order(:name)
     end
 
+    def habanero_relation_ingredient(i)
+      # do nothing
+    end
+
     def habanero_association_ingredient(i)
       if i.relation == 'belongs_to'
         select i.name.attrify, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name))
