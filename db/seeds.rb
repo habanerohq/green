@@ -1,29 +1,10 @@
-# Phase 12 - Define Form Scoops
-
-n = Habanero::Namespace.find_by_name('Habanero')
-s = Habanero::Sorbet.find_by_name('Scoop')
-
-form_scoop = Habanero::Sorbet.create!(:name => 'FormScoop', :namespace => n, :parent => s)
-sorbet_scoop = Habanero::Sorbet.create!(:name => 'SorbetFormScoop', :namespace => n, :parent => form_scoop)
-
-mask = Habanero::Sorbet.find_by_name('Mask')
-
-Habanero::RelationIngredient.create!(
-  :name => 'Mask Sorbet Form Scoops',
-  :sorbet => mask,
-  :children => [
-    Habanero::AssociationIngredient.new(:name => 'Form Scoops', :relation => 'has_many', :sorbet => mask),
-    Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :sorbet => sorbet_scoop),
-  ]
-)
-
 # Phase 11 - Fix the ingredients documentation phase
-=begin
+
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 i_page = Habanero::Page.find_by_name('Ingredient Page')
 i_page.target = ingredient
 i_page.save!
-=end
+
 # Phase 10 - Add a target sorbet to page
 =begin
 page = Habanero::Sorbet.find_by_name('Page')
