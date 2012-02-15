@@ -56,7 +56,7 @@ Sorbet2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
 
-  if Habanero::Sorbet.table_exists? and Habanero::Sorbet.find_by_name('RouteIngredient')
-    Habanero::RouteIngredient.all.each { |i| i.sorbet.klass.draw_routes(self) }
-  end
+#  if Habanero::Sorbet.table_exists? and Habanero::Sorbet.find_by_name('RouteIngredient')
+ #   Habanero::RouteIngredient.all.each { |i| i.sorbet.klass.draw_routes(self) }
+ # end
 end

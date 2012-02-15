@@ -4,28 +4,32 @@ module Habanero
 
     included do
       belongs_to :namespace
-      validates :namespace, :presence => true
+      has_many :ingredients, :class_name => 'Habanero::Ingredient'
 
       acts_as_nested_set
 
-      has_many :ingredients, :class_name => 'Habanero::Ingredient'
+      scope :namespaced, lambda { |n| includes(:namespace).where('habanero_namespaces.name = ?', n) }
 
-      validates :name, :uniqueness => { :scope => :namespace_id }
+      validates :name,
+                :presence => true,
+                :uniqueness => { :scope => :namespace_id }
 
       before_create :mix! # failed create leaves empty table?
-
-      scope :namespaced, lambda { |n| includes(:namespace).where('habanero_namespaces.name = ?', n) }
 
       self.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt) if table_exists?
     end
 
     module InstanceMethods
       def qualified_name
-        "#{namespace.qualified_name}::#{name}" # todo: qualify name into class name
+        "#{namespace.qualified_name}::#{klass_name}"
       end
 
       def table_name
         base.qualified_name.pluralize.attrify
+      end
+
+      def klass_name
+        name
       end
 
       def mix!
@@ -36,25 +40,29 @@ module Habanero
       end
 
       def chill!
-        if parent # don't redefine edge classes ;)
-          set_constant
+        return klass if chilled?
 
-          adapt
+        namespace.klass.const_set(klass_name, Class.new(parent.klass))
 
-          begin
-            # fixme: syntax errors (at least) in the ice are ignored and results in failing
-            #        to include the ice at all, silently
-            klass.send :include, "#{qualified_name}Ice".constantize
-          rescue NoMethodError then raise
-          rescue NameError
-          end
+        adapt
 
-          klass
+        begin
+          # fixme: syntax errors (at least) in the ice are ignored and results in failing
+          #        to include the ice at all, silently
+          klass.send :include, "#{qualified_name}Ice".constantize
+        rescue NoMethodError then raise
+        rescue NameError
         end
+
+        klass
+      end
+
+      def chilled?
+        namespace.klass.constants.include?(klass_name)
       end
 
       def klass
-        qualified_name.constantize
+        namespace.klass.const_get(klass_name)
       end
 
       def base
@@ -69,10 +77,6 @@ module Habanero
 
       def adapt
         ingredients.each { |i| i.adapt(klass) }
-      end
-
-      def set_constant
-        namespace.klass.const_set(name.constify, Class.new(parent.klass))
       end
 
       def to_s

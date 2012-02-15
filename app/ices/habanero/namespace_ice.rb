@@ -5,7 +5,9 @@ module Habanero
     included do
       has_many :sorbets
 
-      validates :name, :uniqueness => true
+      validates :name,
+                :presence => true,
+                :uniqueness => true
     end
 
     module InstanceMethods
@@ -14,7 +16,12 @@ module Habanero
       end
 
       def chill!
-        Object.const_set(qualified_name, Module.new)
+        Object.const_set(qualified_name, Module.new) unless chilled?
+        Object.const_get(qualified_name)
+      end
+
+      def chilled?
+        Object.constants.include?(qualified_name)
       end
 
       def klass
