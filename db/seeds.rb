@@ -1,5 +1,30 @@
-# Phase 14 - Create a sorbet edit page
+# Phase 15 - Create category sorbet
 
+namespace = Habanero::Namespace.find_by_name('Habanero')
+active_record = Habanero::Sorbet.find_by_name('Base')
+
+c = Habanero::Sorbet.create!(:name => 'Category', :namespace => namespace, :parent => active_record)
+nest = Habanero::NestIngredient.create!(:name => 'Nest', :sorbet => c)
+name = Habanero::StringIngredient.create!(:name => 'Name', :sorbet => c)
+abbrev = Habanero::StringIngredient.create!(:name => 'Abbreviation', :sorbet => c)
+strat = Habanero::TextIngredient.create!(:name => 'Strategy', :sorbet => c)
+
+mask = Habanero::Mask.create!(:name => 'Category Document Mask', :sorbet => c)
+scoop = Habanero::DocumentationScoop.create!(:name => 'Category Document', :mask => mask)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => name)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => nest)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => abbrev)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => strat)
+
+ref = Habanero::Section.find_by_name('Reference Manual')
+content_page = Habanero::Page.create!(:name => 'Category Page', :section => ref, :route => '/ingredients/:id', :target => c)
+edit_page = Habanero::Page.create!(:name => 'Category Edit Page', :section => ref, :route => '/ingredients/:id/edit', :target => c, :next_page => content_page)
+
+Habanero::ScoopPlacement.create!(:page => edit_page, :scoop => scoop, :template => 'edit')
+Habanero::ScoopPlacement.create!(:page => content_page, :scoop => scoop, :template => 'show')
+
+# Phase 14 - Create a sorbet edit page
+=begin
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 ref = Habanero::Section.find_by_name('Reference Manual')
 next_page = Habanero::Page.find_by_name('Ingredient Page')
@@ -7,7 +32,7 @@ page = Habanero::Page.create!(:name => 'Ingredient Edit Page', :section => ref, 
 
 scoop = Habanero::DocumentationScoop.find_by_name('Ingredient Document')
 Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'edit')
-
+=end
 # Phase 13 - Create a sorbet edit page
 =begin
 ref = Habanero::Section.find_by_name('Reference Manual')
