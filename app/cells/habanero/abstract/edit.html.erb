@@ -2,8 +2,9 @@
   <%= cell_title("#{@target} editor") %>
 
   <%= cell_content do %>
-    <%= form_for(@target, :url => '', :html => {:method => (@target.new_record? ? :post : :put)}) do |f| -%>
+    <%= form_for(@target, :url => '', :builder => Habanero::IngredientsFormBuilder, :html => {:method => (@target.new_record? ? :post : :put)}) do |f| -%>
       <% @placement.scoop.mask.mask_ingredients.each do |mi| -%>
+        <%= f.ingredient mi.ingredient %>
       <% end %>
       
       <%= f.submit -%>
