@@ -1,0 +1,12 @@
+<%= cell_div do %>
+  <%= cell_title("#{@target} editor") %>
+
+  <%= cell_content do %>
+    <%= form_for(@target, :url => '', :html => {:method => (@target.new_record? ? :post : :put)}) do |f| -%>
+      <% @placement.scoop.mask.mask_ingredients.each do |mi| -%>
+      <% end %>
+      
+      <%= f.submit -%>
+    <% end %>
+  <% end %>
+<% end %>

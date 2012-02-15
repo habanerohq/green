@@ -6,6 +6,11 @@ module Habanero
       instance_variables_from(options)
       render
     end
+    
+    def edit(options)
+      instance_variables_from(options)
+      render
+    end
   
     protected
 

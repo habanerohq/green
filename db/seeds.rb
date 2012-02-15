@@ -1,10 +1,32 @@
-# Phase 11 - Fix the ingredients documentation phase
+# Phase 13 - Create a sorbet edit page
 
+ref = Habanero::Section.find_by_name('Reference Manual')
+next_page = Habanero::Page.find_by_name('Sorbet Page')
+page = Habanero::Page.create!(:name => 'Sorbet Edit Page', :section => ref, :route => '/sorbets/:id/edit', :next_page => next_page)
+
+scoop = Habanero::DocumentationScoop.find_by_name('Sorbet Document')
+Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'edit')
+
+# Phase 12 - Add a next page ingredient to pages, create a sorbet edit page
+=begin
+p_sorbet = Habanero::Sorbet.find_by_name('Page')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Previous Next Pages',
+  :sorbet => p_sorbet,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Previous Pages', :relation => 'has_many', :sorbet => p_sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Next Page', :relation => 'belongs_to', :sorbet => p_sorbet),
+  ]
+)
+=end
+# Phase 11 - Fix the ingredients documentation phase
+=begin
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 i_page = Habanero::Page.find_by_name('Ingredient Page')
 i_page.target = ingredient
 i_page.save!
-
+=end
 # Phase 10 - Add a target sorbet to page
 =begin
 page = Habanero::Sorbet.find_by_name('Page')
