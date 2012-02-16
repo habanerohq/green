@@ -52,11 +52,15 @@ module Habanero
       end
 
       def column_name
-        "#{name.attrify}_id"
+        "#{method_name}_id"
+      end
+
+      def method_name
+        name.attrify
       end
 
       def position_name
-        "#{name.attrify}_position"
+        "#{method_name}_position"
       end
 
       def column_type

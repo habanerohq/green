@@ -1,6 +1,10 @@
 module Habanero  
   class IngredientsFormBuilder < ActionView::Helpers::FormBuilder
 
+    def habanero_category_ingredient(i)
+      grouped_collection_select i.method_name, i.category.children, :children, :name, :id, :name, :prompt => "--- select one #{i.category.name.downcase} ---"
+    end
+
     def habanero_range_ingredient(i)
       i.children.map { |c| text_field_for(c) }.join('...')
     end
@@ -23,7 +27,7 @@ module Habanero
 
     def habanero_association_ingredient(i)
       if i.relation == 'belongs_to'
-        select i.name.attrify, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name))
+        select i.method_name, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name))
       end
     end
     

@@ -1,5 +1,13 @@
 module Habanero  
   module IngredientsHelper
+    def format_habanero_category_ingredient(target, ingredient)
+      if v = value_for(target, ingredient)
+        ingredient_span(ingredient) do
+          v.name
+        end
+      end
+    end
+
     def format_habanero_currency_ingredient(target, ingredient)
       if v = value_for(target, ingredient)
         ingredient_span(ingredient) do

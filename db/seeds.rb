@@ -1,5 +1,22 @@
-# Phase 15 - Create category sorbet
+# Phase 16 - Category Ingredient
 
+namespace = Habanero::Namespace.find_by_name('Habanero')
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+category = Habanero::Sorbet.find_by_name('Category')
+
+c_ingredient = Habanero::Sorbet.create!(:name => 'CategoryIngredient', :namespace => namespace, :parent => ingredient)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Category Ingredients',
+  :sorbet => c_ingredient,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Ingredients', :relation => 'has_many', :sorbet => category),
+    Habanero::AssociationIngredient.new(:name => 'Category', :relation => 'belongs_to', :sorbet => c_ingredient),
+  ]
+)
+
+# Phase 15 - Create category sorbet
+=begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
@@ -22,7 +39,7 @@ edit_page = Habanero::Page.create!(:name => 'Category Edit Page', :section => re
 
 Habanero::ScoopPlacement.create!(:page => edit_page, :scoop => scoop, :template => 'edit')
 Habanero::ScoopPlacement.create!(:page => content_page, :scoop => scoop, :template => 'show')
-
+=end
 # Phase 14 - Create a sorbet edit page
 =begin
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
