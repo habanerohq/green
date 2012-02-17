@@ -1,5 +1,66 @@
-# Phase 16 - Category Ingredient
+# Phase 18 - Add Slug Ingredients
 
+namespace = Habanero::Sorbet.find_by_name('Namespace')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => namespace, :target => namespace.ingredients.find_by_name('Name'))
+
+sorbet = Habanero::Sorbet.find_by_name('Sorbet')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => sorbet, :target => sorbet.ingredients.find_by_name('Name'), :scope => sorbet.ingredients.find_by_name('Namespace'))
+
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => ingredient, :target => ingredient.ingredients.find_by_name('Name'), :scope => ingredient.ingredients.find_by_name('Sorbet'))
+
+mask = Habanero::Sorbet.find_by_name('Mask')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => mask, :target => mask.ingredients.find_by_name('Name'), :scope => mask.ingredients.find_by_name('Sorbet'))
+
+category = Habanero::Sorbet.find_by_name('Category')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => category, :target => category.ingredients.find_by_name('Name'))
+
+site = Habanero::Sorbet.find_by_name('Site')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => site, :target => site.ingredients.find_by_name('Name'))
+
+section = Habanero::Sorbet.find_by_name('Section')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => section, :target => section.ingredients.find_by_name('Name'), :scope => section.ingredients.find_by_name('Site'))
+
+page = Habanero::Sorbet.find_by_name('Page')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => page, :target => page.ingredients.find_by_name('Name'), :scope => page.ingredients.find_by_name('Section'))
+
+scoop = Habanero::Sorbet.find_by_name('Scoop')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => scoop, :target => scoop.ingredients.find_by_name('Name'))
+
+layout = Habanero::Sorbet.find_by_name('Layout')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => layout, :target => layout.ingredients.find_by_name('Name'))
+
+region = Habanero::Sorbet.find_by_name('Region')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => region, :target => region.ingredients.find_by_name('Name'), :scope => region.ingredients.find_by_name('Layout'))
+
+# Phase 17 - Invent Slug Ingredient
+=begin
+namespace = Habanero::Namespace.find_by_name('Habanero')
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+assoc_ingredient = Habanero::Sorbet.find_by_name('AssociationIngredient')
+
+s_ingredient = Habanero::Sorbet.create!(:name => 'SlugIngredient', :namespace => namespace, :parent => ingredient)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Target Slug Ingredients',
+  :sorbet => s_ingredient,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Slug Ingredients', :relation => 'has_many', :sorbet => ingredient),
+    Habanero::AssociationIngredient.new(:name => 'Target', :relation => 'belongs_to', :sorbet => s_ingredient),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Scope Slug Ingredients',
+  :sorbet => s_ingredient,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Slug Ingredients', :relation => 'has_many', :sorbet => assoc_ingredient),
+    Habanero::AssociationIngredient.new(:name => 'Scope', :relation => 'belongs_to', :sorbet => s_ingredient),
+  ]
+)
+=end
+# Phase 16 - Category Ingredient
+=begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 category = Habanero::Sorbet.find_by_name('Category')
@@ -14,7 +75,7 @@ Habanero::RelationIngredient.create!(
     Habanero::AssociationIngredient.new(:name => 'Category', :relation => 'belongs_to', :sorbet => c_ingredient),
   ]
 )
-
+=end
 # Phase 15 - Create category sorbet
 =begin
 namespace = Habanero::Namespace.find_by_name('Habanero')

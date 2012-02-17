@@ -6,6 +6,8 @@ module Habanero
       has_many :sorbets
 
       validates :name, :uniqueness => true
+
+      Sorbet.namespaced('Habanero').where(:name => 'Namespace').first.try(:adapt)
     end
 
     module InstanceMethods

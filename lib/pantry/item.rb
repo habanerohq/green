@@ -1,5 +1,7 @@
 module Pantry
   class Item
+    include Habanero::Reflection
+
     attr_accessor :class_name, :id_values, :attributes, :foreign_values, :pantry
     
     def initialize(class_name, id_values, attributes, foreign_values, pantry = nil)
@@ -17,10 +19,14 @@ module Pantry
     end
 
     def to_model
+      puts "=" * 99
+      puts "#{class_name} +++ #{attributes.inspect}"
+      puts klass.reflect_on_all_associations.map(&:name).inspect
       result = klass.new(attributes)
       foreign_values.symbolize_keys.each do |k, v|
+        puts k
         if v
-          r = klass.reflect_on_association(k)
+          r = klass.association_for(k)
           f = foreign_class(r)
           result.send "#{r.foreign_key}=", apply_search(v, f).last.id
         end
