@@ -1,8 +1,8 @@
 GIT
   remote: git@github.com:habanerohq/pantry.git
-  revision: e2577f848c9c29f258e5836996925fde7f00b8e4
+  revision: 838232e3569308b08c021337c8c836bfbf41b23d
   specs:
-    pantry (0.0.1.pre1)
+    pantry (0.0.1.pre2)
 
 GEM
   remote: http://rubygems.org/
