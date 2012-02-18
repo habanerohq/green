@@ -1,38 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
 </head>
 
 <body class="page <%= @page.section.names_idified %> <%= @page.name.idify %>">
 
-<div id="infobar">
-  <div class="container">
-    <%= arrangement_for :infobar %>
-  </div>
-</div>
-
-<div class="wrapper">
-  <div id="header">
-    <div class="container">
+<div class="<%= layout_class(@page.layout) %>">
+  <% @page.layout.rows.each do |r| %>
+    <div class="<%= row_class(r) %>">
+      <% r.regions.each do |reg| %>
+        <%= arrange_region(reg) %>
+      <% end %>      
     </div>
-  </div>
-
-  <div id="content">
-    <div class="container">
-      <%= arrangement_for :top %>
-      <%= arrangement_for :left %>
-      <%= arrangement_for :sidebar %>
-      <%= arrangement_for :content %>
-      <%= arrangement_for :right %>
-      <%= arrangement_for :bottom %>
-    </div>
-  </div>
-
-  <div id="footer">
-    <div class="container">
-      <%= arrangement_for :footer %>
-    </div>
-  </div>
+  <% end %>
 </div>
 
 </body>

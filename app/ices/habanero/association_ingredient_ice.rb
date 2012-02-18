@@ -24,10 +24,12 @@ module Habanero
           end
         else
           options[:class_name] = "::#{inverse.sorbet.qualified_name}"
+          options[:foreign_key] = inverse.column_name unless relation == 'belongs_to'
         end
 
         options.merge!(:order => inverse.position_name) if parent.ordered? and relation =~ /many/
 
+#        puts "#{klass} #{relation}, #{name.attrify.to_sym}, #{options.inspect}" # todo: log me!
         klass.send relation, name.attrify.to_sym, options
 
         if parent.ordered? and relation == 'belongs_to'

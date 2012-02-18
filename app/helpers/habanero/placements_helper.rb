@@ -13,10 +13,5 @@ module Habanero
         :target => @target
       )
     end
-
-    def arrangement_for(region_name, options = {})
-      options[:class] = ["region #{region_name.to_s.idify}", options[:class]].join(' ')
-      content_tag(:div, content_for(region_name.to_sym), options)
-    end
   end
 end

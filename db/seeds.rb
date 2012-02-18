@@ -1,5 +1,64 @@
-# Phase 16 - Category Ingredient
+# Phase 20 - Define a layout with rows and regions
 
+layout = Habanero::Layout.create!(:name => 'Habanero')
+
+Habanero::Page.all.each do |p|
+  p.layout = layout
+  p.save!
+end
+
+header = Habanero::LayoutRow.create!(:name => 'Header', :layout => layout)
+body = Habanero::LayoutRow.create!(:name => 'Body', :layout => layout)
+footer = Habanero::LayoutRow.create!(:name => 'Footer', :layout => layout)
+
+Habanero::Region.create!(:name => 'Top', :span => 12, :layout => layout, :row => header)
+Habanero::Region.create!(:name => 'Header', :span => 12, :layout => layout, :row => header)
+Habanero::Region.create!(:name => 'Content Top', :span => 12, :layout => layout, :row => header)
+
+Habanero::Region.create!(:name => 'Sidebar', :span => 4, :layout => layout, :row => body)
+Habanero::Region.create!(:name => 'Content', :span => 8, :layout => layout, :row => body)
+
+Habanero::Region.create!(:name => 'Content Bottom', :span => 12, :layout => layout, :row => footer)
+Habanero::Region.create!(:name => 'Footer', :span => 12, :layout => layout, :row => footer)
+
+# Phase 19 - Layout Rows
+=begin
+namespace = Habanero::Namespace.find_by_name('Habanero')
+active_record = Habanero::Sorbet.find_by_name('Base')
+
+layout = Habanero::Sorbet.find_by_name('Layout')
+Habanero::TrueFalseIngredient.create!(:name => 'Fluid', :sorbet => layout)
+
+region = Habanero::Sorbet.find_by_name('Region')
+Habanero::IntegerIngredient.create!(:name => 'Span', :sorbet => region)
+Habanero::IntegerIngredient.create!(:name => 'Offset', :sorbet => region)
+
+layout_row = Habanero::Sorbet.create!(:name => 'LayoutRow', :namespace => namespace, :parent => active_record)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => layout_row)
+Habanero::TrueFalseIngredient.create!(:name => 'Fluid', :sorbet => layout_row)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Layout Rows',
+  :sorbet => layout,
+  :ordered => true,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Rows', :relation => 'has_many', :sorbet => layout),
+    Habanero::AssociationIngredient.new(:name => 'Layout', :relation => 'belongs_to', :sorbet => layout_row),
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Row Regions',
+  :sorbet => layout_row,
+  :ordered => true,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Regions', :relation => 'has_many', :sorbet => layout_row),
+    Habanero::AssociationIngredient.new(:name => 'Row', :relation => 'belongs_to', :sorbet => region),
+  ]
+)
+=end
+# Phase 16 - Category Ingredient
+=begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 category = Habanero::Sorbet.find_by_name('Category')
@@ -14,7 +73,7 @@ Habanero::RelationIngredient.create!(
     Habanero::AssociationIngredient.new(:name => 'Category', :relation => 'belongs_to', :sorbet => c_ingredient),
   ]
 )
-
+=end
 # Phase 15 - Create category sorbet
 =begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
