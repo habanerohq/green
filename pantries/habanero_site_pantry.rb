@@ -13,6 +13,10 @@ class HabaneroSitePantry < Pantry::Base
     refers_to Habanero::Sorbet, :id_value_methods => [:name, :namespace]
     refers_to Habanero::Ingredient, :id_value_methods => [:name, :sorbet]
 
+    can_stack Habanero::Layout
+    can_stack Habanero::LayoutRow, :id_value_methods => [:name, :layout]
+    can_stack Habanero::Region, :id_value_methods => [:name, :layout, :row]
+
     can_stack Habanero::Site
     can_stack Habanero::Section, :id_value_methods => [:name, :site, :parent]
     can_stack Habanero::Page, :id_value_methods => [:name, :section]
