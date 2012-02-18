@@ -24,16 +24,7 @@ module Pantry
           o[a.name] = ao.id_values if ao
         end
       end
-=begin
-      def id_joins
-        id_value_method_names.inject({}) do |m, i| 
-          if (v = self.send(i)) && (a = association_for(i))
-            m[a.name] = v.id_joins
-          end
-          m
-        end
-      end
-=end
+
       def id_value_method_names
         self.class.id_value_method_names
       end
