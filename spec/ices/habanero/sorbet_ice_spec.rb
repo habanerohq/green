@@ -48,5 +48,5 @@ describe Habanero::Sorbet do
     @sorbet.klass.should == klass
   end
 
-  pending 'it should not nuke already defined constants'
+  pending 'should not nuke already defined constants'
 end

@@ -3,7 +3,7 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      has_many :sorbets
+      has_many :sorbets, :dependent => :restrict
 
       validates :name,
                 :presence => true,

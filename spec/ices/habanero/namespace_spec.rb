@@ -39,4 +39,9 @@ describe Habanero::Namespace do
     klass = Habanero::Namespace.new(:name => 'FakeNamespace').chill!
     klass.object_id.should == object_id
   end
+
+  it 'should not destroy if it has associated sorbets' do
+    # we assume that the sorbet pantry has been loaded sucessfully as part of the spec_helper
+    expect { Habanero::Namespace.first.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
+  end
 end

@@ -14,7 +14,7 @@ module Habanero
                 :presence => true,
                 :uniqueness => { :scope => :namespace_id }
 
-      before_create :mix! # failed create leaves empty table?
+      before_create :create_table # failed create leaves empty table?
 
       self.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt) if table_exists?
     end
@@ -30,13 +30,6 @@ module Habanero
 
       def klass_name
         name
-      end
-
-      def mix!
-        if parent
-#          puts "create_table #{table_name}" unless connection.table_exists?(table_name) # write this to a log!
-          connection.create_table(table_name) unless connection.table_exists?(table_name)
-        end
       end
 
       def chill!
@@ -81,6 +74,15 @@ module Habanero
 
       def to_s
         qualified_name
+      end
+
+      protected
+
+      def create_table
+        if parent
+#          puts "create_table #{table_name}" unless connection.table_exists?(table_name) # write this to a log!
+          connection.create_table(table_name) unless connection.table_exists?(table_name)
+        end
       end
     end
   end
