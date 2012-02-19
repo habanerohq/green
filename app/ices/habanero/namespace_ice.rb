@@ -16,7 +16,12 @@ module Habanero
       end
 
       def chill!
-        Object.const_set(qualified_name, Module.new) unless chilled?
+        unless chilled?
+          Object.const_set(qualified_name, Module.new).tap do |klass|
+            klass.unloadable
+          end
+        end
+
         Object.const_get(qualified_name)
       end
 

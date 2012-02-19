@@ -44,4 +44,14 @@ describe Habanero::Namespace do
     # we assume that the sorbet pantry has been loaded sucessfully as part of the spec_helper
     expect { Habanero::Namespace.first.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
   end
+
+  it 'should unload any defined constants when dependencies are cleared' do
+    expect { Object.const_get(@namespace.qualified_name) }.to raise_error NameError
+
+    klass = @namespace.chill!
+    Object.const_get(@namespace.qualified_name).should == klass
+
+    ActiveSupport::Dependencies.clear
+    expect { Object.const_get(@namespace.qualified_name) }.to raise_error NameError
+  end
 end
