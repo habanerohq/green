@@ -43,5 +43,8 @@ group :development, :test do
   gem 'guard-spork'
   gem 'rb-fsevent', :require => false
   gem 'ruby_gntp'
+end
+
+group :test do
   gem 'shoulda', '>= 3.0.0.beta'
 end

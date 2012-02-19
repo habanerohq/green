@@ -48,5 +48,13 @@ describe Habanero::Sorbet do
     @sorbet.klass.should == klass
   end
 
+  it 'should create a table when created' do
+    @sorbet.save
+    @sorbet.should be_persisted
+
+    ActiveRecord::Base.connection.tables.should include @sorbet.table_name
+  end
+
   pending 'should not nuke already defined constants'
+  pending 'should unload any defined constants when dependencies are cleared'
 end
