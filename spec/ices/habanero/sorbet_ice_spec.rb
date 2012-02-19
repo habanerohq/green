@@ -7,8 +7,12 @@ end
 
 describe Habanero::Sorbet do
   it { should belong_to(:namespace) }
-  it { should belong_to(:parent) } # defined by awesome_nested_set 
+  it { should belong_to(:parent) }
   it { should have_many(:ingredients) }
+
+  # defined by awesome_nested_set 
+  it { should belong_to(:parent) }
+  it { should have_many(:children) }
 
   it { should validate_presence_of(:name) }
   it { should validate_uniqueness_of(:name).scoped_to(:namespace_id) }
@@ -18,8 +22,11 @@ describe Habanero::Sorbet do
     @sorbet.parent = Habanero::Sorbet.new(:name => 'FakeBase')
     @sorbet.parent.stub(:namespace).and_return(double(:qualified_name => 'FakeNamespace', :klass => FakeNamespace))
 
-    @fake_module = Module.new
-    @sorbet.stub(:namespace).and_return(double(:qualified_name => 'Baz', :klass => @fake_module))
+    # define a clean fake namespace constant Baz before each test 
+    Object.send :remove_const, 'Baz' if Object.constants.include?('Baz')
+    @fake_module = Object.const_set 'Baz', Module.new
+
+    @sorbet.stub(:namespace).and_return(double(:qualified_name => 'Baz', :klass => Baz))
   end
 
   it 'should have a qualified name' do
@@ -56,5 +63,14 @@ describe Habanero::Sorbet do
   end
 
   pending 'should not nuke already defined constants'
-  pending 'should unload any defined constants when dependencies are cleared'
+
+  it 'should unload any defined constants when dependencies are cleared' do
+    expect { @fake_module.const_get(@sorbet.klass_name) }.to raise_error(NameError)
+
+    klass = @sorbet.chill!
+    @fake_module.const_get(@sorbet.klass_name).should == klass
+
+    ActiveSupport::Dependencies.clear
+    expect { @fake_module.const_get(@sorbet.klass_name) }.to raise_error(NameError)
+  end
 end

@@ -36,6 +36,7 @@ module Habanero
         return klass if chilled?
 
         namespace.klass.const_set(klass_name, Class.new(parent.klass))
+        klass.unloadable
 
         adapt
 
