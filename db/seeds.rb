@@ -1,5 +1,10 @@
-# Phase 26 - Fix region names 
+# Phase 26 - add template back into Scoop
 
+scoop = Habanero::Sorbet.find_by_name('Scoop')
+Habanero::StringIngredient.create!(:name => 'Template', :sorbet => scoop)
+
+# Phase 26 - Fix region names 
+=begin
 layout = Habanero::Layout.find_by_name('Kitchen')
 
 r = layout.regions.find_by_name('Right')
@@ -9,7 +14,7 @@ r.save!
 body = layout.rows.find_by_name('Body')
 
 Habanero::Region.create!(:name => 'Right', :span => 3, :layout => layout, :row => body)
-
+=end
 # Phase 25 - Start Layout Kitchen
 =begin
 layout = Habanero::Sorbet.find_by_name('Layout')
