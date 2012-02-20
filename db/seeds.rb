@@ -1,8 +1,27 @@
-# Phase 21 - Add a template name to Layout
+# Phase 22 - Build a fluid layout for "sorbet kitchens"
 
+layout = Habanero::Layout.create!(:name => 'Kitchen', :fluid => true)
+
+header = Habanero::LayoutRow.create!(:name => 'Header', :layout => layout, :fluid => true)
+body = Habanero::LayoutRow.create!(:name => 'Body', :layout => layout, :fluid => true)
+footer = Habanero::LayoutRow.create!(:name => 'Footer', :layout => layout)
+
+Habanero::Region.create!(:name => 'Top', :span => 12, :layout => layout, :row => header)
+Habanero::Region.create!(:name => 'Header', :span => 12, :layout => layout, :row => header)
+Habanero::Region.create!(:name => 'Content Top', :span => 12, :layout => layout, :row => header)
+
+Habanero::Region.create!(:name => 'Left', :span => 3, :layout => layout, :row => body)
+Habanero::Region.create!(:name => 'Content', :span => 6, :layout => layout, :row => body)
+Habanero::Region.create!(:name => 'Left', :span => 3, :layout => layout, :row => body)
+
+Habanero::Region.create!(:name => 'Content Bottom', :span => 12, :layout => layout, :row => footer)
+Habanero::Region.create!(:name => 'Footer', :span => 12, :layout => layout, :row => footer)
+
+# Phase 21 - Add a template name to Layout
+=begin
 layout = Habanero::Sorbet.find_by_name('Layout')
 Habanero::StringIngredient.create!(:name => 'Template Name', :sorbet => layout)
-
+=end
 # Phase 20 - Define a layout with rows and regions
 =begin
 layout = Habanero::Layout.create!(:name => 'Habanero')
