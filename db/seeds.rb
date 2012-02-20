@@ -1,5 +1,69 @@
-# Phase 22 - Build a fluid layout for "sorbet kitchens"
+# Phase 26 - Fix region names 
 
+layout = Habanero::Layout.find_by_name('Kitchen')
+
+r = layout.regions.find_by_name('Right')
+r.name = 'Left'
+r.save!
+
+body = layout.rows.find_by_name('Body')
+
+Habanero::Region.create!(:name => 'Right', :span => 3, :layout => layout, :row => body)
+
+# Phase 25 - Start Layout Kitchen
+=begin
+layout = Habanero::Sorbet.find_by_name('Layout')
+sorbet2 = Habanero::Section.find_by_name('Sorbet2')
+
+kit_layout = Habanero::Layout.find_by_name('Kitchen')
+
+# fix a naming error from last seed phase
+r = kit_layout.regions.find_all_by_name('Left').last
+r.name = 'Right'
+r.save!
+
+kit = Habanero::Section.create!(:name => 'Kitchens', :route => '/kitchen', :site => sorbet2.site, :parent => sorbet2)
+page = Habanero::Page.create!(:name => 'Layout Kitchen', :section => kit, :target => layout, :route => '/layouts', :layout => kit_layout)
+
+# build the scoops
+scoop = Habanero::LayoutScoop.create!(:name => 'Layout')
+
+# build the placements
+Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :region => kit_layout.regions.find_by_name('Content'), :template => 'layout')
+=end
+# Phase 24 - Create some Layout Masks
+=begin
+layout = Habanero::Sorbet.find_by_name('Layout')
+mask = Habanero::Mask.create!(:name => 'Layout Mask', :sorbet => layout)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Name'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Template Name'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Fluid'))
+mask.save!
+
+row = Habanero::Sorbet.find_by_name('LayoutRow')
+mask = Habanero::Mask.create!(:name => 'Layout Row Mask', :sorbet => row)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Layout'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Name'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Fluid'))
+mask.save!
+
+region = Habanero::Sorbet.find_by_name('Region')
+mask = Habanero::Mask.create!(:name => 'Region Mask', :sorbet => region)
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Layout'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Row'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Name'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Span'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Offset'))
+mask.save!
+=end
+# Phase 23 - Define LayoutScoop
+=begin
+parent = Habanero::Sorbet.find_by_name('SorbetScoop')
+namespace = Habanero::Namespace.find_by_name('Habanero')
+Habanero::Sorbet.create!(:name => 'LayoutScoop', :namespace => namespace, :parent => parent)
+=end
+# Phase 22 - Build a fluid layout for "sorbet kitchens"
+=begin
 layout = Habanero::Layout.create!(:name => 'Kitchen', :fluid => true)
 
 header = Habanero::LayoutRow.create!(:name => 'Header', :layout => layout, :fluid => true)
@@ -16,7 +80,7 @@ Habanero::Region.create!(:name => 'Left', :span => 3, :layout => layout, :row =>
 
 Habanero::Region.create!(:name => 'Content Bottom', :span => 12, :layout => layout, :row => footer)
 Habanero::Region.create!(:name => 'Footer', :span => 12, :layout => layout, :row => footer)
-
+=end
 # Phase 21 - Add a template name to Layout
 =begin
 layout = Habanero::Sorbet.find_by_name('Layout')
