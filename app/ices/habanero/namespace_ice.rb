@@ -3,9 +3,11 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      has_many :sorbets
+      has_many :sorbets, :dependent => :restrict
 
-      validates :name, :uniqueness => true
+      validates :name,
+                :presence => true,
+                :uniqueness => true
     end
 
     module InstanceMethods
@@ -14,7 +16,17 @@ module Habanero
       end
 
       def chill!
-        Object.const_set(qualified_name, Module.new)
+        unless chilled?
+          Object.const_set(qualified_name, Module.new).tap do |klass|
+            klass.unloadable
+          end
+        end
+
+        Object.const_get(qualified_name)
+      end
+
+      def chilled?
+        Object.constants.include?(qualified_name)
       end
 
       def klass

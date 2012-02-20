@@ -38,6 +38,14 @@ gem 'acts_as_list'
 gem 'cells'
 
 group :development, :test do
-  gem 'rspec'
   gem 'rspec-rails'
+  gem 'guard-rspec'
+  gem 'spork'
+  gem 'guard-spork'
+  gem 'rb-fsevent', :require => false
+  gem 'ruby_gntp'
+end
+
+group :test do
+  gem 'shoulda', '>= 3.0.0.beta'
 end
