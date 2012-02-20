@@ -11,6 +11,10 @@ module Habanero
         options[:constraints] = { :host => section.site.host } if section.site.host
         map.match({ qualified_path => 'habanero/pages#show', :defaults => { :draw_type => self.class.name, :draw_id => id } }.merge(options))
       end
+      
+      def layout_name        
+        (layout.template_name || layout.name.attrify) if layout
+      end
 
       def target_class
         nearest_target.try(:klass)

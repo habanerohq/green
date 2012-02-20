@@ -1,5 +1,10 @@
-# Phase 20 - Define a layout with rows and regions
+# Phase 21 - Add a template name to Layout
 
+layout = Habanero::Sorbet.find_by_name('Layout')
+Habanero::StringIngredient.create!(:name => 'Template Name', :sorbet => layout)
+
+# Phase 20 - Define a layout with rows and regions
+=begin
 layout = Habanero::Layout.create!(:name => 'Habanero')
 
 Habanero::Page.all.each do |p|
@@ -20,7 +25,7 @@ Habanero::Region.create!(:name => 'Content', :span => 8, :layout => layout, :row
 
 Habanero::Region.create!(:name => 'Content Bottom', :span => 12, :layout => layout, :row => footer)
 Habanero::Region.create!(:name => 'Footer', :span => 12, :layout => layout, :row => footer)
-
+=end
 # Phase 19 - Layout Rows
 =begin
 namespace = Habanero::Namespace.find_by_name('Habanero')
