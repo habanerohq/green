@@ -4,4 +4,4 @@ module Habanero
 end
 
 Habanero::Namespace.class_eval { include Habanero::NamespaceIce }
-Habanero::Sorbet.namespaced('Habanero').where(:name => 'Namespace').first.try(:chill!)
+Habanero::Sorbet.namespaced('Habanero').where(:name => 'Namespace').first.try(:adapt)
