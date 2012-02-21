@@ -1,16 +1,6 @@
 module Habanero
   class AbstractCell < Cell::Rails
     helper 'habanero/cells'
-
-    def show(options)
-      instance_variables_from(options)
-      render
-    end
-    
-    def edit(options)
-      instance_variables_from(options)
-      render
-    end
   
     protected
 

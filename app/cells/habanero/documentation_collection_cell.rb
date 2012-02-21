@@ -1,5 +1,5 @@
 module Habanero
-  class DocumentationCollectionCell < Habanero::AbstractCollectionCell
+  class DocumentationCollectionCell < Habanero::SorbetCollectionCell
 
   end
 end
