@@ -82,6 +82,12 @@ module Habanero
             end
           end
         end
+
+        if sorbet.chilled? && inverse
+          adapt(sorbet.klass)
+          inverse.adapt(inverse.sorbet.klass)
+          inverse.sorbet.klass.reset_column_information
+        end
       end
 
       def change_columns

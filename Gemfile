@@ -35,6 +35,7 @@ gem 'less-rails-bootstrap'
 gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git'
 gem 'awesome_nested_set'
 gem 'acts_as_list'
+gem 'friendly_id', '~> 4.0.0'
 gem 'cells'
 
 group :development, :test do

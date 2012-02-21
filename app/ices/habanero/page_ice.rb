@@ -4,6 +4,10 @@ module Habanero
 
     included do
       alias_method :parent, :section
+
+      validates :name,
+                :presence => true,
+                :uniqueness => { :scope => 'parent_id' }
     end
 
     module InstanceMethods
