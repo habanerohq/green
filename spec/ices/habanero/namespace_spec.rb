@@ -54,4 +54,11 @@ describe Habanero::Namespace do
     ActiveSupport::Dependencies.clear
     expect { Object.const_get(@namespace.qualified_name) }.to raise_error NameError
   end
+
+  it 'should be unloadable' do
+    object_id = Habanero::Namespace.object_id
+
+    ActiveSupport::Dependencies.clear
+    object_id.should_not == Habanero::Namespace.object_id
+  end
 end

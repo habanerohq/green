@@ -1,5 +1,7 @@
 module Habanero
   class Namespace < ActiveRecord::Base
-    include NamespaceIce
   end
 end
+
+Habanero::Namespace.class_eval { include Habanero::NamespaceIce }
+Habanero::Sorbet.namespaced('Habanero').where(:name => 'Namespace').first.try(:chill!)

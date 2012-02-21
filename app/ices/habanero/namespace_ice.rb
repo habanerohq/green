@@ -3,11 +3,13 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      has_many :sorbets, :dependent => :restrict
+      has_many :sorbets, :class_name => '::Habanero::Sorbet', :dependent => :restrict
 
       validates :name,
                 :presence => true,
                 :uniqueness => true
+
+      unloadable
     end
 
     module InstanceMethods

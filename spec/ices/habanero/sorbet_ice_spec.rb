@@ -73,4 +73,11 @@ describe Habanero::Sorbet do
     ActiveSupport::Dependencies.clear
     expect { @fake_module.const_get(@sorbet.klass_name) }.to raise_error(NameError)
   end
+
+  it 'should be unloadable' do
+    object_id = Habanero::Sorbet.object_id
+
+    ActiveSupport::Dependencies.clear
+    object_id.should_not == Habanero::Sorbet.object_id
+  end
 end

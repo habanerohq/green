@@ -19,7 +19,7 @@ module Habanero
                 :presence => true,
                 :uniqueness => { :scope => 'sorbet_id' }
 
-      Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first.try(:adapt)
+      unloadable
     end
 
     module InstanceMethods
@@ -34,7 +34,7 @@ module Habanero
       def column_name
         qualified_name
       end
-      
+
       def method_name
         column_name
       end
@@ -42,7 +42,7 @@ module Habanero
       def column_type
         :string
       end
-      
+
       def to_s
         name
       end
@@ -53,6 +53,8 @@ module Habanero
         unless column_exists?(column_name)
           add_column column_name, column_type
         end
+
+        adapt(sorbet.klass) if sorbet.chilled?
       end
 
       def column_exists?(column_name)

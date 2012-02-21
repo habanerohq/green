@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'spork'
 
+require 'pp'
+
 Spork.prefork do
   # This file is copied to spec/ when you run 'rails generate rspec:install'
   ENV["RAILS_ENV"] ||= 'test'
@@ -34,9 +36,11 @@ Spork.prefork do
     # rspec-rails.
     config.infer_base_class_for_anonymous_controllers = false
   end
+
+  SorbetPantry.new.use
 end
 
 Spork.each_run do
 end
 
-  ActiveSupport::Dependencies.send :include, Habanero::Autoload
+ActiveSupport::Dependencies.clear

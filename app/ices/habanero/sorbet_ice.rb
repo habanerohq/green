@@ -3,12 +3,12 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      belongs_to :namespace
-      has_many :ingredients, :class_name => 'Habanero::Ingredient'
+      belongs_to :namespace, :class_name => '::Habanero::Namespace'
+      has_many :ingredients, :class_name => '::Habanero::Ingredient'
 
       acts_as_nested_set
 
-      scope :namespaced, lambda { |n| includes(:namespace).where('habanero_namespaces.name = ?', n) }
+      scope :namespaced, lambda { |n| joins(:namespace).where('habanero_namespaces.name = ?', n) }
 
       validates :name,
                 :presence => true,
@@ -16,7 +16,7 @@ module Habanero
 
       before_create :create_table # failed create leaves empty table?
 
-      self.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt) if table_exists?
+      unloadable
     end
 
     module InstanceMethods

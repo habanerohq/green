@@ -1,5 +1,7 @@
 module Habanero
   class Ingredient < ActiveRecord::Base
-    include IngredientIce
   end
 end
+
+Habanero::Ingredient.class_eval { include Habanero::IngredientIce }
+Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first.try(:chill!)
