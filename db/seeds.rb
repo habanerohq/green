@@ -1,4 +1,4 @@
-# Phase 27 - Create some Layout Masks for tree rendering
+# Phase 29 - Create some Layout Masks for tree rendering
 
 layout = Habanero::Sorbet.find_by_name('Layout')
 l_mask = Habanero::Mask.create!(:name => 'Layout Tree Mask', :sorbet => layout)
@@ -16,6 +16,60 @@ r_mask = Habanero::Mask.create!(:name => 'Region Tree Mask', :sorbet => region, 
 r_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Placements'))
 r_mask.save!
 
+# Phase 28 - queries on scoops
+=begin
+scoop = Habanero::Sorbet.find_by_name('Scoop')
+query = Habanero::Sorbet.find_by_name('Query')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Query Scoops',
+  :sorbet => query,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Query', :relation => 'belongs_to', :sorbet => scoop),
+    Habanero::AssociationIngredient.new(:name => 'Scoops', :relation => 'has_many', :sorbet => query)
+  ]
+)
+
+# Phase 27 - queries
+=begin
+namespace = Habanero::Namespace.find_by_name('Habanero')
+active_record = Habanero::Sorbet.find_by_name('Base')
+
+query = Habanero::Sorbet.create!(:name => 'Query', :parent => active_record, :namespace => namespace)
+query.ingredients << Habanero::StringIngredient.new(:name => 'Name')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Sorbet Queries',
+  :sorbet => query,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Sorbet', :relation => 'belongs_to', :sorbet => query),
+    Habanero::AssociationIngredient.new(:name => 'Queries', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Sorbet'))
+  ]
+)
+
+condition = Habanero::Sorbet.create!(:name => 'Condition', :parent => active_record, :namespace => namespace)
+condition.ingredients << Habanero::StringIngredient.new(:name => 'Predicate') # todo: should not be a StringIngredient
+condition.ingredients << Habanero::StringIngredient.new(:name => 'Value')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Ingredient Conditions',
+  :sorbet => condition,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Ingredient', :relation => 'belongs_to', :sorbet => condition),
+    Habanero::AssociationIngredient.new(:name => 'Conditions', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Ingredient'))
+  ]
+)
+
+Habanero::RelationIngredient.create!(
+  :name => 'Query Conditions',
+  :sorbet => query,
+  :ordered => true,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Query', :relation => 'belongs_to', :sorbet => condition),
+    Habanero::AssociationIngredient.new(:name => 'Conditions', :relation => 'has_many', :sorbet => query)
+  ]
+)
+=end
 # Phase 26 - add template back into Scoop
 =begin
 scoop = Habanero::Sorbet.find_by_name('Scoop')

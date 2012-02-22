@@ -29,8 +29,6 @@ describe Habanero::SlugIngredient do
     ActiveSupport::Dependencies.clear
   end
 
-  pending 'should have the same sorbet for the target and scope ingredients'
-
   it 'do stuff' do
     @sorbet.ingredients << Habanero::SlugIngredient.new(:name => 'Slug', :target => @sorbet.ingredients.first)
 
@@ -74,5 +72,31 @@ describe Habanero::SlugIngredient do
     index = ActiveRecord::Base.connection.indexes(@sorbet.table_name).detect { |i| "index_#{@sorbet.table_name}_on_slug" }
     index.should_not be_nil
     index.unique.should be_false
+  end
+
+  it 'validate scope ingredient is on target sorbet'  do
+    ingredient = Habanero::SlugIngredient.new(
+      :name => 'Slug',
+      :sorbet => @sorbet,
+      :target => @sorbet.ingredients.first,
+      :scope => Habanero::Sorbet.find_by_name('Sorbet').ingredients.find_by_name('Namespace')
+    )
+
+    ingredient.should_not be_valid
+    ingredient.errors_on(:scope).should include "is not present on the target sorbet"
+  end
+
+  it 'validate scope ingredient is a belongs_to association'  do
+    target = Habanero::Sorbet.find_by_name('Namespace')
+
+    ingredient = Habanero::SlugIngredient.new(
+      :name => 'Slug',
+      :sorbet => target,
+      :target => target.ingredients.find_by_name('Name'),
+      :scope => target.ingredients.find_by_name('Sorbets')
+    )
+
+    ingredient.should_not be_valid
+    ingredient.errors_on(:scope).should include "is not a belongs_to association"
   end
 end

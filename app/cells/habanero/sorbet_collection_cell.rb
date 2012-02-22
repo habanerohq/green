@@ -12,7 +12,14 @@ module Habanero
       @mask = @placement.scoop.mask
       @targets = @page.target_class.order(:name)
       render
-    end 
+    end
+
+    def table(options)
+      instance_variables_from(options)
+      @query = @placement.scoop.query
+      @targets = @query.evaluate(params)
+      render
+    end
 
     def tree_node(targets, mask)
       @mask = mask
