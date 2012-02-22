@@ -43,9 +43,7 @@ describe Habanero::Query do
 
     # make sure this works with the id as a string too
     params = { :q => { "#{condition.id}" => 'Page' }}
-    pp params
     @query.evaluate(params).should == [Habanero::Sorbet.find_by_name('Page')]
-
   end
 
 end
