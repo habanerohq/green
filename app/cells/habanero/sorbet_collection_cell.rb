@@ -11,7 +11,14 @@ module Habanero
       instance_variables_from(options)
       @targets = @page.target_class.order(:name)
       render
-    end 
+    end
+
+    def table(options)
+      instance_variables_from(options)
+      @query = @placement.scoop.query
+      @targets = @query.evaluate(params)
+      render
+    end
 
   end
 end

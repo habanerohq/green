@@ -7,7 +7,7 @@ module Habanero
 
       validates :name,
                 :presence => true,
-                :uniqueness => { :scope => 'parent_id' }
+                :uniqueness => { :scope => 'section_id' }
     end
 
     module InstanceMethods

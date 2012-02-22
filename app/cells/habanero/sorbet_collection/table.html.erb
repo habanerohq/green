@@ -1,0 +1,21 @@
+<h2>Le Table</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <% @placement.scoop.mask.mask_ingredients.each do |mi| %>
+        <th><%= mi.ingredient.name %></th>
+      <%- end -%>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @targets.each do |t| %>
+      <tr>
+        <% @placement.scoop.mask.mask_ingredients.each do |mi| %>
+          <td><%= format_ingredient(t, mi.ingredient) %></td>
+        <%- end -%>
+      </tr>
+    <%- end -%> 
+  </tbody>
+</table>
