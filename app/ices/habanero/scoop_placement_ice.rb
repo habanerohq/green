@@ -4,7 +4,11 @@ module Habanero
 
     module InstanceMethods
       def region_name
-        region ? name.attrify.to_sym : :content
+        region ? region.name.attrify.to_sym : :content
+      end
+      
+      def to_s
+        "#{scoop} # #{template}"
       end
     end
   end

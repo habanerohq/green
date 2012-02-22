@@ -8,9 +8,15 @@ module Habanero
       row.fluid? ? 'row-fluid' : 'row'
     end
 
-    def arrange_region(region, options = {})
+    def content_for_region(region, options = {})
+      layout_region(region, options = {}) do
+        content_for(region.name.attrify.to_sym)
+      end
+    end
+
+    def layout_region(region, options = {}, &block)
       options[:class] = ["region #{region.name.idify} span#{region.span} offset#{region.offset}", options[:class]].join(' ')
-      content_tag(:div, content_for(region.name.attrify.to_sym), options)
+      content_tag(:div, yield, options)
     end
   end
 end

@@ -7,7 +7,7 @@ module Habanero
 
       validates :name,
                 :presence => true,
-                :uniqueness => { :scope => 'parent_id' }
+                :uniqueness => { :scope => 'section_id' }
     end
 
     module InstanceMethods
@@ -26,6 +26,10 @@ module Habanero
 
       def nearest_target
         target || section.nearest_target
+      end
+      
+      def to_s
+        name
       end
     end
   end

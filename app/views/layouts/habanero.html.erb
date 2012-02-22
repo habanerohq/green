@@ -12,7 +12,7 @@
   <% @page.layout.rows.each do |r| %>
     <div class="<%= row_class(r) %>">
       <% r.regions.each do |reg| %>
-        <%= arrange_region(reg) %>
+        <%= content_for_region(reg) %>
       <% end %>      
     </div>
   <% end %>

@@ -1,8 +1,26 @@
-# Phase 26 - add template back into Scoop
+# Phase 27 - Create some Layout Masks for tree rendering
 
+layout = Habanero::Sorbet.find_by_name('Layout')
+l_mask = Habanero::Mask.create!(:name => 'Layout Tree Mask', :sorbet => layout)
+l_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Rows'))
+l_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Pages'))
+l_mask.save!
+
+row = Habanero::Sorbet.find_by_name('LayoutRow')
+row_mask = Habanero::Mask.create!(:name => 'Layout Row Tree Mask', :sorbet => row, :parent => l_mask)
+row_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Regions'))
+row_mask.save!
+
+region = Habanero::Sorbet.find_by_name('Region')
+r_mask = Habanero::Mask.create!(:name => 'Region Tree Mask', :sorbet => region, :parent => row_mask)
+r_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Placements'))
+r_mask.save!
+
+# Phase 26 - add template back into Scoop
+=begin
 scoop = Habanero::Sorbet.find_by_name('Scoop')
 Habanero::StringIngredient.create!(:name => 'Template', :sorbet => scoop)
-
+=end
 # Phase 26 - Fix region names 
 =begin
 layout = Habanero::Layout.find_by_name('Kitchen')
@@ -54,11 +72,11 @@ mask.save!
 
 region = Habanero::Sorbet.find_by_name('Region')
 mask = Habanero::Mask.create!(:name => 'Region Mask', :sorbet => region)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Layout'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Row'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Name'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Span'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Offset'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Layout'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Row'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Name'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Span'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Offset'))
 mask.save!
 =end
 # Phase 23 - Define LayoutScoop

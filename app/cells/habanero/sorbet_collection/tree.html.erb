@@ -1,0 +1,5 @@
+<%= cell_div do %>
+  <%= cell_title(@placement.scoop.to_s) %>
+
+  <%= render({:state => :tree_node}, @targets, @mask) -%>
+<% end %>
