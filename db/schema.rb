@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120118010531) do
+ActiveRecord::Schema.define(:version => 20120223065912) do
 
   create_table "habanero_ingredients", :force => true do |t|
     t.integer "sorbet_id"
@@ -19,12 +19,14 @@ ActiveRecord::Schema.define(:version => 20120118010531) do
     t.integer "parent_id"
     t.integer "lft"
     t.integer "rgt"
+    t.string  "slug"
   end
 
   add_index "habanero_ingredients", ["sorbet_id"], :name => "index_habanero_ingredients_on_sorbet_id"
 
   create_table "habanero_namespaces", :force => true do |t|
     t.string "name"
+    t.string "slug"
   end
 
   create_table "habanero_sorbets", :force => true do |t|
@@ -33,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20120118010531) do
     t.integer "parent_id"
     t.integer "lft"
     t.integer "rgt"
+    t.string  "slug"
   end
 
 end
