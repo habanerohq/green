@@ -36,7 +36,7 @@ module Habanero
     end
 
     def add_indices
-      unless column_exists?(column_name)
+      unless index_exists?(column_name)
         add_index column_name
       end
     end

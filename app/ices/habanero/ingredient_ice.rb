@@ -58,7 +58,11 @@ module Habanero
       end
 
       def column_exists?(column_name)
-        connection.columns(sorbet.table_name).map(&:name).include?(column_name.to_s)
+        connection.column_exists?(sorbet.table_name, column_name.to_s)
+      end
+
+      def index_exists?(column_name)
+        connection.index_exists?(sorbet.table_name, column_name.to_s)
       end
 
       def add_column(name, type)
