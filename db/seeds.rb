@@ -1,5 +1,67 @@
-# Phase 29 - Create some Layout Masks for tree rendering
+# Phase 30 - More trees in the kitchen
 
+# build the masks
+site = Habanero::Sorbet.find_by_name('Site')
+site_mask = Habanero::Mask.create!(:name => 'Site Tree Mask', :sorbet => site)
+site_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => site.ingredients.find_by_name('Sections'))
+site_mask.save!
+
+section = Habanero::Sorbet.find_by_name('Section')
+section_mask = Habanero::Mask.create!(:name => 'Section Tree Mask', :sorbet => section, :parent => site_mask)
+section_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => section.ingredients.find_by_name('Pages'))
+section_mask.save!
+
+page = Habanero::Sorbet.find_by_name('Page')
+page_mask = Habanero::Mask.create!(:name => 'Page Tree Mask', :sorbet => page, :parent => section_mask)
+page_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => page.ingredients.find_by_name('Placements'))
+page_mask.save!
+
+scoop = Habanero::Sorbet.find_by_name('Scoop')
+scoop_mask = Habanero::Mask.create!(:name => 'Scoop Tree Mask', :sorbet => scoop)
+scoop_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => scoop.ingredients.find_by_name('Placements'))
+scoop_mask.save!
+
+namespace = Habanero::Sorbet.find_by_name('Namespace')
+namespace_mask = Habanero::Mask.create!(:name => 'Namespace Tree Mask', :sorbet => namespace)
+namespace_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => namespace.ingredients.find_by_name('Sorbets'))
+namespace_mask.save!
+
+sorbet = Habanero::Sorbet.find_by_name('Sorbet')
+sorbet_mask = Habanero::Mask.create!(:name => 'Sorbet Tree Mask', :sorbet => sorbet, :parent => namespace_mask)
+sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Ingredients'))
+sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Masks'))
+sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Queries'))
+sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Sections'))
+sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Pages'))
+sorbet_mask.save!
+
+mask = Habanero::Sorbet.find_by_name('Mask')
+mask_mask = Habanero::Mask.create!(:name => 'Mask Tree Mask', :sorbet => mask, :parent => sorbet_mask)
+mask_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => mask.ingredients.find_by_name('Mask Ingredients'))
+mask_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => mask.ingredients.find_by_name('Sorbet Scoops'))
+mask_mask.save!
+
+category = Habanero::Sorbet.find_by_name('Category')
+category_mask = Habanero::Mask.create!(:name => 'Category Tree Mask', :sorbet => category)
+category_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => category.ingredients.find_by_name('Ingredients'))
+category_mask.save!
+
+page = Habanero::Page.find_by_name('Layout Kitchen')
+
+# build the scoops
+site_scoop = Habanero::SorbetCollectionScoop.create!(:name => 'Site Tree', :mask => Habanero::Mask.find_by_name('Site Tree Mask'))
+scoop_scoop = Habanero::SorbetCollectionScoop.create!(:name => 'Scoop Tree', :mask => Habanero::Mask.find_by_name('Scoop Tree Mask'))
+sorbet_scoop = Habanero::SorbetCollectionScoop.create!(:name => 'Sorbet Tree', :mask => Habanero::Mask.find_by_name('Sorbet Tree Mask'))
+category_scoop = Habanero::SorbetCollectionScoop.create!(:name => 'Category Tree', :mask => Habanero::Mask.find_by_name('Category Tree Mask'))
+
+# build the placements
+Habanero::ScoopPlacement.create!(:page => page, :scoop => site_scoop, :region => page.layout.regions.find_by_name('Left'), :template => 'tree')
+Habanero::ScoopPlacement.create!(:page => page, :scoop => sorbet_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
+Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
+Habanero::ScoopPlacement.create!(:page => page, :scoop => category_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
+
+# Phase 29 - Create some Layout Masks for tree rendering
+=begin
 layout = Habanero::Sorbet.find_by_name('Layout')
 l_mask = Habanero::Mask.create!(:name => 'Layout Tree Mask', :sorbet => layout)
 l_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Rows'))
@@ -15,7 +77,7 @@ region = Habanero::Sorbet.find_by_name('Region')
 r_mask = Habanero::Mask.create!(:name => 'Region Tree Mask', :sorbet => region, :parent => row_mask)
 r_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Placements'))
 r_mask.save!
-
+=end
 # Phase 28 - queries on scoops
 =begin
 scoop = Habanero::Sorbet.find_by_name('Scoop')

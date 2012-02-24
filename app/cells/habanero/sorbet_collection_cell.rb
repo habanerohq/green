@@ -10,7 +10,7 @@ module Habanero
     def tree(options)
       instance_variables_from(options)
       @mask = @placement.scoop.mask
-      @targets = @page.target_class.order(:name)
+      @targets = @mask.sorbet.klass.order(:name)
       render
     end
 

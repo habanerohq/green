@@ -2,12 +2,21 @@
   <ul>
     <%- @targets.each do |t| -%>
       <li><%= t.to_s %></li>
+
+      <%- if t.respond_to?(:children)  -%>
+          <%= render({:state => :tree_node}, t.children, @mask) -%>
+      <%- end -%>
+
       <%- @mask.mask_ingredients.each do |mi| -%>
           <%= 
             unless mi.ingredient.relation == 'has_many'
               format_ingredient(t, mi.ingredient)
             else
-              render({:state => :tree_node}, t.send(mi.ingredient.method_name), @mask.children.detect{|m| m.sorbet == mi.ingredient.inverse.sorbet})
+              render(
+                {:state => :tree_node}, 
+                t.send(mi.ingredient.method_name), 
+                @mask.children.detect{|m| m.sorbet == mi.ingredient.inverse.sorbet}
+              )
             end
           -%>
       <%- end if @mask.present? -%>
