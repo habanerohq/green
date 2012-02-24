@@ -3,7 +3,7 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      belongs_to :sorbet
+      belongs_to :sorbet, :inverse_of => :ingredients
 
       acts_as_nested_set
 

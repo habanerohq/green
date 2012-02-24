@@ -4,7 +4,9 @@ module Habanero
 
     included do
       belongs_to :namespace, :class_name => '::Habanero::Namespace'
-      has_many :ingredients, :class_name => '::Habanero::Ingredient'
+      has_many :ingredients,
+               :class_name => '::Habanero::Ingredient',
+               :inverse_of => :sorbet
 
       acts_as_nested_set
 
@@ -13,6 +15,8 @@ module Habanero
       validates :name,
                 :presence => true,
                 :uniqueness => { :scope => :namespace_id }
+
+      validates_associated :ingredients
 
       before_create :create_table # failed create leaves empty table?
 
