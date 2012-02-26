@@ -5,7 +5,6 @@ module Habanero
     module InstanceMethods
       def adapt(klass)
         klass.send :belongs_to, method_name.to_sym, :class_name => 'Habanero::Category', :foreign_key => column_name
-        Habanero::Category.send :has_many, klass.name.underscore.pluralize.to_sym, :foreign_key => column_name
       end
 
       def column_name
