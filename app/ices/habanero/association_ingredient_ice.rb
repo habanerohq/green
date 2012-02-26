@@ -6,6 +6,9 @@ module Habanero
       validates :relation,
                 :presence => true,
                 :inclusion => { :in => %w(belongs_to has_one has_many has_and_belongs_to_many) }
+
+      validates :name,
+                :presence => true
     end
 
     module InstanceMethods

@@ -83,4 +83,37 @@ describe Habanero::AssociationIngredient do
   it 'acts as list' do
     Habanero::Dummy.ancestors.should include ActiveRecord::Acts::List::InstanceMethods
   end
+  
+  it 'handles polymorphic associations' do
+    poly = Habanero::RelationIngredient.create!(
+      :name => 'Context Dummies',
+      :sorbet => @sorbet,
+      :children => [
+        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Namespace')),
+        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Layout')),
+        Habanero::AssociationIngredient.new(:name => 'Context', :relation => 'belongs_to', :sorbet => @sorbet)
+      ]
+    )
+      
+    poly.children.count.should == 3
+    poly.children.each { |c| c.should be_polymorphic }
+    
+    a = Habanero::Namespace.reflect_on_association(:dummies)
+    a.should be_present
+    a.class_name.should == '::Habanero::Dummy'
+    a.options[:as].should == 'context'
+    a.foreign_key.should == 'context_id'
+    
+    a = Habanero::Layout.reflect_on_association(:dummies)
+    a.should be_present
+    a.class_name.should == '::Habanero::Dummy'
+    a.options[:as].should == 'context'
+    a.foreign_key.should == 'context_id'
+    
+    a = Habanero::Dummy.reflect_on_association(:context)
+    a.should be_present
+    a.options[:polymorphic].should == true
+    
+    poly.destroy
+  end
 end
