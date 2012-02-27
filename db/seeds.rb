@@ -1,7 +1,15 @@
+# Phase 36 - link kitchen pages to show & edit pages
+
+show_page = Habanero::Page.find_by_name('Show Sorbet')
+Habanero::Page.find_by_name('Layout Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Sorbet Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Scoop Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Category Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
+
 # Phase 35 - Make our Sorbets use NameIngredient
-
+=begin
 Habanero::Ingredient.update_all("type = 'Habanero::NameIngredient'", "type = 'Habanero::StringIngredient' AND name = 'Name'")
-
+=end
 # Phase 34 - Fix NameIngredient
 =begin
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
