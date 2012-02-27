@@ -27,9 +27,5 @@ module Habanero
     def nearest_target
       target || section.nearest_target
     end
-
-    def to_s
-      name
-    end
   end
 end

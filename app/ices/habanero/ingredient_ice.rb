@@ -43,10 +43,6 @@ module Habanero
         :string
       end
 
-      def to_s
-        name
-      end
-
     protected
 
       def add_columns

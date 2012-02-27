@@ -80,10 +80,6 @@ module Habanero
         ingredients.each { |i| i.adapt(klass) }
       end
 
-      def to_s
-        qualified_name
-      end
-
       protected
 
       def create_table
