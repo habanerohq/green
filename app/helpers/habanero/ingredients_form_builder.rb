@@ -1,4 +1,4 @@
-module Habanero  
+module Habanero
   class IngredientsFormBuilder < ActionView::Helpers::FormBuilder
 
     def habanero_category_ingredient(i)
@@ -16,7 +16,7 @@ module Habanero
     def habanero_true_false_ingredient(i)
       check_box_for(i)
     end
-    
+
     def habanero_nest_ingredient(i)
       select :parent, object.class.order(:name)
     end
@@ -27,13 +27,13 @@ module Habanero
 
     def habanero_association_ingredient(i)
       if i.relation == 'belongs_to'
-        select i.method_name, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name))
+        collection_select i.column_name, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name)), :id, :to_s
       end
     end
-    
+
     def ingredient(i)
       method = i.class.name.attrify
-      
+
       @template.content_tag(:p) do
         @template.content_tag(:label, i.name) <<
         if respond_to?(method) && i.class != Habanero::Ingredient
@@ -43,18 +43,18 @@ module Habanero
         end
       end
     end
-    
+
     def text_field_for(i)
       text_field(i.name.attrify)
     end
-    
+
     def text_area_for(i)
       text_area(i.name.attrify)
     end
-    
+
     def check_box_for(i)
       check_box(i.name.attrify)
     end
-    
+
   end
 end

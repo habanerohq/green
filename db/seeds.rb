@@ -1,5 +1,34 @@
-# Phase 32a - Build a show page for sorbets
+# Phase 35 - Make our Sorbets use NameIngredient
 
+Habanero::Ingredient.update_all("type = 'Habanero::NameIngredient'", "type = 'Habanero::StringIngredient' AND name = 'Name'")
+
+# Phase 34 - Fix NameIngredient
+=begin
+ingredient = Habanero::Sorbet.find_by_name('Ingredient')
+namespace = Habanero::Namespace.find_by_name('Habanero')
+
+name_ingredient = Habanero::Sorbet.create!(
+  :name => 'NameIngredient',
+  :parent => ingredient,
+  :namespace => namespace
+)
+
+Habanero::StringIngredient.create!(:name => 'Format', :sorbet => name_ingredient)
+=end
+# Phase 33 - Build an edit page for sorbets
+=begin
+kit = Habanero::Section.find_by_name('Kitchens')
+kit_layout = Habanero::Layout.find_by_name('Kitchen')
+
+edit_page = Habanero::Page.create!(:name => 'Edit Sorbet', :section => kit, :target => Habanero::Sorbet.find_by_name('Site'), :route => '/sites/:sorbet_type/:id/edit', :layout => kit_layout)
+edit_scoop = Habanero::SorbetScoop.create!(:name => 'Edit Sorbet')
+
+Habanero::ScoopPlacement.create!(:page => edit_page, :scoop => edit_scoop, :region => edit_page.layout.regions.find_by_name('Content'), :template => 'edit')
+
+Habanero::Page.find_by_name('Show Sorbet').placements.first.scoop.update_attribute(:page_id, edit_page.id)
+=end
+# Phase 32a - Build a show page for sorbets
+=begin
 kit = Habanero::Section.find_by_name('Kitchens')
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
@@ -10,7 +39,7 @@ show_scoop = Habanero::SorbetScoop.create!(:name => 'Show Sorbet')
 Habanero::ScoopPlacement.create!(:page => show_page, :scoop => show_scoop, :region => show_page.layout.regions.find_by_name('Content'), :template => 'show')
 
 Habanero::Page.find_by_name('Site Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
-
+=end
 # Phase 32 - SorbetScoops belong to a Page
 =begin
 scoop = Habanero::Sorbet.find_by_name('SorbetScoop')

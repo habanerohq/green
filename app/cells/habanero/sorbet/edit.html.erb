@@ -2,12 +2,17 @@
   <%= cell_title("#{@target} editor") %>
 
   <%= cell_content do %>
-    <%= form_for(@target, :url => '', :builder => Habanero::IngredientsFormBuilder, :html => {:method => (@target.new_record? ? :post : :put)}) do |f| -%>
-      <% @placement.scoop.mask.mask_ingredients.each do |mi| -%>
-        <%= f.ingredient mi.ingredient %>
+    <%= form_for(@target, :as => "placement_#{@placement.id}",
+                          :url => '', # use the page or the current page
+                          :builder => Habanero::IngredientsFormBuilder,
+                          :html => {:method => (@target.new_record? ? :post : :put)}) do |f| -%>
+      <% @ingredients.each do |ingredient| -%>
+        <%= f.ingredient ingredient %>
       <% end %>
-      
-      <%= f.submit -%>
+
+      <div class="form-actions">
+        <%= f.submit :class => 'btn btn-primary' -%>
+      </div>
     <% end %>
   <% end %>
 <% end %>

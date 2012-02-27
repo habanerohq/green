@@ -4,4 +4,8 @@ module Habanero
 end
 
 Habanero::Ingredient.class_eval { include Habanero::IngredientIce }
-Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first.try(:adapt) if Habanero::Sorbet.table_exists?
+if Habanero::Sorbet.table_exists?
+  Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first.try(:adapt)
+  Habanero::Sorbet.class_attribute :_sorbet
+  Habanero::Sorbet._sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first
+end
