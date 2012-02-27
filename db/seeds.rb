@@ -1,5 +1,33 @@
-# Phase 30 - More trees in the kitchen
+# Phase 31 - Build one kitchen per tree
 
+kit = Habanero::Section.find_by_name('Kitchens')
+kit_layout = Habanero::Layout.find_by_name('Kitchen')
+
+layout_page = kit.pages.first
+layout_page.route = '/layouts'
+layout_page.save!
+
+site_page = Habanero::Page.create!(:name => 'Site Kitchen', :section => kit, :target => Habanero::Sorbet.find_by_name('Site'), :route => '/sites', :layout => kit_layout)
+sorbet_page = Habanero::Page.create!(:name => 'Sorbet Kitchen', :section => kit, :target => Habanero::Sorbet.find_by_name('Sorbet'), :route => '/sorbets', :layout => kit_layout)
+scoop_page = Habanero::Page.create!(:name => 'Scoop Kitchen', :section => kit, :target => Habanero::Sorbet.find_by_name('Scoop'), :route => '/scoops', :layout => kit_layout)
+category_page = Habanero::Page.create!(:name => 'Category Kitchen', :section => kit, :target => Habanero::Sorbet.find_by_name('Category'), :route => '/categories', :layout => kit_layout)
+
+placements = layout_page.placements
+
+placements[1].page = site_page
+placements[2].page = sorbet_page
+placements[3].page = scoop_page
+placements[4].page = category_page
+
+left = kit_layout.regions.find_by_name('Left')
+placements[2].region = left
+placements[3].region = left
+placements[4].region = left
+
+placements.each { |p| p.save!}
+
+# Phase 30 - More trees in the kitchen
+=begin
 # build the masks
 site = Habanero::Sorbet.find_by_name('Site')
 site_mask = Habanero::Mask.create!(:name => 'Site Tree Mask', :sorbet => site)
@@ -59,7 +87,7 @@ Habanero::ScoopPlacement.create!(:page => page, :scoop => site_scoop, :region =>
 Habanero::ScoopPlacement.create!(:page => page, :scoop => sorbet_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
 Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
 Habanero::ScoopPlacement.create!(:page => page, :scoop => category_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
-
+=end
 # Phase 29 - Create some Layout Masks for tree rendering
 =begin
 layout = Habanero::Sorbet.find_by_name('Layout')
