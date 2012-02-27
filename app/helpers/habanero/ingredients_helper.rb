@@ -61,6 +61,10 @@ module Habanero
       end
     end
 
+    def format_habanero_relation_ingredient(target, ingredient)
+      # huhu
+    end
+
     def format_ingredient(target, ingredient)
       method = "format_#{ingredient.class.name.attrify}"
       if respond_to?(method) && ingredient.class != Habanero::Ingredient
@@ -78,7 +82,7 @@ module Habanero
     def ingredient_css_classes(ingredient)
       "ingredient #{ingredient.class.to_s.idify} #{ingredient.qualified_name.idify}"
     end
-    
+
     def value_for(target, ingredient)
       target.send(ingredient.name.attrify)
     end

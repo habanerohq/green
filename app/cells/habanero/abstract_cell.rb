@@ -1,7 +1,8 @@
 module Habanero
   class AbstractCell < Cell::Rails
     helper 'habanero/cells'
-  
+    helper 'habanero/pages'
+
     protected
 
     def instance_variables_from(options)

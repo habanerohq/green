@@ -1,5 +1,33 @@
-# Phase 31 - Build one kitchen per tree
+# Phase 32a - Build a show page for sorbets
 
+kit = Habanero::Section.find_by_name('Kitchens')
+kit_layout = Habanero::Layout.find_by_name('Kitchen')
+
+show_page = Habanero::Page.create!(:name => 'Show Sorbet', :section => kit, :target => Habanero::Sorbet.find_by_name('Site'), :route => '/sites/:sorbet_type/:id', :layout => kit_layout)
+
+show_scoop = Habanero::SorbetScoop.create!(:name => 'Show Sorbet')
+
+Habanero::ScoopPlacement.create!(:page => show_page, :scoop => show_scoop, :region => show_page.layout.regions.find_by_name('Content'), :template => 'show')
+
+Habanero::Page.find_by_name('Site Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
+
+# Phase 32 - SorbetScoops belong to a Page
+=begin
+scoop = Habanero::Sorbet.find_by_name('SorbetScoop')
+page = Habanero::Sorbet.find_by_name('Page')
+
+Habanero::RelationIngredient.create!(
+  :name => 'Page SorbetScoops',
+  :sorbet => scoop,
+  :children => [
+    Habanero::AssociationIngredient.new(:name => 'Page', :relation => 'belongs_to', :sorbet => scoop),
+    Habanero::AssociationIngredient.new(:name => 'SorbetScoops', :relation => 'has_many', :sorbet => page)
+  ]
+)
+=end
+
+# Phase 31 - Build one kitchen per tree
+=begin
 kit = Habanero::Section.find_by_name('Kitchens')
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
@@ -25,7 +53,7 @@ placements[3].region = left
 placements[4].region = left
 
 placements.each { |p| p.save!}
-
+=end
 # Phase 30 - More trees in the kitchen
 =begin
 # build the masks

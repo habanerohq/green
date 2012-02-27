@@ -3,9 +3,9 @@
 
   <%= cell_content do %>
     <dl>
-      <% @placement.scoop.mask.mask_ingredients.each do |mi| %>
-        <dt><%= mi.ingredient.name %></dt>
-        <dd><%= format_ingredient(@target, mi.ingredient) %></dd>
+      <% @ingredients.each do |mi| %>
+        <dt><%= mi.name %></dt>
+        <dd><%= format_ingredient(@target, mi) %></dd>
       <% end %>
     </dl>
   <% end %>

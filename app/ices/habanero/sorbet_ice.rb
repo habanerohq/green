@@ -42,6 +42,9 @@ module Habanero
         namespace.klass.const_set(klass_name, Class.new(parent.klass))
         klass.unloadable
 
+        klass.class_attribute :_sorbet
+        klass._sorbet = self
+
         adapt
 
         begin

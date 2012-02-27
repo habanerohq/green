@@ -1,7 +1,7 @@
 <% if @targets.any? %>
   <ul>
     <%- @targets.each do |t| -%>
-      <li><%= t.to_s %></li>
+      <li><%= link_to(t, page_path(@placement.scoop.page, :id => t, :sorbet_type => t.class._sorbet)) %></li>
 
       <%- if t.respond_to?(:children)  -%>
           <%= render({:state => :tree_node}, t.children, @mask) -%>
