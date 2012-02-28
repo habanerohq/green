@@ -42,7 +42,7 @@ module Habanero
 
       def inverse
         if relation == 'belongs_to'
-          siblings.first
+          siblings.detect.first unless polymorphic?
         else
           siblings.detect { |s| s.relation == 'belongs_to' }
         end
