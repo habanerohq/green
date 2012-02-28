@@ -1,17 +1,22 @@
 require 'spec_helper'
 
 describe Habanero::NameIngredient do
-  before do
+  before(:all) do
     @ingredient = Habanero::NameIngredient.new :name => 'Name', :format => '{{ name }}'
 
-    @namespace = Habanero::Namespace.find_by_name('Habanero')
-    @parent = Habanero::Sorbet.find_by_name('Base')
     @sorbet = Habanero::Sorbet.create!(
       :name => 'NameIngredientTestSorbet',
-      :parent => @parent,
-      :namespace => @namespace,
-      :ingredients => [@ingredient]
+      :parent => Habanero::Sorbet.find_by_name('Base'),
+      :namespace => Habanero::Namespace.find_by_name('Habanero')
     )
+
+    @sorbet.ingredients << @ingredient
+
+    @sorbet.chill!
+  end
+
+  after(:all) do
+    Habanero::Sorbet.find_by_name('NameIngredientTestSorbet').try(:destroy)
   end
 
   it 'should not allow more than one NameIngredient per Sorbet' do
@@ -26,8 +31,6 @@ describe Habanero::NameIngredient do
   end
 
   it 'should define a to_s method on the sorbet' do
-    @sorbet.chill!
-
     record = Habanero::NameIngredientTestSorbet.new :name => 'Foo'
     record.to_s.should == 'Foo'
   end
