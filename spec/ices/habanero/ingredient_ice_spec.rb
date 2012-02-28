@@ -25,7 +25,7 @@ describe Habanero::Ingredient do
   it 'should have a column type' do
     @ingredient.column_type.should == :string
   end
-
+=begin
   it 'should maintain a column in the sorbet database table' do
     sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Sorbet').first
 
@@ -48,5 +48,5 @@ describe Habanero::Ingredient do
 
     sorbet.ingredients << ingredient
   end
-
+=end
 end

@@ -6,7 +6,9 @@ gem 'rails', '3.1.3'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'pg'
 gem 'mysql2'
+
 gem 'json'
 
 # Gems used only for assets and not required
@@ -33,7 +35,7 @@ gem 'jquery-rails'
 
 gem 'less-rails-bootstrap'
 gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git'
-gem 'awesome_nested_set'
+gem 'awesome_nested_set', '2.0.2'
 gem 'acts_as_list'
 gem 'friendly_id', '~> 4.0.0'
 gem 'cells'

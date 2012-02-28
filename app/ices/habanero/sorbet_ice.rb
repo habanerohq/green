@@ -6,7 +6,8 @@ module Habanero
       belongs_to :namespace, :class_name => '::Habanero::Namespace'
       has_many :ingredients,
                :class_name => '::Habanero::Ingredient',
-               :inverse_of => :sorbet
+               :inverse_of => :sorbet,
+               :dependent => :destroy
 
       acts_as_nested_set
 

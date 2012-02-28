@@ -5,9 +5,9 @@ module Habanero
     included do
       validate :validate_scope, :if => :scoped?
 
-      after_create :add_indices
-      after_save :change_indices
-      after_destroy :remove_indices
+      after_create :add_index
+      after_save :change_index
+      after_destroy :remove_index
     end
 
     def column_name
@@ -28,6 +28,10 @@ module Habanero
       scope.present?
     end
 
+    def unscoped?
+      scoped? == false
+    end
+
     protected
 
     def validate_scope
@@ -35,33 +39,23 @@ module Habanero
       errors.add(:scope, "is not a belongs_to association") if scope.relation != 'belongs_to'
     end
 
-    def add_indices
-      unless index_exists?(column_name)
-        add_index column_name
+    def add_index
+      connection.add_index(sorbet.table_name, column_name, :unique => unscoped?)
+    end
+
+    def change_index
+      if name_changed? && name_was.present?
+        connection.rename_index(sorbet.table_name, name_was.attrify, column_name)
+      end
+
+      if scope_id_changed?
+        connection.remove_index(sorbet.table_name, column_name) if connection.index_exists?(sorbet.table_name, column_name)
+        connection.add_index(sorbet.table_name, column_name, :unique => unscoped?)
       end
     end
 
-    def add_index(name)
-      options = scoped? ? {} : { :unique => true }
-      connection.add_index sorbet.table_name, name, options
-    end
-
-    def change_indices
-      if name_was and name_changed?
-        rename_index(name_was.attrify, column_name)
-      end
-    end
-
-    def rename_index(old_name, new_name)
-      connection.rename_index sorbet.table_name, old_name, new_name
-    end
-
-    def remove_indices
-      remove_index(column_name)
-    end
-
-    def remove_index(name)
-      connection.remove_column sorbet.table_name, name
+    def remove_index
+      connection.remove_index(sorbet.table_name, column_name) if connection.index_exists?(sorbet.table_name, column_name)
     end
   end
 end
