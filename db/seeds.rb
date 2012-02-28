@@ -1,11 +1,17 @@
-# Phase 36 - link kitchen pages to show & edit pages
+# Phase 37 - fix sorbet tree mask hierarchy
 
+scoop = Habanero::Page.find_by_name('Sorbet Kitchen').placements.first.scoop
+scoop.mask = Habanero::Mask.find_by_name('Namespace Tree Mask')
+scoop.save!
+
+# Phase 36 - link kitchen pages to show & edit pages
+=begin
 show_page = Habanero::Page.find_by_name('Show Sorbet')
 Habanero::Page.find_by_name('Layout Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
 Habanero::Page.find_by_name('Sorbet Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
 Habanero::Page.find_by_name('Scoop Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
 Habanero::Page.find_by_name('Category Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
-
+=end
 # Phase 35 - Make our Sorbets use NameIngredient
 =begin
 Habanero::Ingredient.update_all("type = 'Habanero::NameIngredient'", "type = 'Habanero::StringIngredient' AND name = 'Name'")
