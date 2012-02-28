@@ -27,8 +27,9 @@ module Habanero
 
     def habanero_association_ingredient(i)
       if i.relation == 'belongs_to'
-        collection_select i.column_name, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name)), :id, :to_s
+        collection_select i.column_name, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name)), :id, :to_s, :prompt => "--- select one #{i.sorbet.name.downcase} ---"
       end
+      # todo: provide the ability to add to has_many lists
     end
 
     def ingredient(i)
