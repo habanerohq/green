@@ -2,10 +2,8 @@ module Habanero
   module RouteIngredientIce
     extend ActiveSupport::Concern
 
-    module InstanceMethods
-      def adapt(klass)
-        klass.send :include, Routable
-      end
+    def adapt(klass)
+      klass.send :include, Routable
     end
 
     module Routable
