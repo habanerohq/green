@@ -20,6 +20,7 @@ module Habanero
       validates_associated :ingredients
 
       before_create :create_table # failed create leaves empty table?
+      after_destroy :remove_const
 
       unloadable
     end
@@ -32,11 +33,11 @@ module Habanero
       def all_ingredients
         self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
       end
-      
+
       def displayable_ingredients(ingreds)
         (ingreds || ingredients).reject { |i| i.type == 'Habanero::RelationIngredient'}
       end
-      
+
       def all_displayable_ingredients
         displayable_ingredients(all_ingredients)
       end
@@ -96,6 +97,10 @@ module Habanero
 #          puts "create_table #{table_name}" unless connection.table_exists?(table_name) # write this to a log!
           connection.create_table(table_name) unless connection.table_exists?(table_name)
         end
+      end
+
+      def remove_const
+        namespace.klass.send(:remove_const, klass_name) if chilled?
       end
     end
   end

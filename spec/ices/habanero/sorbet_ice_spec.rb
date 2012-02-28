@@ -80,4 +80,17 @@ describe Habanero::Sorbet do
     ActiveSupport::Dependencies.clear
     object_id.should_not == Habanero::Sorbet.object_id
   end
+
+  it 'should remove constant when destroyed' do
+    sorbet = Habanero::Sorbet.create!(
+      :name => 'TestRemove',
+      :parent => Habanero::Sorbet.find_by_name('Base'),
+      :namespace => Habanero::Namespace.find_by_name('Habanero')
+    )
+
+    sorbet.chill!
+    sorbet.should be_chilled
+    sorbet.destroy
+    sorbet.should_not be_chilled
+  end
 end
