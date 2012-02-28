@@ -4,7 +4,6 @@
   <%= cell_content do %>
     <%= form_for(@target, :as => "placement_#{@placement.id}",
                           :url => '', # use the page or the current page
-                          :builder => Habanero::IngredientsFormBuilder,
                           :html => {:method => (@target.new_record? ? :post : :put)}) do |f| -%>
       <% @ingredients.each do |ingredient| -%>
         <%= f.ingredient ingredient %>
