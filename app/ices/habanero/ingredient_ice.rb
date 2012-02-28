@@ -45,6 +45,16 @@ module Habanero
 
     protected
 
+      [:add_column, :remove_column, :rename_column, :'column_exists?',
+       :add_index, :remove_index, :rename_index, :'index_exists?'].each do |msg|
+        class_eval <<-RUBY_EVAL
+          def #{msg}(*args)
+            args.unshift(sorbet.table_name)
+            connection.send(:#{msg}, *args)
+          end
+        RUBY_EVAL
+      end
+
       def add_columns
         unless column_exists?(column_name)
           add_column column_name, column_type
@@ -53,37 +63,14 @@ module Habanero
         adapt(sorbet.klass) if sorbet.chilled?
       end
 
-      def column_exists?(column_name)
-        connection.column_exists?(sorbet.table_name, column_name.to_s)
-      end
-
-      def index_exists?(column_name)
-        connection.index_exists?(sorbet.table_name, column_name.to_s)
-      end
-
-      def add_column(name, type)
-#        puts "add_column #{sorbet.table_name}, #{name}, #{type}" # write this to a log!
-        connection.add_column sorbet.table_name, name, type
-      end
-
       def change_columns
         if name_was and name_changed?
           rename_column(name_was.attrify, column_name)
         end
       end
 
-      def rename_column(old_name, new_name)
-#        puts "rename_column #{sorbet.table_name}, #{old_name}, #{new_name}" # write this to a log!
-        connection.rename_column sorbet.table_name, old_name, new_name
-      end
-
       def remove_columns
         remove_column(column_name)
-      end
-
-      def remove_column(name)
-#        puts "remove_column #{name}" # write this to a log!
-        connection.remove_column sorbet.table_name, name
       end
 
       def reset_columns

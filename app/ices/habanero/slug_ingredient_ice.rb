@@ -3,11 +3,12 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      validate :validate_scope, :if => :scoped?
+      validate :slug_ingredient_validate_scope, :if => :scoped?
 
-      after_create :add_index
-      after_save :change_index
-      after_destroy :remove_index
+      # todo: there should be a nice way to wrap these in a class/module
+      after_create  :slug_ingredient_after_create
+      after_save    :slug_ingredient_after_save
+      after_destroy :slug_ingredient_after_destroy
     end
 
     def column_name
@@ -34,28 +35,30 @@ module Habanero
 
     protected
 
-    def validate_scope
+    def slug_ingredient_validate_scope
       errors.add(:scope, "is not present on the target sorbet") unless scope.sorbet == target.sorbet
       errors.add(:scope, "is not a belongs_to association") if scope.relation != 'belongs_to'
     end
 
-    def add_index
-      connection.add_index(sorbet.table_name, column_name, :unique => unscoped?)
+    def slug_ingredient_after_create
+      add_index(column_name, :unique => unscoped?)
     end
 
-    def change_index
+    def slug_ingredient_after_save
       if name_changed? && name_was.present?
-        connection.rename_index(sorbet.table_name, name_was.attrify, column_name)
+        rename_index(name_was.attrify, column_name)
       end
 
       if scope_id_changed?
-        connection.remove_index(sorbet.table_name, column_name) if connection.index_exists?(sorbet.table_name, column_name)
-        connection.add_index(sorbet.table_name, column_name, :unique => unscoped?)
+        remove_index(column_name) if index_exists?(column_name)
+        add_index(column_name, :unique => unscoped?)
       end
     end
 
-    def remove_index
-      connection.remove_index(sorbet.table_name, column_name) if connection.index_exists?(sorbet.table_name, column_name)
+    def slug_ingredient_after_destroy
+      # todo: is this necessary? the column should have already been removed by
+      #       superclass, the index along with it
+      remove_index(column_name) if index_exists?(column_name)
     end
   end
 end
