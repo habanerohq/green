@@ -47,7 +47,8 @@ module Habanero
     def format_habanero_association_ingredient(target, ingredient)
       if ingredient.relation == 'has_many'
         ingredient_span(ingredient) do 
-#          value_for(target, ingredient).map(&:to_s).join(', ')
+          value_for(target, ingredient).map(&:to_s).join(', ')
+=begin
           content_tag(:dl) do
             value_for(target, ingredient).inject('') do |m, o|
               m << 
@@ -55,6 +56,7 @@ module Habanero
               content_tag(:dd, (o.documentation if o.respond_to?(:documentation)))
             end.html_safe
           end
+=end
         end
       else
         value_for(target, ingredient)
