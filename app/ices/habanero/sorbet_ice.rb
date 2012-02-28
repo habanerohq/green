@@ -27,9 +27,17 @@ module Habanero
       def qualified_name
         "#{namespace.qualified_name}::#{klass_name}"
       end
+
+      def all_ingredients
+        self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
+      end
       
-      def displayable_ingredients
-        ingredients.reject { |i| i.type == 'Habanero::RelationIngredient'}
+      def displayable_ingredients(ingreds)
+        (ingreds || ingredients).reject { |i| i.type == 'Habanero::RelationIngredient'}
+      end
+      
+      def all_displayable_ingredients
+        displayable_ingredients(all_ingredients)
       end
 
       def table_name
@@ -74,10 +82,6 @@ module Habanero
         if parent
           parent.self_and_ancestors.detect(&:parent)
         end || self
-      end
-
-      def all_ingredients
-        self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
       end
 
       def adapt

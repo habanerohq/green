@@ -7,7 +7,7 @@ module Habanero
 
       @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
       @target = @sorbet.klass.find(params[:id])
-      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.displayable_ingredients
+      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.all_displayable_ingredients
 
       render
     end
@@ -17,7 +17,7 @@ module Habanero
 
       @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
       @target = @sorbet.klass.find(params[:id])
-      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.ingredients
+      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.all_displayable_ingredients
 
       if data = params[:"placement_#{@placement.id}"] and request.method =~ /POST/i
         # here we would update, maybe create if PUT works
