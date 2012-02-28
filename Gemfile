@@ -34,7 +34,7 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'less-rails-bootstrap'
-gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git'
+gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git', :ref => '3bf96f1add955ef9e48a0cbc7b45892d028e089b'
 gem 'awesome_nested_set', '2.0.2'
 gem 'acts_as_list'
 gem 'friendly_id', '~> 4.0.0'
