@@ -7,6 +7,6 @@ Habanero::Namespace.class_eval { include Habanero::NamespaceIce }
 
 if Habanero::Sorbet.table_exists?
   Habanero::Sorbet.namespaced('Habanero').where(:name => 'Namespace').first.try(:adapt)
-  Habanero::Sorbet.class_attribute :_sorbet
-  Habanero::Sorbet._sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Namespace').first
+  Habanero::Namespace.class_attribute :_sorbet
+  Habanero::Namespace._sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Namespace').first
 end
