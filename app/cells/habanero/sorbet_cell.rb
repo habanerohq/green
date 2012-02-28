@@ -7,7 +7,7 @@ module Habanero
 
       @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
       @target = @sorbet.klass.find(params[:id])
-      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.ingredients
+      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.displayable_ingredients
 
       render
     end

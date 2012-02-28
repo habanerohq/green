@@ -27,6 +27,10 @@ module Habanero
       def qualified_name
         "#{namespace.qualified_name}::#{klass_name}"
       end
+      
+      def displayable_ingredients
+        ingredients.reject { |i| i.type == 'Habanero::RelationIngredient'}
+      end
 
       def table_name
         base.qualified_name.pluralize.attrify
