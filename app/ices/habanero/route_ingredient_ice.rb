@@ -9,21 +9,19 @@ module Habanero
     module Routable
       extend ActiveSupport::Concern
 
-      module InstanceMethods
-        def path
-          route
-        end
+      def path
+        route
+      end
 
-        def qualified_path
-          if respond_to?(:parent) && parent && parent.respond_to?(:qualified_path)
-            parent.qualified_path << path # code for qualifiying path here
-          else
-            path
-          end
+      def qualified_path
+        if respond_to?(:parent) && parent && parent.respond_to?(:qualified_path)
+          parent.qualified_path << path # code for qualifiying path here
+        else
+          path
         end
+      end
 
-        def draw_route(map)
-        end
+      def draw_route(map)
       end
 
       module ClassMethods
