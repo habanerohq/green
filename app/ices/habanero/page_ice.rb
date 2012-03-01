@@ -10,6 +10,13 @@ module Habanero
                 :uniqueness => { :scope => 'section_id' }
     end
 
+    module ClassMethods
+      def draw_routes(map)
+        # respect order scoped by section when drawing page routes
+        order('section_position').all.each { |p| p.draw_route(map) }
+      end
+    end
+
     def draw_route(map, options = {})
       options[:constraints] = { :host => section.site.host } if section.site.host
       options[:as] = "page_#{id}"
