@@ -1,9 +1,25 @@
-# Phase 37 - fix sorbet tree mask hierarchy
+# Phase 38 - sorbet create page
 
+kit = Habanero::Section.find_by_name('Kitchens')
+kit_layout = Habanero::Layout.find_by_name('Kitchen')
+
+create_page = Habanero::Page.create!(:name => 'Create Sorbet', :section => kit, :target => Habanero::Sorbet.find_by_name('Site'), :route => '/sites/:sorbet_type/new', :layout => kit_layout)
+
+# reuse the sorbet scoop from the edit page
+edit_page = Habanero::Page.find_by_name('Edit Sorbet')
+edit_scoop = edit_page.placements.detect { |sp| sp.scoop.is_a?(Habanero::SorbetScoop) && sp.template == 'edit' }.scoop
+Habanero::ScoopPlacement.create!(:page => create_page, :scoop => edit_scoop, :region => edit_page.layout.regions.find_by_name('Content'), :template => 'new')
+
+# move it to the right position, otherwise routes don't work
+show_page = Habanero::Page.find_by_name('Show Sorbet')
+create_page.insert_at(show_page.section_position)
+
+# Phase 37 - fix sorbet tree mask hierarchy
+=begin
 scoop = Habanero::Page.find_by_name('Sorbet Kitchen').placements.first.scoop
 scoop.mask = Habanero::Mask.find_by_name('Namespace Tree Mask')
 scoop.save!
-
+=end
 # Phase 36 - link kitchen pages to show & edit pages
 =begin
 show_page = Habanero::Page.find_by_name('Show Sorbet')
