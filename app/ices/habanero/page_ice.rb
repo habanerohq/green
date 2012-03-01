@@ -18,9 +18,15 @@ module Habanero
     end
 
     def draw_route(map, options = {})
-      options[:constraints] = { :host => section.site.host } if section.site.host
+      options[:constraints] = { :host => section.site.host } unless section.site.host.blank?
       options[:as] = "page_#{id}"
-      map.match({ qualified_path => 'habanero/pages#show', :defaults => { :draw_type => self.class.name, :draw_id => id } }.merge(options))
+      options[:defaults] = { :draw_type => self.class.name, :draw_id => id }
+
+      if sites.any?
+        map.root({ :to => 'habanero/pages#show' }.merge(options))
+      end
+
+      map.match({ qualified_path => 'habanero/pages#show' }.merge(options))
     end
 
     def layout_name
