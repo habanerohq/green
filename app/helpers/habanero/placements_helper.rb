@@ -7,10 +7,11 @@ module Habanero
     end
 
     def place(placement)
-      render_cell(placement.scoop.cell_type, placement.template, 
-        :page => @page, 
-        :placement => placement,
-        :target => @target
+      render_cell(placement.scoop.cell_type,
+                  placement.template.present? ? placement.template : 'show',
+                  :page => @page, 
+                  :placement => placement,
+                  :target => @target
       )
     end
   end
