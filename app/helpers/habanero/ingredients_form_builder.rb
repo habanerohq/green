@@ -18,7 +18,8 @@ module Habanero
     end
 
     def habanero_nest_ingredient(i)
-      collection_select :parent_id, object.class.order(:name), :id, :to_s, :prompt => "--- select one #{i.sorbet.name.downcase} ---"
+      collection = object.class._sorbet.base.klass.unscoped.order(:name)
+      collection_select :parent_id, collection, :id, :to_s, :prompt => "--- select one #{i.sorbet.name.downcase} ---"
     end
 
     def habanero_relation_ingredient(i)
