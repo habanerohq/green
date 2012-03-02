@@ -47,6 +47,9 @@ group :development, :test do
   gem 'guard-spork'
   gem 'rb-fsevent', :require => false
   gem 'ruby_gntp'
+  gem 'rspec-cells'
+  gem 'webrat'
+  gem 'capybara'
 end
 
 group :test do
