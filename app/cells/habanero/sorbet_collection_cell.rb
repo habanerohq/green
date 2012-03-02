@@ -25,7 +25,12 @@ module Habanero
       @mask = mask
       @targets = targets
       render
-    end 
+    end
+
+    def navigation(options)
+      instance_variables_from(options)
+      render
+    end
 
   end
 end
