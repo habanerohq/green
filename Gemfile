@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.2'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -47,9 +47,9 @@ group :development, :test do
   gem 'guard-spork'
   gem 'rb-fsevent', :require => false
   gem 'ruby_gntp'
-  gem 'rspec-cells'
-  gem 'webrat'
-  gem 'capybara'
+#  gem 'rspec-cells'
+#  gem 'webrat'
+#  gem 'capybara'
 end
 
 group :test do
