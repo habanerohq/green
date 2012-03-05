@@ -3,7 +3,7 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      validate :slug_ingredient_validate_scope, :if => :scoped?
+#      validate :slug_ingredient_validate_scope, :if => :scoped?
 
       # todo: there should be a nice way to wrap these in a class/module
       after_create  :slug_ingredient_after_create

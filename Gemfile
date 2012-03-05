@@ -34,7 +34,7 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'less-rails-bootstrap'
-gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git', :ref => 'aee6922b87ce0d7a016f601b324cd29fa7215d1c'
+gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git', :ref => 'f8ad7eb3fa82750a2f997b19178383d77c2e2b63'
 gem 'awesome_nested_set'
 gem 'acts_as_list'
 gem 'friendly_id', '~> 4.0.0'
@@ -47,9 +47,9 @@ group :development, :test do
   gem 'guard-spork'
   gem 'rb-fsevent', :require => false
   gem 'ruby_gntp'
-  gem 'rspec-cells'
-  gem 'webrat'
-  gem 'capybara'
+#  gem 'rspec-cells'
+#  gem 'webrat'
+#  gem 'capybara'
 end
 
 group :test do
