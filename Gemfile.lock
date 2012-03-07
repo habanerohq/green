@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:habanerohq/pantry.git
-  revision: c0fb76f7ef270f9ba6723ce4610bbdb6592b3c4d
-  ref: c0fb76f7ef270f9ba6723ce4610bbdb6592b3c4d
+  revision: 01dd26b0363f79147f83b4fa5c6567eafc84520d
+  ref: 01dd26b0363f79147f83b4fa5c6567eafc84520d
   specs:
     pantry (0.0.1.pre2)
 
