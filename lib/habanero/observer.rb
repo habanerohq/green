@@ -5,5 +5,6 @@ class Habanero::Observer < Pantry::Observer
 
   def define_stacks
     ::SorbetPantry.new.define_stacks
+    ::HabaneroSitePantry.new.define_stacks
   end
 end
