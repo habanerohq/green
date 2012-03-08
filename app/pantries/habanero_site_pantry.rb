@@ -23,6 +23,9 @@ class HabaneroSitePantry < Pantry::Base
     
     can_stack 'Habanero::Mask', :id_value_methods => [:name, :sorbet]
     can_stack 'Habanero::MaskIngredient', :id_value_methods => [:mask, :ingredient]
+    
+    can_stack 'Habanero::Query', :id_value_methods => [:name, :sorbet]
+    can_stack 'Habanero::Condition', :id_value_methods => [:query, :ingredient]
 
     can_stack 'Habanero::Scoop'
     can_stack 'Habanero::ScoopPlacement', :id_value_methods => [:template, :page, :scoop, :region]
