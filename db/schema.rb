@@ -36,33 +36,14 @@ ActiveRecord::Schema.define(:version => 20120306055304) do
     t.integer "lft"
     t.integer "rgt"
     t.string  "slug"
-    t.string  "sort_direction"
-    t.string  "relation"
-    t.string  "format"
-    t.text    "documentation"
-    t.boolean "derived"
-    t.boolean "nullable"
-    t.boolean "sortable"
-    t.boolean "ordered"
-    t.integer "limit"
-    t.integer "precision"
-    t.integer "scale"
-    t.integer "default"
-    t.integer "scope_id"
-    t.integer "target_id"
-    t.integer "category_id"
   end
 
-  add_index "habanero_ingredients", ["slug"], :name => "index_habanero_ingredients_on_slug"
   add_index "habanero_ingredients", ["sorbet_id"], :name => "index_habanero_ingredients_on_sorbet_id"
 
   create_table "habanero_namespaces", :force => true do |t|
     t.string "name"
     t.string "slug"
-    t.text   "documentation"
   end
-
-  add_index "habanero_namespaces", ["slug"], :name => "index_habanero_namespaces_on_slug", :unique => true
 
   create_table "habanero_sorbets", :force => true do |t|
     t.integer "namespace_id"
@@ -71,9 +52,6 @@ ActiveRecord::Schema.define(:version => 20120306055304) do
     t.integer "lft"
     t.integer "rgt"
     t.string  "slug"
-    t.text    "documentation"
   end
-
-  add_index "habanero_sorbets", ["slug"], :name => "index_habanero_sorbets_on_slug"
 
 end
