@@ -2,7 +2,10 @@ module Habanero
   class IngredientsFormBuilder < ActionView::Helpers::FormBuilder
 
     def habanero_category_ingredient(i)
-      grouped_collection_select i.method_name, i.category.children, :children, :name, :id, :name, :prompt => "--- select one #{i.category.name.downcase} ---"
+      grouped_collection_select i.method_name, i.category.children, 
+        :children, :name, :id, :name, 
+        :include_blank => true,
+        :prompt => "--- select one #{i.category.name.downcase} ---"
     end
 
     def habanero_range_ingredient(i)
@@ -19,7 +22,11 @@ module Habanero
 
     def habanero_nest_ingredient(i)
       collection = object.class._sorbet.base.klass.unscoped.order(:name)
-      collection_select :parent_id, collection, :id, :to_s, :prompt => "--- select one #{i.sorbet.name.downcase} ---"
+      collection_select :parent_id, 
+        collection, 
+        :id, :to_s, 
+        :include_blank => true,
+        :prompt => "--- select one #{i.sorbet.name.downcase} ---"
     end
 
     def habanero_relation_ingredient(i)
@@ -28,7 +35,11 @@ module Habanero
 
     def habanero_association_ingredient(i)
       if i.relation == 'belongs_to'
-        collection_select i.column_name, (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name)), :id, :to_s, :prompt => "--- select one #{i.sorbet.name.downcase} ---"
+        collection_select i.column_name, 
+          (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name)), 
+          :id, :to_s, 
+          :include_blank => true,
+          :prompt => "--- select one #{i.sorbet.name.downcase} ---"
       end
       # todo: provide the ability to add to has_many lists
     end
