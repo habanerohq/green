@@ -1,10 +1,12 @@
 module Habanero
   class PageCollectionCell < Habanero::SorbetCollectionCell
     def button_group(options)
-      instance_variables_from(options)
-      @query = @placement.scoop.query
-      @targets = @query.evaluate(params)
-      render
+      list(options)
     end
+
+    def button_dropdown(options)
+      list(options)
+    end
+
   end
 end

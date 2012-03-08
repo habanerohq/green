@@ -1,0 +1,15 @@
+<%= cell_div do %>
+  <%= cell_content do %>
+    <div class="btn-group">
+      <%= link_to ({:anchor => ''}, :class => 'btn dropdown-toggle', 'data-toggle' => 'dropdown') do %>
+        <%= @placement.scoop.body %>
+        <span class="caret"></span>
+      <% end %>
+      <ul class="dropdown-menu">
+        <% @targets.each do |t| %>
+          <li><%= link_to (t, page_path(t, :id => t, :sorbet_type => t.class._sorbet)) %><li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
