@@ -26,7 +26,7 @@ module Habanero
         collection, 
         :id, :to_s, 
         :include_blank => true,
-        :prompt => "--- select one #{i.sorbet.name.downcase} ---"
+        :prompt => "--- select one #{i.to_s.downcase} ---"
     end
 
     def habanero_relation_ingredient(i)
@@ -39,7 +39,7 @@ module Habanero
           (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name)), 
           :id, :to_s, 
           :include_blank => true,
-          :prompt => "--- select one #{i.sorbet.name.downcase} ---"
+          :prompt => "--- select one #{i.to_s.downcase} ---"
       end
       # todo: provide the ability to add to has_many lists
     end
