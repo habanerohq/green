@@ -40,6 +40,7 @@ gem 'awesome_nested_set'
 gem 'acts_as_list'
 gem 'friendly_id', '~> 4.0.0'
 gem 'cells'
+gem 'kaminari'
 
 group :development, :test do
   gem 'rspec-rails'
