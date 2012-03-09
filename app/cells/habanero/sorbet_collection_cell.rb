@@ -25,8 +25,7 @@ module Habanero
     end
 
     def navigation(options)
-      instance_variables_from(options)
-      render
+      list(options)
     end
   end
 end

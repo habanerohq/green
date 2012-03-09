@@ -3,11 +3,15 @@
 </style>
 
 <div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to @page.section.site.name, '/', :class => 'brand' %>
 
-  <%= link_to @page.section.site.name, '/', :class => 'brand' %>
-
-</div>
-</div>
+      <ul class="nav">
+        <% @targets.each do |target| %>
+          <li class="<%= @page == target && 'active' %>"><%= link_to target.to_s, target.path %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 </div>
