@@ -28,37 +28,43 @@ module Habanero
         :class => header_classes(ingredient)
       }
       content_tag(:th, options) do
-        path = page_path(@page, placement_param => { :sort_ingredient_id => ingredient.id, :sort_direction => (new_sort_direction if sorted?(ingredient)) })
-        (link_to ingredient.to_s, path) + ((sort_direction_marker if sorted?(ingredient)) || '')
+        path = page_path(@page, placement_param => {ingredient.column_name=> new_sort_direction(ingredient)})
+        (link_to ingredient.to_s, path) + sort_direction_marker(ingredient)
       end
     end
 
     def header_classes(ingredient)
-      [
-        (params[placement_param][:sort_direction] if sorted?(ingredient))
-      ].compact.join(' ')
+      sort_direction(ingredient)
+    end
+
+    def sort_direction(ingredient)
+      sort_params[ingredient.column_name] if sort_params
     end
 
     def sorted?(ingredient)
-      params[placement_param] and params[placement_param][:sort_ingredient_id] == ingredient.id.to_s
+      sort_direction(ingredient).present?
     end
 
-    def new_sort_direction
-      swap_sort_direction(params[placement_param][:sort_direction])
+    def new_sort_direction(ingredient)
+     sort_direction(ingredient) == 'asc' ? 'desc' : 'asc'
+    end
+    
+    def sort_params
+      params[placement_param]
     end
 
-    def swap_sort_direction(d)
-      d == 'desc' ? 'asc' : 'desc'
-    end
-
-    def sort_direction_marker
+    def sort_direction_marker(ingredient)
       content_tag(:span) do
-        content_tag(:i, nil, :class => sort_direction_class)
+        content_tag(:i, nil, :class => sort_direction_class(ingredient))
       end
     end
     
-    def sort_direction_class
-      params[placement_param][:sort_direction] == 'desc' ? 'icon-chevron-down' : 'icon-chevron-up'
+    def sort_direction_class(ingredient)
+      if sorted?(ingredient)
+        sort_direction(ingredient) == 'desc' ? 'icon-chevron-down' : 'icon-chevron-up'
+      else
+        ''
+      end
     end
   end
 end

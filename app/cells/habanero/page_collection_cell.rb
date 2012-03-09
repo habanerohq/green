@@ -1,12 +1,13 @@
 module Habanero
   class PageCollectionCell < Habanero::SorbetCollectionCell
     def button_group(options)
-      list(options)
+      _list(options)
+      render
     end
 
     def button_dropdown(options)
-      list(options)
+      _list(options)
+      render
     end
-
   end
 end
