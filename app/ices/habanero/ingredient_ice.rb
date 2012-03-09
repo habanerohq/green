@@ -44,16 +44,6 @@ module Habanero
 
     protected
 
-    [:add_column, :remove_column, :rename_column, :'column_exists?',
-     :add_index, :remove_index, :rename_index, :'index_exists?'].each do |msg|
-      class_eval <<-RUBY_EVAL
-        def #{msg}(*args)
-          args.unshift(sorbet.table_name)
-          connection.send(:#{msg}, *args)
-        end
-      RUBY_EVAL
-    end
-
     def add_columns
       unless column_exists?(column_name)
         add_column column_name, column_type
@@ -74,6 +64,16 @@ module Habanero
 
     def reset_columns
       sorbet.klass.reset_column_information unless parent
+    end
+
+    [:add_column, :remove_column, :rename_column, :'column_exists?',
+     :add_index, :remove_index, :rename_index, :'index_exists?'].each do |msg|
+      class_eval <<-RUBY_EVAL
+        def #{msg}(*args)
+          args.unshift(sorbet.table_name)
+          connection.send(:#{msg}, *args)
+        end
+      RUBY_EVAL
     end
   end
 end
