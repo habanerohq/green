@@ -10,6 +10,12 @@
 
   <div class="form-actions">
     <%= f.submit :class => 'btn btn-primary' -%>
-    <%= link_to 'Delete', '', :class => 'btn btn-danger', :confirm => 'Sure?', :method => :delete %>
+
+    <% if @target.persisted? %>
+      <%= link_to 'Delete', '',
+        :class => 'btn btn-danger',
+        :confirm => 'Are you sure?',
+        :method => :delete %>
+    <% end %>
   </div>
 <% end %>
