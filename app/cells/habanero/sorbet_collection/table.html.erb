@@ -6,7 +6,7 @@
       <thead>
         <tr>
           <% @ingredients.each do |i| %>
-            <th><%= i.to_s %></th>
+            <%= table_header(i) %>
           <%- end -%>
         </tr>
       </thead>

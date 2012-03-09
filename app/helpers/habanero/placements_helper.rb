@@ -14,5 +14,9 @@ module Habanero
                   :target => @target
       )
     end
+
+    def placement_param
+      "placement_#{@placement.id}"
+    end
   end
 end

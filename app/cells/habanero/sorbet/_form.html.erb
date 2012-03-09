@@ -1,4 +1,4 @@
-<%= form_for(@target, :as => "placement_#{@placement.id}",
+<%= form_for(@target, :as => placement_param,
                       :url => '', # use the page or the current page
                       :html => {:method => (@target.new_record? ? :post : :put)}) do |f| -%>
 

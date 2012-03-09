@@ -2,6 +2,7 @@ module Habanero
   module CellsHelper
     include PlacementsHelper
     include IngredientsHelper
+    include TablesHelper
     
     def cell_div(options={}, &block)
       options.reverse_merge!(:id => @placement.scoop.name.idify, :class => "cell #{cell_id.idify} #{@placement.template}")
