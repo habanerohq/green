@@ -1,21 +1,25 @@
-<h2>Le Table</h2>
+<%= cell_div do %>
+  <%= cell_title(@placement.scoop.to_s) %>
 
-<table class="table">
-  <thead>
-    <tr>
-      <% @placement.scoop.mask.mask_ingredients.each do |mi| %>
-        <th><%= mi.ingredient.name %></th>
-      <%- end -%>
-    </tr>
-  </thead>
+  <%= cell_content do %>
+    <table class="table">
+      <thead>
+        <tr>
+          <% @ingredients.each do |i| %>
+            <th><%= i.to_s %></th>
+          <%- end -%>
+        </tr>
+      </thead>
 
-  <tbody>
-    <% @targets.each do |t| %>
-      <tr>
-        <% @placement.scoop.mask.mask_ingredients.each do |mi| %>
-          <td><%= format_ingredient(t, mi.ingredient) %></td>
-        <%- end -%>
-      </tr>
-    <%- end -%> 
-  </tbody>
-</table>
+      <tbody>
+        <% @targets.each do |t| %>
+          <tr>
+            <% @ingredients.each do |i| %>
+              <td><%= format_ingredient(t, i) %></td>
+            <%- end -%>
+          </tr>
+        <%- end -%> 
+      </tbody>
+    </table>
+  <% end %>
+<% end %>

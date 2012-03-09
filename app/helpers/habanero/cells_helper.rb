@@ -14,7 +14,7 @@ module Habanero
 
     def cell_title(title, &block)
       content_tag(:div, :class => 'title') do
-        h(1){title.to_s} << (block.present? ? with_output_buffer(&block) :'')
+        h(2){title.to_s} << (block.present? ? with_output_buffer(&block) :'')
       end
     end
     
