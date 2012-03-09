@@ -10,31 +10,11 @@
           <%- end -%>
         </tr>
       </thead>
-
       <tbody>
         <% @targets.each do |t| %>
           <tr>
             <% @ingredients.each do |i| %>
-              <td>
-                <% if @placement.scoop.page %>
-
-                  <% if i.relation == 'belongs_to' %>
-                    <% v = t.send(i.method_name) %>
-                    <% if v.present? %>
-                      <%= link_to(format_ingredient(t, i), page_path(@placement.scoop.page, :id => t.send(i.method_name), :sorbet_type => i.inverse.sorbet)) %>
-                    <% end %>
-
-                  <% elsif i.type == 'Habanero::NameIngredient' %>
-                    <%= link_to(format_ingredient(t, i), page_path(@placement.scoop.page, :id => t, :sorbet_type => t.class._sorbet)) %>
-
-                  <% else %>
-                    <%= format_ingredient(t, i) %>
-                  <% end %>
-
-                <% else %>
-                  <%= format_ingredient(t, i) %>
-                <% end %>
-              </td>
+              <td><%= table_format(t, i) %></td>
             <%- end -%>
           </tr>
         <%- end -%> 

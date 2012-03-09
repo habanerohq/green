@@ -71,7 +71,30 @@ module Habanero
         ingredient_span(ingredient) { "#{value_for(target, ingredient)}" }
       end
     end
+    
+    def table_format(target, ingredient)
+      if @placement.scoop.page
 
+        if ingredient.relation == 'belongs_to'
+          v = target.send(ingredient.method_name)
+          if v.present?
+            link_to format_ingredient(target, ingredient), 
+              page_path(@placement.scoop.page, :id => target.send(ingredient.method_name), :sorbet_type => ingredient.inverse.sorbet)
+          end
+
+        elsif ingredient.type == 'Habanero::NameIngredient'
+          link_to_unless_current format_ingredient(target, ingredient), 
+            page_path(@placement.scoop.page, :id => target, :sorbet_type => target.class._sorbet)
+
+        else
+          format_ingredient(target, ingredient)
+        end
+
+      else
+        format_ingredient(target, ingredient)
+      end
+    end
+    
     def ingredient_span(ingredient, options = {}, &block)
       options[:class] = "#{ingredient_css_classes(ingredient)} #{options[:class]}"
       content_tag(:span, options, &block)
