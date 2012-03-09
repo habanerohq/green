@@ -55,5 +55,5 @@ group :development, :test do
 end
 
 group :test do
-  gem 'shoulda', '>= 3.0.0.beta'
+  gem 'shoulda', '>= 3.0.1'
 end

@@ -186,7 +186,7 @@ DEPENDENCIES
   rspec-rails
   ruby_gntp
   sass-rails (~> 3.2.3)
-  shoulda (>= 3.0.0.beta)
+  shoulda (>= 3.0.1)
   spork
   sqlite3
   uglifier (>= 1.0.3)
