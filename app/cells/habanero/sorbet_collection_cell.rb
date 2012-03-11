@@ -8,7 +8,16 @@ module Habanero
     def table(options)
       _list(options)
       if data = params["placement_#{@placement.id}"]
-        @targets = data.reduce(@targets) { |result, (column, direction)| result.order("#{column} #{direction}") } 
+        @targets = data.reduce(@targets) do |result, (method, direction)|
+          if @query.klass.column_names.include?(method)
+            result.order("#{method} #{direction}")
+          else
+            k = @query.klass.reflect_on_association(method.to_sym).klass
+            tn = k.table_name
+            cn = (k.column_names.include?('name') ? 'name' : 'id') # todo: what to do if name is not the same as to_s
+            result.includes(method).order("#{tn}.#{cn} #{direction}")
+          end
+        end
       end
       render
     end

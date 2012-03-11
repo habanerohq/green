@@ -28,7 +28,7 @@ module Habanero
         :class => header_classes(ingredient)
       }
       content_tag(:th, options) do
-        path = page_path(@page, placement_param => {ingredient.column_name=> new_sort_direction(ingredient)})
+        path = page_path(@page, placement_param => {ingredient.method_name => new_sort_direction(ingredient)})
         (link_to ingredient.to_s, path) + sort_direction_marker(ingredient)
       end
     end
@@ -38,7 +38,7 @@ module Habanero
     end
 
     def sort_direction(ingredient)
-      sort_params[ingredient.column_name] if sort_params
+      sort_params[ingredient.method_name] if sort_params
     end
 
     def sorted?(ingredient)
