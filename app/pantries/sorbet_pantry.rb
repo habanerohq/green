@@ -1,8 +1,13 @@
 class SorbetPantry < Pantry::Base
   
   def define_stacks
-    can_stack 'Habanero::Namespace'
-    can_stack 'Habanero::Sorbet', :id_value_methods => [:name, :namespace]
+    can_stack 'Habanero::Namespace', :scope => {:where => {:name => ['Habanero', 'ActiveRecord']}}
+    can_stack 'Habanero::Sorbet', 
+      :id_value_methods => [:name, :namespace], 
+      :scope => {
+        :includes => :namespace,
+        :where => {:habanero_namespaces => {:name => ['Habanero', 'ActiveRecord']}}
+      }
     
     [
       'Habanero::StringIngredient', 
@@ -25,7 +30,15 @@ class SorbetPantry < Pantry::Base
       'Habanero::SlugIngredient',
       'Habanero::CategoryIngredient',
       'Habanero::RouteIngredient'
-    ].each { |i| can_stack i, :id_value_methods => [:name, :sorbet, :parent] }
+    ].
+    each do |i| 
+      can_stack i, 
+      :id_value_methods => [:name, :sorbet, :parent],
+      :scope => {
+        :includes => {:sorbet => :namespace},
+        :where => {:habanero_namespaces => {:name => ['Habanero', 'ActiveRecord']}}
+      }
+    end
   end
 
 end
