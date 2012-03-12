@@ -5,6 +5,22 @@ module Habanero
       render
     end
 
+    def search(options)
+      _list(options)
+
+      @sorbet = @query.sorbet
+      @target = @sorbet.klass.new(params[:"placement_#{@placement.id}"])
+
+      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @sorbet.all_displayable_ingredients
+
+      if request.put? && data = params[:"placement_#{@placement.id}"]
+
+#        parent_controller.redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
+      end
+
+      render
+    end
+
     def table(options)
       _list(options)
       if data = params["placement_#{@placement.id}"]

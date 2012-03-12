@@ -1,0 +1,12 @@
+<%= form_for(@target, :as => placement_param,
+                      :url => '', # use the page or the current page
+                      :html => {:method => :put}) do |f| -%>
+
+  <% @ingredients.each do |ingredient| -%>
+    <%= f.ingredient ingredient %>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.submit 'Search', :class => 'btn btn-primary' -%>
+  </div>
+<% end %>
