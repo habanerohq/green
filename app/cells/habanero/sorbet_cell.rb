@@ -37,10 +37,10 @@ module Habanero
       instance_variables_from(options)
 
       @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
-      @target = @sorbet.klass.new(params[:"placement_#{@placement.id}"])
+      @target = @sorbet.klass.new(placement_params)
       @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.all_displayable_ingredients
 
-      if data = params[:"placement_#{@placement.id}"] and request.method =~ /POST/i
+      if placement_params && request.put?
         # here we would update, maybe create if PUT works
         if @target.save
           parent_controller.redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
@@ -48,6 +48,13 @@ module Habanero
       end
 
       render
+    end
+
+    protected
+
+    def placement_params
+      # todo: need to move this elsewhere
+      params[:"#{@placement.template}_#{@placement.id}"]
     end
   end
 end
