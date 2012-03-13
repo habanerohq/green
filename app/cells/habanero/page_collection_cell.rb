@@ -9,5 +9,9 @@ module Habanero
       _list(options)
       render
     end
+
+    def navigation(options)
+      _list(options)
+    end
   end
 end

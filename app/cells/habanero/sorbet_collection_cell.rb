@@ -51,10 +51,6 @@ module Habanero
       render
     end
 
-    def navigation(options)
-      list(options)
-    end
-    
     protected
 
     def _list(options)
