@@ -1,5 +1,6 @@
 <%= form_for(@target, :as => placement_param,
                       :url => '', # use the page or the current page
+                      :builder => Habanero::SearchFormBuilder,
                       :html => {:method => :put}) do |f| -%>
 
   <% @ingredients.each do |ingredient| -%>
