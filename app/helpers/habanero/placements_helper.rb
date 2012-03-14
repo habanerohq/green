@@ -16,7 +16,7 @@ module Habanero
     end
 
     def placement_param
-      "#{@placement.template}_#{@placement.id}"
+      @placement.params_key
     end
   end
 end

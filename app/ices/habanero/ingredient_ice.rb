@@ -41,6 +41,10 @@ module Habanero
     def column_type
       :string
     end
+    
+    def to_conditions(params)
+      [ (Habanero::Condition.new(:predicate => 'matches', :value => params[method_name], :ingredient => self) unless params[method_name].blank?) ]
+    end
 
     protected
 
