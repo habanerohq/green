@@ -21,7 +21,7 @@ module Habanero
     def prepare_search(params, page)
       if data = params[params_key]
         scoop.translate_search(data)
-        page.placements.each { |p| p.scoop.search = scoop.search }
+        page.placements.each { |p| p.scoop.search = scoop.search if p.scoop.id == scoop.id }
       end
     end
     

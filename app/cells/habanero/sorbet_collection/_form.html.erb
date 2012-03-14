@@ -1,4 +1,4 @@
-<%= form_for(@search, :as => placement_param,
+<%= form_for(@search, :as => @placement.params_key,
                       :url => '', # use the page or the current page
                       :builder => Habanero::SearchFormBuilder,
                       :html => {:method => :put}) do |f| -%>
