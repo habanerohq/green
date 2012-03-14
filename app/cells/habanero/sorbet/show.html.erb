@@ -1,19 +1,17 @@
-<%= cell_div do %>
-  <%= cell_title(@target) %>
+<%= cell_title(@target) %>
 
-  <%= cell_content do %>
-    <dl>
-      <% @ingredients.each do |mi| %>
-        <dt><%= mi.name %></dt>
-        <dd><%= format_ingredient(@target, mi) %></dd>
-      <% end %>
-    </dl>
-  <% end %>
-
-  <% if @placement.scoop.page %>
-    <%= link_to page_path(@placement.scoop.page), :class => 'btn' do %>
-      <i class="icon-pencil"></i>
-      Edit
+<%= cell_content do %>
+  <dl>
+    <% @ingredients.each do |mi| %>
+      <dt><%= mi.name %></dt>
+      <dd><%= format_ingredient(@target, mi) %></dd>
     <% end %>
+  </dl>
+<% end %>
+
+<% if @placement.scoop.page %>
+  <%= link_to page_path(@placement.scoop.page), :class => 'btn' do %>
+    <i class="icon-pencil"></i>
+    Edit
   <% end %>
 <% end %>

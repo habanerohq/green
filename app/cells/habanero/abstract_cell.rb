@@ -3,6 +3,8 @@ module Habanero
     helper 'habanero/cells'
     helper 'habanero/pages'
 
+    layout 'scoop'
+
     protected
 
     def instance_variables_from(options)

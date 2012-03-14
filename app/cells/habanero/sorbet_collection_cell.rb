@@ -51,6 +51,10 @@ module Habanero
       @search = @placement.search
       @targets = @search.try(:query_chain) || @query.evaluate(params)
       @ingredients = @placement.ingredients
+
+      if @placement.scoop.paginate?
+        @targets = @targets.page(params[:page])
+      end
     end
   end
 end

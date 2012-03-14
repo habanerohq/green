@@ -25,8 +25,8 @@ module Habanero
         end
       end
 
-      if request.put? && data = params[:"placement_#{@placement.id}"]
-        @target.update_attributes(data)
+      if placement_params && request.put?
+        @target.update_attributes(placement_params)
         parent_controller.redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
       end
 
@@ -40,8 +40,7 @@ module Habanero
       @target = @sorbet.klass.new(placement_params)
       @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.all_displayable_ingredients
 
-      if placement_params && request.put?
-        # here we would update, maybe create if PUT works
+      if placement_params && request.post?
         if @target.save
           parent_controller.redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
         end

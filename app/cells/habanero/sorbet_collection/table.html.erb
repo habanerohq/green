@@ -1,24 +1,24 @@
-<%= cell_div do %>
-  <%= cell_title(@placement.scoop.to_s) %>
+<%= cell_title(@placement.scoop.to_s) %>
 
-  <%= cell_content do %>
-    <table class="table table-striped table-condensed">
-      <thead>
+<%= cell_content do %>
+  <table class="table table-striped table-condensed">
+    <thead>
+      <tr>
+        <% @ingredients.each do |i| %>
+          <%= table_header(i) %>
+        <%- end -%>
+      </tr>
+    </thead>
+    <tbody>
+      <% @targets.each do |t| %>
         <tr>
           <% @ingredients.each do |i| %>
-            <%= table_header(i) %>
+            <td><%= table_format(t, i) %></td>
           <%- end -%>
         </tr>
-      </thead>
-      <tbody>
-        <% @targets.each do |t| %>
-          <tr>
-            <% @ingredients.each do |i| %>
-              <td><%= table_format(t, i) %></td>
-            <%- end -%>
-          </tr>
-        <%- end -%> 
-      </tbody>
-    </table>
-  <% end %>
+      <%- end -%> 
+    </tbody>
+  </table>
 <% end %>
+
+<%= paginate @targets if @placement.scoop.paginate? %>

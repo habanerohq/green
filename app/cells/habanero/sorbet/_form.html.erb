@@ -1,6 +1,6 @@
 <%= form_for(@target, :as => placement_param,
                       :url => '', # use the page or the current page
-                      :method => (@target.new_record? ? :put : :post)) do |f| -%>
+                      :method => (@target.new_record? ? :post : :put)) do |f| -%>
 
   <pre><%= @target.errors.inspect %></pre>
 
