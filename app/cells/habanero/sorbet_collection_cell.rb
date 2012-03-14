@@ -55,9 +55,14 @@ module Habanero
 
     def _list(options)
       instance_variables_from(options)
+
       @query = @placement.scoop.query
       @targets = @query.evaluate(params)
       @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @query.sorbet.all_displayable_ingredients
+
+      if @placement.scoop.paginate?
+        @targets = @targets.page(params[:page])
+      end
     end
   end
 end

@@ -21,4 +21,6 @@
       </tbody>
     </table>
   <% end %>
+
+  <%= paginate @targets if @placement.scoop.paginate? %>
 <% end %>
