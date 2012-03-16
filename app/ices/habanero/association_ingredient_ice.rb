@@ -70,6 +70,14 @@ module Habanero
     def column_type
       :integer
     end
+    
+    def arel_column
+      inverse.sorbet.klass.arel_table[:name] # todo: what happens when the association object doesn't respond to #name ???
+    end
+
+    def apply_inclusions(query_chain)
+      query_chain.includes(method_name)
+    end
 
     protected
 
