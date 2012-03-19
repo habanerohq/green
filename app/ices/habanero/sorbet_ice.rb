@@ -57,7 +57,7 @@ module Habanero
 
       klass.class_attribute :_sorbet
       klass._sorbet = self
-      klass.set_table_name(table_name)
+      klass.table_name = table_name
 
       adapt
 
