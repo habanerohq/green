@@ -75,6 +75,13 @@ class HabaneroSitePantry < Pantry::Base
         :includes => {:scoop => :namespace},
         :where => {:habanero_namespaces => {:name => 'Habanero'}}
       }
+
+    can_stack 'Habanero::Category', 
+      :id_value_methods => [:name, :parent],
+      :scope => {
+        :includes => :site,
+        :where => {:habanero_sites => {:name => 'Habanero'}}
+      }      
   end
 end
 
