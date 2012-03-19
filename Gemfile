@@ -41,6 +41,7 @@ gem 'acts_as_list'
 gem 'friendly_id', '~> 4.0.0'
 gem 'cells'
 gem 'kaminari'
+gem 'simple_form'
 
 group :development, :test do
   gem 'rspec-rails'
