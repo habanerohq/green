@@ -12,6 +12,7 @@ module Habanero
 
     def navigation(options)
       _list(options)
+      render
     end
   end
 end

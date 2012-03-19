@@ -9,7 +9,9 @@
 
       <ul class="nav">
         <% @targets.each do |target| %>
-          <li class="<%= @page == target && 'active' %>"><%= link_to target.to_s, target.path %></li>
+          <li class="<%= @page == target && 'active' %>">
+            <%= link_to(target, page_path(target, :id => target, :sorbet_type => target.class._sorbet)) %>
+          </li>
         <% end %>
       </ul>
     </div>
