@@ -27,7 +27,7 @@ module Habanero
 
       if params[@placement.params_key] && request.put?
         @target.update_attributes(params[@placement.params_key])
-        parent_controller.redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
+        redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
       end
 
       render
@@ -42,7 +42,7 @@ module Habanero
 
       if params[@placement.params_key] && request.post?
         if @target.save
-          parent_controller.redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
+          redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
         end
       end
 
