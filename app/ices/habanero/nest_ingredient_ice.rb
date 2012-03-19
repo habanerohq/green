@@ -10,6 +10,10 @@ module Habanero
       :integer
     end
 
+    def method_name
+      :parent_id
+    end
+
     def adapt(klass)
       klass.send :acts_as_nested_set unless klass.respond_to?(:acts_as_nested_set_options)
     end
