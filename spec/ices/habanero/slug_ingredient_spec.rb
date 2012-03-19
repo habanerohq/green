@@ -4,91 +4,106 @@ describe Habanero::SlugIngredient do
   it { should belong_to(:target) }
   it { should belong_to(:scope) }
 
-  before(:all) do
-    @sorbet = Habanero::Sorbet.create!(
-      :name => 'Dummy',
-      :parent => Habanero::Sorbet.find_by_name('Base'),
+  before(:each) do
+    @book = Habanero::Sorbet.new(
+      :name => 'Book',
+      :parent => Habanero::Sorbet.namespaced('ActiveRecord').where(:name => 'Base').first,
       :namespace => Habanero::Namespace.find_by_name('Habanero')
     )
 
-    @sorbet.ingredients << Habanero::StringIngredient.new(:name => 'Name')
-    @sorbet.ingredients << Habanero::SlugIngredient.new(:name => 'Slug', :target => @sorbet.ingredients.find_by_name('Name'))
+    title = Habanero::StringIngredient.new(:name => 'Title')
+    slug = Habanero::SlugIngredient.new(:name => 'Slug', :target => title)
 
-    # we need a relation in order to test scoped slugs
-    Habanero::RelationIngredient.create!(
-      :name => 'Site Dummies',
-      :sorbet => @sorbet,
+    # a related sorbet with which we can test scoped slugs
+    @author = Habanero::Sorbet.new(
+      :name => 'Author',
+      :parent => Habanero::Sorbet.namespaced('ActiveRecord').where(:name => 'Base').first,
+      :namespace => Habanero::Namespace.find_by_name('Habanero')
+    )
+
+    name = Habanero::StringIngredient.new(:name => 'Name')
+
+    relation = Habanero::RelationIngredient.new(
+      :name => 'Author Books',
       :children => [
-        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Site')),
-        Habanero::AssociationIngredient.new(:name => 'Site', :relation => 'belongs_to', :sorbet => @sorbet)
+        Habanero::AssociationIngredient.new(:name => 'Author', :relation => 'belongs_to', :sorbet => @book),
+        Habanero::AssociationIngredient.new(:name => 'Books', :relation => 'has_many', :sorbet => @author)
       ]
     )
 
-    @sorbet.chill!
+    @book.ingredients = [title, slug, relation]
+    @author.ingredients = [name]
+
+    @book.save!
+    @book.chill!
   end
 
-  after(:all) do
-    Habanero::Sorbet.find_by_name('Dummy').try(:destroy)
+  after(:each) do
+    Habanero.send :remove_const, 'Book'
+    Habanero.send :remove_const, 'Author'
   end
 
   it 'extends friendly id' do
-    @sorbet.klass.new.should respond_to :friendly_id
+    @book.klass.new.should respond_to :friendly_id
   end
 
   it 'generates a slug using the value of the target ingredient' do
-    record = @sorbet.klass.create!(:name => 'Bar')
-    record.slug.should == 'bar'
+    record = @book.klass.create!(:title => 'War and Peace')
+    record.slug.should == 'war-and-peace'
   end
 
   it 'is findable using the slug value' do
-    record = @sorbet.klass.create!(:name => 'Baz')
-    @sorbet.klass.find(record.slug).should == record
+    record = @book.klass.create!(:title => 'War of the Worlds')
+    @book.klass.find(record.slug).should == record
   end
 
   it 'generates unscoped slugs when no scope is specified' do
-    record1 = @sorbet.klass.create!(:name => 'Moo')
-    record2 = @sorbet.klass.create!(:name => 'Moo')
+    record1 = @book.klass.create!(:title => 'Dune')
+    record2 = @book.klass.create!(:title => 'Dune')
     record2.slug.should_not == record1.slug
   end
 
   it 'adds an unique index on the slug column' do
-    index = ActiveRecord::Base.connection.indexes(@sorbet.table_name).detect { |i| "index_#{@sorbet.table_name}_on_slug" }
+    index = ActiveRecord::Base.connection.indexes(@book.table_name).detect { |i| "index_#{@book.table_name}_on_slug" }
     index.should_not be_nil
     index.unique.should be_true
   end
 
   context 'scoped' do
-    before(:all) do
-      @sorbet.ingredients.find_by_name('Slug').update_attribute(:scope_id, @sorbet.ingredients.find_by_name('Site').id)
+    before(:each) do
+      # re-configure the existing slug ingredient to be scoped by author
+      @book.ingredients.find_by_name('Slug').update_attribute(
+        :scope_id,
+        @book.ingredients.find_by_name('Author').id
+      )
 
-      # we have to re-chill in order for the changes above to take effect
-      @sorbet.namespace.klass.send :remove_const, @sorbet.klass_name
-      @sorbet.chill!
+      @book.namespace.klass.send :remove_const, 'Book'
+      @book.chill!
     end
 
     it 'is invalid when scope ingredient does not belong to the same sorbet' do
-      slug = @sorbet.ingredients.find_by_name('Slug')
+      slug = @book.ingredients.find_by_name('Slug')
       slug.scope = Habanero::Sorbet.find_by_name('Sorbet').ingredients.find_by_name('Namespace')
       slug.should_not be_valid
       slug.errors_on(:scope).should include "is not present on the target sorbet"
     end
 
     it 'is invalid when target ingredient is not a belongs_to association ingredient' do
-      slug = @sorbet.ingredients.find_by_name('Slug')
+      slug = @book.ingredients.find_by_name('Slug')
       slug.scope = Habanero::Sorbet.find_by_name('Sorbet').ingredients.find_by_name('Ingredients')
       slug.should_not be_valid
       slug.errors_on(:scope).should include "is not a belongs_to association"
     end
 
     it 'adds a non-unique index on the slug column' do
-      index = ActiveRecord::Base.connection.indexes(@sorbet.table_name).detect { |i| "index_#{@sorbet.table_name}_on_slug" }
+      index = ActiveRecord::Base.connection.indexes(@book.table_name).detect { |i| "index_#{@book.table_name}_on_slug" }
       index.should_not be_nil
       index.unique.should be_false
     end
 
     it 'scopes slugs by the target ingredient' do
-      record1 = @sorbet.klass.create!(:name => 'Zomg', :site => Habanero::Site.new)
-      record2 = @sorbet.klass.create!(:name => 'Zomg', :site => Habanero::Site.new)
+      record1 = @book.klass.create!(:title => 'The Time Machine', :author => @author.klass.new(:name => 'Wells'))
+      record2 = @book.klass.create!(:title => 'The Time Machine', :author => @author.klass.new(:name => 'Someone Else'))
       record2.slug.should == record1.slug
     end
   end
