@@ -37,11 +37,16 @@ module Habanero
 
     def format_habanero_nest_ingredient(target, ingredient)
       ingredient_span(ingredient) do 
+        target.parent.to_s
+      end
+=begin
+      ingredient_span(ingredient) do 
         content_tag(:dl) do
           content_tag(:dt, 'parent') << content_tag(:dd, target.parent.to_s) <<
           content_tag(:dt, 'children') << content_tag(:dd, target.children.map(&:to_s).join(', '))
         end
       end
+=end
     end
 
     def format_habanero_association_ingredient(target, ingredient)

@@ -35,7 +35,7 @@ module Habanero
     end
 
     def to_s
-      "#{scoop} # #{template}"
+      "#{template} on #{page}"
     end
   end
 end
