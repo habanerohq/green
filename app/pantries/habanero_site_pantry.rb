@@ -77,11 +77,7 @@ class HabaneroSitePantry < Pantry::Base
       }
 
     can_stack 'Habanero::Category', 
-      :id_value_methods => [:name, :parent],
-      :scope => {
-        :includes => :site,
-        :where => {:habanero_sites => {:name => 'Habanero'}}
-      }      
+      :id_value_methods => [:name, :parent]
   end
 end
 
