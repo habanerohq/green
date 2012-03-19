@@ -89,5 +89,9 @@ module Habanero
     def value_for(target, ingredient)
       target.send(ingredient.name.attrify)
     end
+
+    def ingredient_input_options(ingredient)
+      options = [ingredient.column_name]
+    end
   end
 end

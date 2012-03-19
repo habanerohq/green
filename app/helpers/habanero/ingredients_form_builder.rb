@@ -1,6 +1,5 @@
 module Habanero
-  class IngredientsFormBuilder < ActionView::Helpers::FormBuilder
-
+  class IngredientsFormBuilder < SimpleForm::FormBuilder
     def habanero_category_ingredient(i)
       grouped_collection_select i.method_name, i.category.children, 
         :children, :name, :id, :name, 
@@ -12,62 +11,35 @@ module Habanero
       i.children.map { |c| text_field_for(c) }.join('...')
     end
 
-    def habanero_text_ingredient(i)
-      text_area_for(i)
-    end
-
-    def habanero_true_false_ingredient(i)
-      check_box_for(i)
-    end
-
-    def habanero_nest_ingredient(i)
-      collection = object.class._sorbet.base.klass.unscoped.order(:name)
-      collection_select :parent_id, 
-        collection, 
-        :id, :to_s, 
-        :include_blank => true,
-        :prompt => "--- select one #{i.to_s.downcase} ---"
-    end
-
-    def habanero_relation_ingredient(i)
-      # do nothing
-    end
-
-    def habanero_association_ingredient(i)
-      if i.relation == 'belongs_to'
-        collection_select i.column_name, 
-          (object.class.reflect_on_association(i.name.attrify.to_sym).klass.order(:name)), 
-          :id, :to_s, 
-          :include_blank => true,
-          :prompt => "--- select one #{i.to_s.downcase} ---"
+    def ingredient_input(ingredient)
+      if input_class = input_for_ingredient(ingredient)
+        input_type = input_class.name.underscore.to_sym
+        self.class.map_type(input_type, :to => input_class)
       end
-      # todo: provide the ability to add to has_many lists
+
+      options = default_ingredient_input_options(ingredient)
+
+      # use custom input class via #map_type as called above
+      options.reverse_merge! :as => input_type if input_type.present?
+      options.reverse_merge! :disabled => true if ingredient.column_name == 'type'
+
+      input(ingredient.method_name, options)
     end
 
-    def ingredient(i)
-      method = i.class.name.attrify
+    protected
 
-      @template.content_tag(:p) do
-        @template.content_tag(:label, i.name) <<
-        if respond_to?(method) && i.class != Habanero::Ingredient
-          send(method, i)
-        else
-          text_field_for(i)
-        end
+    def input_for_ingredient(ingredient)
+      begin
+        return ingredient.class.name.gsub(/Ingredient$/, 'Input').constantize
+      rescue NameError
       end
     end
 
-    def text_field_for(i)
-      text_field(i.name.attrify)
+    def default_ingredient_input_options(ingredient)
+      {
+        :label => ingredient.name
+        # todo: add hint and other options stored with the ingredient
+      }
     end
-
-    def text_area_for(i)
-      text_area(i.name.attrify)
-    end
-
-    def check_box_for(i)
-      check_box(i.name.attrify)
-    end
-
   end
 end

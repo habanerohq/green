@@ -1,10 +1,10 @@
-<%= form_for(@search, :as => @placement.params_key,
+<%= simple_form_for(@sorbet.klass.new, :as => @placement.params_key,
                       :url => '', # use the page or the current page
                       :builder => Habanero::SearchFormBuilder,
                       :html => {:method => :put}) do |f| -%>
 
   <% @ingredients.each do |ingredient| -%>
-    <%= f.ingredient ingredient %>
+    <%= f.ingredient_input ingredient %>
   <% end %>
 
   <div class="form-actions">

@@ -1,11 +1,15 @@
-<%= form_for(@target, :as => @placement.params_key,
-                      :url => '', # use the page or the current page
-                      :method => (@target.new_record? ? :post : :put)) do |f| -%>
+<%= simple_form_for(@target, :as => @placement.params_key,
+      :url => '', # use the page or the current page
+      :method => (@target.new_record? ? :post : :put),
+      :builder => Habanero::IngredientsFormBuilder,
+      :html => { :class => 'form-horizontal' }) do |f| -%>
 
-  <pre><%= @target.errors.inspect %></pre>
+  <% if @target.errors.present? %>
+    <div class="alert alert-error">Some errors were found, please take a look:</div>
+  <% end %>
 
   <% @ingredients.each do |ingredient| -%>
-    <%= f.ingredient ingredient %>
+    <%= f.ingredient_input ingredient %>
   <% end %>
 
   <div class="form-actions">
