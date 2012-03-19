@@ -9,6 +9,10 @@
         <% end %>
       </li>
       
+      <%- if t.respond_to?(:children)  -%>
+          <%= render({:state => :tree_node}, t.children, @mask) -%>
+      <%- end -%>
+
       <%- @mask.mask_ingredients.each do |mi| -%>
           <%= 
             i = mi.ingredient
