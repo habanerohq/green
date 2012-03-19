@@ -38,10 +38,11 @@ gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git', :ref => '8dffb705d
 # gem 'pantry', :path => '../pantry'
 gem 'awesome_nested_set'
 gem 'acts_as_list'
-gem 'friendly_id', '~> 4.0.0'
+gem 'friendly_id'
 gem 'cells'
 gem 'kaminari'
 gem 'simple_form'
+gem 'commonjs', '0.2.0'
 
 group :development, :test do
   gem 'rspec-rails'
