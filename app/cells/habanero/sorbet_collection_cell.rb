@@ -30,9 +30,9 @@ module Habanero
     end
 
     def tree(options)
-      instance_variables_from(options)
+      _list(options)
       @mask = @placement.scoop.mask
-      @targets = @mask.sorbet.klass.order(:name)
+      @targets = roots_only
       render
     end
 
@@ -47,14 +47,23 @@ module Habanero
     def _list(options)
       instance_variables_from(options)
       @query = @placement.query
-      @sorbet = @query.sorbet
+      @mask = @placement.scoop.mask
+      @sorbet = @query.try(:sorbet) || @mask.try(:sorbet)
       @search = @placement.search
-      @targets = @search.try(:query_chain) || @query.evaluate(params)
+      @targets = targets_by_precedence
       @ingredients = @placement.ingredients
 
       if @placement.scoop.paginate?
         @targets = @targets.page(params[:page])
       end
+    end
+    
+    def targets_by_precedence
+      @search.try(:query_chain) || @query.try(:evaluate, params) || (@sorbet.klass.order(:name) if @sorbet.present?) || []
+    end
+    
+    def roots_only
+      @mask.sorbet.klass.respond_to?(:roots) ? @targets.where(:parent_id => nil) : @targets
     end
   end
 end

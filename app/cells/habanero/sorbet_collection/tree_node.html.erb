@@ -19,9 +19,11 @@
             unless i.relation == 'has_many'
               format_ingredient(t, i)
             else
+              manies = t.send(i.method_name)
+              manies = manies.reject { |m| m.respond_to?(:parent_id) && m.parent_id }
               render(
                 {:state => :tree_node}, 
-                t.send(i.method_name), 
+                manies, 
                 @mask.children.detect{|m| m.sorbet == i.inverse.sorbet}
               ) unless i.polymorphic?
             end
