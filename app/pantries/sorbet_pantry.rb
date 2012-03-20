@@ -23,7 +23,7 @@ class SorbetPantry < Pantry::Base
       'Habanero::DateTimeIngredient', 
       'Habanero::TimeIngredient', 
       'Habanero::NameIngredient', 
-      'Habanero::RangeIngredient', 
+#      'Habanero::RangeIngredient', 
       'Habanero::NestIngredient', 
       'Habanero::RelationIngredient', 
       'Habanero::AssociationIngredient', 
