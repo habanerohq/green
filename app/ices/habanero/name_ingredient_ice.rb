@@ -13,12 +13,14 @@ module Habanero
     end
 
     def adapt(klass)
-      klass.class_eval do
-        def to_s
-          name
-        end
-      end
+      klass.send :include, Ice
     end
+
+    module Ice
+      def to_s
+        name
+      end
+    end    
 
     def name
       'Name'

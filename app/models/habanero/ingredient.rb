@@ -1,12 +1,96 @@
 module Habanero
   class Ingredient < ActiveRecord::Base
+
+    belongs_to :sorbet, :inverse_of => :ingredients
+
+    acts_as_nested_set
+
+    after_create :add_columns
+    after_save :change_columns
+    after_destroy :remove_columns
+
+    # reset column information on the sorbet when necessary
+    after_save :reset_columns
+    after_destroy :reset_columns
+
+    validates :name,
+              :presence => true,
+              :uniqueness => { :scope => 'sorbet_id' }
+
+    unloadable
+
+    def qualified_name
+      [parent.try(:qualified_name), name].compact.join('_').attrify
+    end
+
+    def adapt(klass)
+      # nothing to do here yet
+    end
+
+    def column_name
+      qualified_name
+    end
+
+    def method_name
+      column_name
+    end
+
+    def column_type
+      :string
+    end
+    
+    def arel_column
+      sorbet.klass.arel_table[column_name]
+    end
+    
+    def to_conditions(params)
+      [ (Habanero::Condition.new(:predicate => 'matches', :value => params[method_name], :ingredient => self) unless params[method_name].blank?) ]
+    end
+
+    def apply_inclusions(query_chain)
+      query_chain
+    end
+
+    protected
+
+    def add_columns
+      unless column_exists?(column_name)
+        add_column column_name, column_type
+      end
+
+      adapt(sorbet.klass) if sorbet.chilled?
+    end
+
+    def change_columns
+      if name_was and name_changed?
+        rename_column(name_was.attrify, column_name)
+      end
+    end
+
+    def remove_columns
+      remove_column(column_name)
+    end
+
+    def reset_columns
+      sorbet.klass.reset_column_information unless parent
+    end
+
+    [:add_column, :remove_column, :rename_column, :'column_exists?',
+     :add_index, :remove_index, :rename_index, :'index_exists?'].each do |msg|
+      class_eval <<-RUBY_EVAL
+        def #{msg}(*args)
+          args.unshift(sorbet.table_name)
+          connection.send(:#{msg}, *args)
+        end
+      RUBY_EVAL
+    end
   end
 end
-
-Habanero::Ingredient.class_eval { include Habanero::IngredientIce }
 
 if Habanero::Sorbet.table_exists?
   Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first.try(:adapt)
   Habanero::Ingredient.class_attribute :_sorbet
   Habanero::Ingredient._sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first
 end
+
+Habanero::Ingredient.class_eval { include Habanero::IngredientIce }
