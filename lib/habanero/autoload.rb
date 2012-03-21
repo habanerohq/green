@@ -27,6 +27,7 @@ module Habanero
         begin
           return const_missing_without_sorbet(*args)
         rescue NameError => e
+          e.message =~ /#{const_name}$/ ? nil : raise
         end
 
         ActiveRecord::Base.logger.level = 2

@@ -73,8 +73,8 @@ module Habanero
         # fixme: syntax errors (at least) in the ice are ignored and results in failing
         #        to include the ice at all, silently
         klass.send :include, "#{qualified_name}Ice".constantize
-      rescue NoMethodError then raise
-      rescue NameError
+      rescue NameError => e
+        e.message =~ /#{qualified_name}Ice$/ ? nil : raise
       end
 
       klass
