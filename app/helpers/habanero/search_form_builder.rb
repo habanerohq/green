@@ -9,5 +9,9 @@ module Habanero
     def habanero_association_ingredient(i)
       text_field i.method_name if i.relation == 'belongs_to'
     end
+
+    def default_ingredient_options(ingredient)
+      super.merge :required => false
+    end
   end
 end
