@@ -4,12 +4,10 @@
       :builder => Habanero::IngredientsFormBuilder,
       :html => { :class => 'form-horizontal' }) do |f| -%>
 
-  <% if @target.errors.present? %>
-    <div class="alert alert-error">Some errors were found, please take a look:</div>
-  <% end %>
+  <%= f.error_notification %>
 
   <% @ingredients.each do |ingredient| -%>
-    <%= f.ingredient_input ingredient %>
+    <%= f.input ingredient.method_name, :ingredient => ingredient %>
   <% end %>
 
   <div class="form-actions">

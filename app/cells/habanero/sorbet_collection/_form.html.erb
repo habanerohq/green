@@ -4,7 +4,7 @@
                       :html => {:method => :put}) do |f| -%>
 
   <% @ingredients.each do |ingredient| -%>
-    <%= f.ingredient_input ingredient %>
+    <%= f.input ingredient.method_name, :ingredient => ingredient %>
   <% end %>
 
   <div class="form-actions">

@@ -1,45 +1,33 @@
 module Habanero
-  class IngredientsFormBuilder < SimpleForm::FormBuilder
-    def habanero_category_ingredient(i)
-      grouped_collection_select i.method_name, i.category.children, 
-        :children, :name, :id, :name, 
-        :include_blank => true,
-        :prompt => "--- select one #{i.category.name.downcase} ---"
-    end
+  class IngredientsFormBuilder < ::SimpleForm::FormBuilder
+    # todo: somehow dynamically loop through all availble inputs here
+    map_type :'habanero/association_ingredient', :to => Habanero::Inputs::AssociationInput
+    map_type :'habanero/nest_ingredient',        :to => Habanero::Inputs::NestInput
+    map_type :'habanero/category_ingredient',    :to => Habanero::Inputs::CategoryInput
 
-    def habanero_range_ingredient(i)
-      i.children.map { |c| text_field_for(c) }.join('...')
-    end
-
-    def ingredient_input(ingredient)
-      if input_class = input_for_ingredient(ingredient)
-        input_type = input_class.name.underscore.to_sym
-        self.class.map_type(input_type, :to => input_class)
+    def input(attribute_name, options={}, &block)
+      if ingredient = options[:ingredient]
+        options.reverse_merge! default_ingredient_options(ingredient)
       end
 
-      options = default_ingredient_input_options(ingredient)
+      super
+    end
 
-      # use custom input class via #map_type as called above
-      options.reverse_merge! :as => input_type if input_type.present?
-      options.reverse_merge! :disabled => true if ingredient.column_name == 'type'
-
-      input(ingredient.method_name, options)
+    def default_ingredient_options(ingredient)
+      { :label => ingredient.name,
+        # todo: add more default options, hints etc.
+      }
     end
 
     protected
 
-    def input_for_ingredient(ingredient)
-      begin
-        return ingredient.class.name.gsub(/Ingredient$/, 'Input').constantize
-      rescue NameError
+    def default_input_type(attribute_name, column, options) #:nodoc:
+      if options[:ingredient]
+        input_type = options[:ingredient].class.name.underscore.to_sym
+        return input_type if self.class.mappings.has_key?(input_type)
       end
-    end
 
-    def default_ingredient_input_options(ingredient)
-      {
-        :label => ingredient.name
-        # todo: add hint and other options stored with the ingredient
-      }
+      super
     end
   end
 end
