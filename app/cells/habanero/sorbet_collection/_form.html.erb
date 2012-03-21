@@ -1,4 +1,4 @@
-<%= simple_form_for(@sorbet.klass.new, :as => @placement.params_key,
+<%= simple_form_for(@search, :as => @placement.params_key,
                       :url => '', # use the page or the current page
                       :builder => Habanero::SearchFormBuilder,
                       :html => {:method => :put}) do |f| -%>

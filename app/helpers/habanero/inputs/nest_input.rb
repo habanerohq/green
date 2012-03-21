@@ -16,7 +16,7 @@ module Habanero
       private
 
       def collection
-        object.class._sorbet.base.klass.unscoped.order(:name)
+        ingredient.sorbet.base.klass.unscoped.order(:name)
       end
     end
   end

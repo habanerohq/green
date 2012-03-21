@@ -20,7 +20,7 @@ module Habanero
       private
 
       def associated_model
-        object.class.reflect_on_association(ingredient.name.attrify.to_sym).klass
+        ingredient.sorbet.klass.reflect_on_association(ingredient.name.attrify.to_sym).klass
       end
 
       def collection
