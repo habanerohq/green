@@ -9,7 +9,7 @@ module Habanero
     end
     
     def ingredients
-      mask ? mask.mask_ingredients.map(&:ingredient) : sorbet.try(:all_displayable_ingredients)
+      mask ? mask.ingredients : sorbet.try(:primary_ingredients)
     end
 
     def translators

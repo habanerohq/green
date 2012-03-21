@@ -3,21 +3,14 @@ module Habanero
     include Habanero::PagesHelper
 
     def show(options)
-      instance_variables_from(options)
-
-      @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
+      _get_started(options)
       @target = @sorbet.klass.find(params[:id])
-      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.all_displayable_ingredients
-
       render
     end
 
     def edit(options)
-      instance_variables_from(options)
-
-      @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
+      _get_started(options)
       @target = @sorbet.klass.find(params[:id])
-      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.all_displayable_ingredients
 
       if request.delete?
         if @target.destroy
@@ -34,11 +27,8 @@ module Habanero
     end
 
     def new(options)
-      instance_variables_from(options)
-
-      @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
+      _get_started(options)
       @target = @sorbet.klass.new(params[@placement.params_key])
-      @ingredients = @placement.scoop.mask ? @placement.scoop.mask.mask_ingredients.map(&:ingredient) : @target._sorbet.all_displayable_ingredients
 
       if params[@placement.params_key] && request.post?
         if @target.save
@@ -47,6 +37,14 @@ module Habanero
       end
 
       render
+    end
+    
+    protected
+    
+    def _get_started(options)
+      instance_variables_from(options)
+      @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
+      @ingredients = @placement.ingredients || @sorbet.primary_ingredients
     end
   end
 end
