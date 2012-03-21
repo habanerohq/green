@@ -3,8 +3,6 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      alias_method :parent, :section
-
       validates :name,
                 :presence => true,
                 :uniqueness => { :scope => 'section_id' }
@@ -15,6 +13,10 @@ module Habanero
         # respect order scoped by section when drawing page routes
         order('section_position').all.each { |p| p.draw_route(map) }
       end
+    end
+
+    def parent
+      section
     end
 
     def draw_route(map, options = {})
