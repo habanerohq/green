@@ -6,7 +6,7 @@ module Habanero
         case ingredient.relation.to_sym
         when :belongs_to
           @builder.collection_select(
-            ingredient.column_name, collection, :id, :to_s,
+            ingredient.column_name, collection, :id, :to_s_qual,
             input_options, input_html_options
           )
         end

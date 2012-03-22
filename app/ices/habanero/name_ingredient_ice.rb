@@ -20,6 +20,10 @@ module Habanero
       def to_s
         name
       end
+
+      def to_s_qual
+        to_s
+      end
     end    
 
     def name
