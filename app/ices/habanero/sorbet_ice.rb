@@ -34,7 +34,11 @@ module Habanero
     end
 
     def primary_mask
-      masks.detect { |m| m.primary? }
+      all_masks.detect { |m| m.primary? }
+    end
+    
+    def all_masks
+      self_and_ancestors.includes(:masks).map(&:masks).flatten.reverse
     end
     
     def all_ingredients
