@@ -39,6 +39,15 @@ module Habanero
       render
     end
     
+    def connections(options)
+      instance_variables_from(options)
+      @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
+      @ingredients = @sorbet.connections
+      @target = @sorbet.klass.find(params[:id]) if params[:id]
+      
+      render
+    end
+    
     protected
     
     def _get_started(options)

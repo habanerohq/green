@@ -48,6 +48,12 @@ module Habanero
     def all_displayable_ingredients
       displayable_ingredients(all_ingredients)
     end
+    
+    def connections
+      h = all_ingredients.select { |i| i.relation =~ /has/ }
+      p = h.select { |i| i.primary? }
+      p.any? ? p : h
+    end
 
     def table_name
       base.qualified_name.pluralize.attrify

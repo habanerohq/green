@@ -1,0 +1,18 @@
+<%= cell_title('connections') %>
+
+<ul>
+  <%- @ingredients.each do |i| -%>
+    <li>
+      <%= i.to_s %>
+      <%- if @target.present? -%>
+        <ul>
+          <%- @target.send(i.method_name).each do  |c| -%>
+            <li>
+              <%= link_to(c, page_path((@placement.scoop.page || @page), :id => c, :sorbet_type => c.class._sorbet)) %>
+            </li>
+          <%- end -%>
+        </ul>
+      <%- end -%>
+    </li>
+  <%- end -%>
+</ul>
