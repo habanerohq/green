@@ -17,6 +17,10 @@ module Habanero
     def adapt(klass)
       klass.send :acts_as_nested_set unless klass.respond_to?(:acts_as_nested_set_options)
     end
+    
+    def condition_predicate
+      'eq'
+    end
 
     protected
 

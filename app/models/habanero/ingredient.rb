@@ -40,11 +40,19 @@ module Habanero
     end
     
     def arel_column
-      sorbet.klass.arel_table[column_name]
+      sorbet.klass.arel_table[method_name]
     end
     
     def to_conditions(params)
-      [ (Habanero::Condition.new(:predicate => 'matches', :value => params[method_name], :ingredient => self) unless params[method_name].blank?) ]
+      [ (Habanero::Condition.new(:predicate => condition_predicate, :value => condition_value(params), :ingredient => self) unless condition_value(params).blank?) ]
+    end
+    
+    def condition_predicate
+      'matches'
+    end
+    
+    def condition_value(params)
+      params[method_name]
     end
 
     def apply_inclusions(query_chain)
