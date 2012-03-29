@@ -1,1 +1,0 @@
-{"class_name":"Habanero::Sorbet","attributes":{"name":"RangeIngredient","namespace_id":2,"slug":"rangeingredient","id":44,"parent_id":2},"foreign_values":{"parent":{"name":"Ingredient","namespace":{"name":"Habanero"}},"namespace":{"name":"Habanero"}},"id_values":{"name":"RangeIngredient","namespace":{"name":"Habanero"}},"old_attributes":null,"pantry":{}}
