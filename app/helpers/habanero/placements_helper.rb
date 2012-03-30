@@ -14,5 +14,13 @@ module Habanero
                   :target => @target
       )
     end
+    
+    def collection_title
+      unless @placement.scoop.title.blank?
+        @placement.scoop.title.blank?
+      else
+        "#{@sorbet.to_s} #{@placement.template}"
+      end
+    end
   end
 end
