@@ -15,7 +15,7 @@ module Habanero
     def adapt(klass)
       klass.class_eval <<-RUBY_EVAL
         def _to_s
-          #{(self.children.map(&:method_name) << self.method_name).join(' << ')}
+          #{(self.children.map(&:method_name) << self.method_name).join(' << ')}.underscore.humanize
         end
 
         def self.to_s_methods
