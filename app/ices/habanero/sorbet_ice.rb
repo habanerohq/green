@@ -45,8 +45,12 @@ module Habanero
       self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
     end
 
-    def displayable_ingredients(ingreds)
-      (ingreds || ingredients).reject { |i| i.type == 'Habanero::RelationIngredient' }
+    def displayable_ingredients(ingreds = nil)
+      (ingreds || ingredients).
+      reject do |i| 
+        i.type.in? ['Habanero::RelationIngredient', 'Habanero::SlugIngredient'] or
+          (i.type == 'Habanero::AssociationIngredient' and i.relation == 'has_many')
+      end
     end
 
     def all_displayable_ingredients
