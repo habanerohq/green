@@ -14,17 +14,13 @@ module Habanero
 
       def input_options
         options.reverse_merge :include_blank => true,
-                              :prompt => "-- Select #{associated_model.name} --"
+                              :prompt => "-- Select #{ingredient.inverse_klass.name} --"
       end
 
       private
 
-      def associated_model
-        ingredient.sorbet.klass.reflect_on_association(ingredient.name.attrify.to_sym).klass
-      end
-
       def collection
-        associated_model.unscoped.order(:name)
+        ingredient.inverse_klass.default_order
       end
     end
   end

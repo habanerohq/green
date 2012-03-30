@@ -47,6 +47,10 @@ module Habanero
       end
     end
 
+    def inverse_klass
+      inverse.sorbet.klass
+    end
+
     def polymorphic?
       siblings.count > 1
     end

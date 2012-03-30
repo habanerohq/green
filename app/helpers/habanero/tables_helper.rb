@@ -3,14 +3,15 @@ module Habanero
     def table_format(target, ingredient)
       if @placement.scoop.page
 
-        if ingredient.relation == 'belongs_to'
+        case
+        when ingredient.relation == 'belongs_to'
           v = target.send(ingredient.method_name)
           if v.present?
             link_to format_ingredient(target, ingredient), 
               page_path(@placement.scoop.page, :id => target.send(ingredient.method_name), :sorbet_type => ingredient.inverse.sorbet)
           end
 
-        elsif ingredient.type == 'Habanero::NameIngredient'
+        when ingredient.type == 'Habanero::NameIngredient'
           link_to_unless_current format_ingredient(target, ingredient), 
             page_path(@placement.scoop.page, :id => target, :sorbet_type => target.class._sorbet)
 

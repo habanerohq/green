@@ -26,7 +26,15 @@ module Habanero
       klass.send :include, Ice
     end
 
-    module Ice
+    module Ice        
+      extend ActiveSupport::Concern
+    
+      module ClassMethods
+        def default_order
+          order(to_s_methods)
+        end      
+      end
+
       def to_s
         _to_s
       end
