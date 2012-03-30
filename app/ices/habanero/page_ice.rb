@@ -30,6 +30,14 @@ module Habanero
 
       map.match({ qualified_path => 'habanero/pages#show' }.merge(options))
     end
+    
+    def all_placements
+      inherited_placements + placements
+    end
+    
+    def inherited_placements
+      template.try(:all_placements) || []
+    end
 
     def layout_name
       (layout.template_name || layout.name.attrify) if layout

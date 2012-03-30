@@ -1,7 +1,7 @@
 module Habanero
   module PlacementsHelper
     def arrange(page)
-      page.placements.each do |p|
+      page.all_placements.each do |p|
         content_for(p.region_name) { place(p) }
       end
     end
