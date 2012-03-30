@@ -48,18 +48,26 @@ module Habanero
       instance_variables_from(options)
       @query = @placement.query
       @mask = @placement.scoop.mask
-      @sorbet = @query.try(:sorbet) || @mask.try(:sorbet)
+      @sorbet = sorbet_by_precedence
       @search = @placement.search
       @targets = targets_by_precedence
-      @ingredients = @placement.ingredients
+      @ingredients = ingredients_by_precedence
 
       if @placement.scoop.paginate?
         @targets = @targets.page(params[:page])
       end
     end
     
+    def sorbet_by_precedence
+      @query.try(:sorbet) || @mask.try(:sorbet) || @page.nearest_target
+    end
+    
     def targets_by_precedence
-      @search.try(:query_chain) || @query.try(:evaluate, params) || (@sorbet.klass.order(:name) if @sorbet.present?) || []
+      @search.try(:query_chain) || @query.try(:evaluate, params) || (@sorbet.klass.order(@sorbet.klass.to_s_methods) if @sorbet.present?) || []
+    end
+    
+    def ingredients_by_precedence
+      @placement.ingredients || @sorbet.try(:all_displayable_ingredients)
     end
     
     def roots_only
