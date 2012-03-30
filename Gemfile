@@ -34,7 +34,7 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'less-rails-bootstrap'
-gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git', :ref => 'beffb7b62d5028c9035c7636da0167cfba4ff015'
+gem 'pantry', :git => 'git@github.com:habanerohq/pantry.git', :ref => '2c3ca1701ac65a0bfc3fdf374da4ec38d1636e67'
 # gem 'pantry', :path => '../pantry'
 gem 'awesome_nested_set'
 gem 'acts_as_list'
@@ -43,6 +43,7 @@ gem 'cells'
 gem 'kaminari'
 gem 'simple_form'
 gem 'commonjs', '0.2.0'
+# gem 'geokit-rails3'
 
 group :development, :test do
   gem 'rspec-rails'
