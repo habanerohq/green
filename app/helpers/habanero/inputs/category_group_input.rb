@@ -1,9 +1,10 @@
 module Habanero
   module Inputs
-    class CategoryInput < Base
+    class CategoryGroupInput < Base
       def input
-        @builder.collection_select(
-          ingredient.column_name, collection, :id, :to_s_qual,
+        @builder.grouped_collection_select(
+          ingredient.method_name, collection,
+          :children, :name, :id, :name,
           input_options, input_html_options
         )
       end
