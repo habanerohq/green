@@ -12,7 +12,7 @@ module Habanero
     end
 
     def adapt(klass)
-      return nil if klass.reflect_on_association(name.attrify.to_sym)
+      return nil if klass.reflect_on_association(name.attrify.to_sym) or !inverse.present?
 
       options = {}
 
