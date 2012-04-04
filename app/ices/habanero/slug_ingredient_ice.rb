@@ -41,7 +41,7 @@ module Habanero
     end
 
     def slug_ingredient_after_create
-      add_index(column_name, :unique => unscoped?)
+      add_index(column_name, :unique => unscoped?) unless index_exists?(column_name)
     end
 
     def slug_ingredient_after_save

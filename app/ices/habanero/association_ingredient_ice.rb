@@ -87,7 +87,11 @@ module Habanero
 
     def add_columns
       if columns_required?
-        add_column column_name, column_type unless column_exists?(column_name)
+        begin
+          add_column column_name, column_type unless column_exists?(column_name)
+        rescue Exception => e
+          puts self.inspect
+        end
         add_column "#{name.attrify}_type", :string if polymorphic?
 
         if parent.ordered?

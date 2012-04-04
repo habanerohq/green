@@ -10,7 +10,7 @@ module Habanero
       extend ActiveSupport::Concern
 
       def path
-        route
+        route || ''
       end
 
       def qualified_path

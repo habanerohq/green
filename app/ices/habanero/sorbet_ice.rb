@@ -20,6 +20,7 @@ module Habanero
       validates_associated :ingredients
 
       before_create :create_table # failed create leaves empty table?
+      after_create :create_default_ingredients
       after_destroy :remove_const
 
       unloadable
@@ -118,6 +119,19 @@ module Habanero
       if parent
 #          puts "create_table #{table_name}" unless connection.table_exists?(table_name) # write this to a log!
         connection.create_table(table_name) unless connection.table_exists?(table_name)
+      end
+    end
+    
+    def create_default_ingredients
+      if !respond_to?(:suppress_automatic_naming) or (respond_to?(:suppress_automatic_naming) and !suppress_automatic_naming?)
+        begin
+          ni = Habanero::NameIngredient.create!(:name => 'Name', :sorbet => self)
+          Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => self, :target => ni)
+        rescue ActiveRecord::UnknownAttributeError => e
+          nil
+        rescue NameError => e
+          e.message =~ /Ingredient$/ ? nil : raise
+        end
       end
     end
 
