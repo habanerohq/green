@@ -31,8 +31,11 @@ module Habanero
       @target = @sorbet.klass.new(params[@placement.params_key])
 
       if params[@placement.params_key] && request.post?
-        if @target.save
-          redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
+        @target.transaction do
+          if @target.save
+            @target.post_create if @target.respond_to?(:post_create)
+            redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
+          end
         end
       end
 
