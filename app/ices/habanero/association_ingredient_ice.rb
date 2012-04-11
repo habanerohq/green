@@ -31,12 +31,12 @@ module Habanero
         options[:foreign_key] = inverse_column_name unless relation == 'belongs_to'
       end
 
-      options.merge!(:order => inverse_position_name) if relation =~ /many/ and parent.try(:ordered?)
+      options.merge!(:order => inverse_position_name) if relation =~ /many/ and ordered?
 
 #        puts "#{klass} #{relation}, #{name.attrify.to_sym}, #{options.inspect}" # todo: log me!
       klass.send relation, name.attrify.to_sym, options
 
-      if parent.try(:ordered?) and relation == 'belongs_to'
+      if ordered? and relation == 'belongs_to'
         klass.send :acts_as_list, :scope => name.attrify.to_sym, :column => position_name
       end
     end
@@ -46,7 +46,7 @@ module Habanero
     end
 
     def inverse_sorbet
-      associated_type || inverse.sorbet
+      inverse.present? ? inverse.sorbet : associated_type
     end
 
     def inverse_klass
@@ -55,6 +55,10 @@ module Habanero
 
     def inverse_name
       associated_name || inverse.name
+    end
+    
+    def ordered?
+      ordered || parent.try(:ordered?)
     end
 
     def polymorphic?
@@ -70,7 +74,7 @@ module Habanero
     end
 
     def inverse_column_name
-      "#{associated_name.attrify}_id" || inverse.column_name
+      associated_name ? "#{associated_name.attrify}_id" : inverse.column_name
     end
 
     def method_name
@@ -82,7 +86,7 @@ module Habanero
     end
 
     def inverse_position_name
-      "#{associated_name.attrify}_position" || inverse.position_name
+      associated_name ? "#{associated_name.attrify}_position" : inverse.position_name
     end
 
     def column_type
@@ -120,7 +124,7 @@ module Habanero
         end
         add_column "#{name.attrify}_type", :string if polymorphic?
 
-        if parent.ordered?
+        if ordered?
           unless column_exists?(position_name)
             add_column position_name, column_type
           end
