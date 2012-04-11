@@ -43,9 +43,5 @@ module Habanero
         to_s
       end
     end    
-
-#    def name
-#      'Name'
-#    end
   end
 end

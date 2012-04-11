@@ -94,7 +94,8 @@ module Habanero
     end
     
     def arel_column
-      inverse_sorbet.klass.arel_table[:name] # todo: what happens when the association object doesn't respond to #name ???
+      ni = inverse_sorbet.klass.all_ingredients.detect{ |i| i.type == 'Habanero::NameIngredient' }
+      ni.present? ? inverse_sorbet.klass.arel_table[ni.method_name] : :name
     end
 
     def apply_inclusions(query_chain)
