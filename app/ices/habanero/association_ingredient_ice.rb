@@ -62,7 +62,7 @@ module Habanero
     end
 
     def polymorphic?
-      siblings.count > 1
+      read_attribute(:polymorphic) or siblings.count > 1
     end
 
     def columns_required?
