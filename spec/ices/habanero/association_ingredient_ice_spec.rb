@@ -1,16 +1,17 @@
 require 'spec_helper'
 
 describe Habanero::AssociationIngredient do
-
   before(:each) do
-    @sorbet = Habanero::Sorbet.create!(
-      :name => 'Dummy',
-      :parent => Habanero::Sorbet.first, # ActiveRecord::Base
+    @sorbet = Habanero::Sorbet.new(
+      :name => 'AssocDummy',
+      :parent => Habanero::Sorbet.namespaced('ActiveRecord').where(:name => 'Base').first,
       :namespace => Habanero::Namespace.find_by_name('Habanero'),
       :ingredients => [
         Habanero::StringIngredient.new(:name => 'Foo')
       ]
     )
+
+    # todo: don't use Habanero::Site to test the other side of the association
 
     @relation = Habanero::RelationIngredient.create!(
       :name => 'Site Dummies',
@@ -21,11 +22,14 @@ describe Habanero::AssociationIngredient do
         Habanero::AssociationIngredient.new(:name => 'Site', :relation => 'belongs_to', :sorbet => @sorbet),
       ]
     )
+
+    @sorbet.save!
+    @sorbet.chill!
   end
 
   after(:each) do
-    @sorbet.destroy
-    ActiveSupport::Dependencies.clear
+    Habanero.send :remove_const, 'AssocDummy'
+    Habanero.send :remove_const, 'Site' if Habanero.constants.include?('Site')
   end
 
   it 'has an inverse' do
@@ -37,7 +41,7 @@ describe Habanero::AssociationIngredient do
     @relation.children.first.should_not be_polymorphic
     @relation.children.last.should_not be_polymorphic
   end
-  
+
   it 'knows if columns are required' do
     @relation.children.first.should_not be_columns_required
     @relation.children.last.should be_columns_required
@@ -53,37 +57,37 @@ describe Habanero::AssociationIngredient do
   it 'has a column type' do
     @relation.children.last.column_type.should == :integer
   end
-  
+
   it 'builds has_many association' do 
     a = Habanero::Site.reflect_on_association(:dummies)
     a.should be_present
-    a.class_name.should == '::Habanero::Dummy'
+    a.class_name.should == '::Habanero::AssocDummy'
     a.foreign_key.should == 'site_id'
     a.options[:order].should == 'site_position'
     a.macro.should == :has_many
   end
-  
+
   it 'builds belongs_to association' do 
-    a = Habanero::Dummy.reflect_on_association(:site)
+    a = Habanero::AssocDummy.reflect_on_association(:site)
     a.should be_present
     a.class_name.should == '::Habanero::Site'
     a.macro.should == :belongs_to
   end
 
   it 'maintains columns in the sorbet database table' do
-    ActiveRecord::Base.connection.columns('habanero_dummies').map(&:name).should include 'site_id'
-    Habanero::Dummy.new.should respond_to 'site'
+    ActiveRecord::Base.connection.columns(@sorbet.table_name).map(&:name).should include 'site_id'
+    Habanero::AssocDummy.new.should respond_to 'site'
 
-    ActiveRecord::Base.connection.columns('habanero_dummies').map(&:name).should include 'site_position'
-    Habanero::Dummy.new.should respond_to 'site_position'
+    ActiveRecord::Base.connection.columns(@sorbet.table_name).map(&:name).should include 'site_position'
+    Habanero::AssocDummy.new.should respond_to 'site_position'
 
     Habanero::Site.new.should respond_to 'dummies'
   end
-  
+
   it 'acts as list' do
-    Habanero::Dummy.ancestors.should include ActiveRecord::Acts::List::InstanceMethods
+    Habanero::AssocDummy.ancestors.should include ActiveRecord::Acts::List::InstanceMethods
   end
-  
+
   it 'handles polymorphic associations' do
     poly = Habanero::RelationIngredient.create!(
       :name => 'Context Dummies',
@@ -94,26 +98,26 @@ describe Habanero::AssociationIngredient do
         Habanero::AssociationIngredient.new(:name => 'Context', :relation => 'belongs_to', :sorbet => @sorbet)
       ]
     )
-      
+
     poly.children.count.should == 3
     poly.children.each { |c| c.should be_polymorphic }
-    
+
     a = Habanero::Namespace.reflect_on_association(:dummies)
     a.should be_present
-    a.class_name.should == '::Habanero::Dummy'
+    a.class_name.should == '::Habanero::AssocDummy'
     a.options[:as].should == 'context'
     a.foreign_key.should == 'context_id'
-    
+
     a = Habanero::Layout.reflect_on_association(:dummies)
     a.should be_present
-    a.class_name.should == '::Habanero::Dummy'
+    a.class_name.should == '::Habanero::AssocDummy'
     a.options[:as].should == 'context'
     a.foreign_key.should == 'context_id'
-    
-    a = Habanero::Dummy.reflect_on_association(:context)
+
+    a = Habanero::AssocDummy.reflect_on_association(:context)
     a.should be_present
     a.options[:polymorphic].should == true
-    
+
     poly.destroy
   end
 end
