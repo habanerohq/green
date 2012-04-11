@@ -9,10 +9,12 @@ module Habanero
 
       validates :name,
                 :presence => true
+      
+      before_save :null_blanks
     end
 
     def adapt(klass)
-      return nil if klass.reflect_on_association(name.attrify.to_sym) or !inverse.present?
+      return nil if klass.reflect_on_association(name.attrify.to_sym) or !has_inverse?
 
       options = {}
 
@@ -21,30 +23,38 @@ module Habanero
         if relation == 'belongs_to'
           options[:polymorphic] = true
         else
-          options[:as] = inverse.name.attrify
+          options[:as] = inverse_name.attrify
           options[:class_name] = "::#{inverse_sorbet.qualified_name}"
         end
       else
         options[:class_name] = "::#{inverse_sorbet.qualified_name}"
-        options[:foreign_key] = inverse.column_name unless relation == 'belongs_to'
+        options[:foreign_key] = inverse_column_name unless relation == 'belongs_to'
       end
 
-      options.merge!(:order => inverse.position_name) if parent.ordered? and relation =~ /many/
+      options.merge!(:order => inverse_position_name) if relation =~ /many/ and parent.try(:ordered?)
 
 #        puts "#{klass} #{relation}, #{name.attrify.to_sym}, #{options.inspect}" # todo: log me!
       klass.send relation, name.attrify.to_sym, options
 
-      if parent.ordered? and relation == 'belongs_to'
+      if parent.try(:ordered?) and relation == 'belongs_to'
         klass.send :acts_as_list, :scope => name.attrify.to_sym, :column => position_name
       end
     end
+    
+    def has_inverse?
+      inverse.present? or (associated_type.present? and associated_name.present?)
+    end
 
     def inverse_sorbet
-      inverse.sorbet
+      associated_type || inverse.sorbet
     end
 
     def inverse_klass
       inverse_sorbet.klass
+    end
+
+    def inverse_name
+      associated_name || inverse.name
     end
 
     def polymorphic?
@@ -59,12 +69,20 @@ module Habanero
       "#{method_name}_id"
     end
 
+    def inverse_column_name
+      "#{associated_name.attrify}_id" || inverse.column_name
+    end
+
     def method_name
       name.attrify
     end
 
     def position_name
       "#{method_name}_position"
+    end
+
+    def inverse_position_name
+      "#{associated_name.attrify}_position" || inverse.position_name
     end
 
     def column_type
@@ -80,6 +98,10 @@ module Habanero
     end
 
     protected
+    
+    def null_blanks
+      self.associated_name = nil if associated_name.blank?
+    end
 
     def inverse
       if relation == 'belongs_to'
