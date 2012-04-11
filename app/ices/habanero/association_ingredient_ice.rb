@@ -39,14 +39,6 @@ module Habanero
       end
     end
 
-    def inverse
-      if relation == 'belongs_to'
-        siblings.detect.first unless polymorphic?
-      else
-        siblings.detect { |s| s.relation == 'belongs_to' }
-      end
-    end
-
     def inverse_sorbet
       inverse.sorbet
     end
@@ -88,6 +80,14 @@ module Habanero
     end
 
     protected
+
+    def inverse
+      if relation == 'belongs_to'
+        siblings.detect.first unless polymorphic?
+      else
+        siblings.detect { |s| s.relation == 'belongs_to' }
+      end
+    end
 
     def add_columns
       if columns_required?
