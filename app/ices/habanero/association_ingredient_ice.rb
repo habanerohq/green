@@ -74,7 +74,7 @@ module Habanero
     end
 
     def inverse_column_name
-      associated_name ? "#{associated_name.attrify}_id" : inverse.column_name
+      inverse.present? ? inverse.column_name : "#{associated_name.attrify}_id"
     end
 
     def method_name
@@ -86,7 +86,7 @@ module Habanero
     end
 
     def inverse_position_name
-      associated_name ? "#{associated_name.attrify}_position" : inverse.position_name
+      inverse.present? ? inverse.position_name : "#{associated_name.attrify}_position"
     end
 
     def column_type
@@ -105,7 +105,7 @@ module Habanero
     protected
     
     def null_blanks
-      self.associated_name = nil if associated_name.blank?
+      self.associated_name = nil if respond_to?(:associated_name) and associated_name.blank?
     end
 
     def inverse
