@@ -24,7 +24,7 @@
               render(
                 {:state => :tree_node}, 
                 manies, 
-                @mask.children.detect{|m| m.sorbet == i.inverse.sorbet}
+                @mask.children.detect{|m| m.sorbet == i.inverse_sorbet}
               ) unless i.polymorphic?
             end
           -%>

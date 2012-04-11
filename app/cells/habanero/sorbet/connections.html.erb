@@ -4,7 +4,7 @@
   <%- @ingredients.each do |i| -%>
     <li>
       <%= i.to_s %> 
-      <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), page_path(new_sorbet_page, :sorbet_type => i.inverse.sorbet)) if i.inverse.present? %>
+      <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), page_path(new_sorbet_page, :sorbet_type => i.inverse_sorbet)) if i.inverse.present? %>
       <%- if @target.present? -%>
         <ul>
           <%- @target.send(i.method_name).each do  |c| -%>

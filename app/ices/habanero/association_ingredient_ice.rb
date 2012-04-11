@@ -22,10 +22,10 @@ module Habanero
           options[:polymorphic] = true
         else
           options[:as] = inverse.name.attrify
-          options[:class_name] = "::#{inverse.sorbet.qualified_name}"
+          options[:class_name] = "::#{inverse_sorbet.qualified_name}"
         end
       else
-        options[:class_name] = "::#{inverse.sorbet.qualified_name}"
+        options[:class_name] = "::#{inverse_sorbet.qualified_name}"
         options[:foreign_key] = inverse.column_name unless relation == 'belongs_to'
       end
 
@@ -47,8 +47,12 @@ module Habanero
       end
     end
 
+    def inverse_sorbet
+      inverse.sorbet
+    end
+
     def inverse_klass
-      inverse.sorbet.klass
+      inverse_sorbet.klass
     end
 
     def polymorphic?
@@ -76,7 +80,7 @@ module Habanero
     end
     
     def arel_column
-      inverse.sorbet.klass.arel_table[:name] # todo: what happens when the association object doesn't respond to #name ???
+      inverse_sorbet.klass.arel_table[:name] # todo: what happens when the association object doesn't respond to #name ???
     end
 
     def apply_inclusions(query_chain)
@@ -103,8 +107,8 @@ module Habanero
 
       if sorbet.chilled? && inverse
         adapt(sorbet.klass)
-        inverse.adapt(inverse.sorbet.klass)
-        inverse.sorbet.klass.reset_column_information
+        inverse.adapt(inverse_sorbet.klass)
+        inverse_sorbet.klass.reset_column_information
       end
     end
 
