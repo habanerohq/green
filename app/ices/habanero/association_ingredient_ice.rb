@@ -94,8 +94,8 @@ module Habanero
     end
     
     def arel_column
-      ni = inverse_sorbet.klass.all_ingredients.detect{ |i| i.type == 'Habanero::NameIngredient' }
-      ni.present? ? inverse_sorbet.klass.arel_table[ni.method_name] : :name
+      is = inverse_sorbet
+      is.klass.arel_table[is.name_ingredient_column_name]
     end
 
     def apply_inclusions(query_chain)

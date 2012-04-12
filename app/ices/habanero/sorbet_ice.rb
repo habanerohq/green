@@ -62,6 +62,14 @@ module Habanero
       p = h.select { |i| i.primary? }
       p.any? ? p : h
     end
+    
+    def name_ingredient
+      all_ingredients.detect{ |i| i.type == 'Habanero::NameIngredient' }
+    end
+    
+    def name_ingredient_column_name
+      name_ingredient.try(:method_name) || (respond_to?(:name) ? :name : :id)
+    end
 
     def table_name
       base.qualified_name.pluralize.attrify
