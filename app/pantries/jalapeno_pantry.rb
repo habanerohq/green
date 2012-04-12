@@ -39,5 +39,8 @@ class JalapenoPantry < Pantry::Base
         :where => {:habanero_namespaces => {:name => 'Jalapeno'}}
       }
     end
+    
+    can_stack 'Habanero::Category', 
+      :id_value_methods => [:name, :parent]
   end
 end
