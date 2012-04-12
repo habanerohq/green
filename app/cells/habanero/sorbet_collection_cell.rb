@@ -21,12 +21,12 @@ module Habanero
           else
             k = klass_by_precedence.reflect_on_association(method.to_sym).klass
             tn = k.table_name
-            cn = (k.column_names.include?('name') ? 'name' : 'id') # todo: what to do if name is not the same as to_s
+            cn = @sorbet.name_ingredient_column_name
             result.includes(method).order("#{tn}.#{cn} #{direction}")
           end
         end
       else
-        @targets = @targets.order(@sorbet.klass.to_s_methods)
+        @targets = @targets.order("#{@sorbet.klass.table_name}.#{@sorbet.klass.to_s_methods}")
       end
       render
     end
