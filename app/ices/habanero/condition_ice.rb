@@ -15,5 +15,9 @@ module Habanero
       chain = ingredient.apply_inclusions(chain)
       chain.where(column.send(predicate, value))
     end
+    
+    def to_s
+      "#{ingredient} #{predicate} '#{value}'"
+    end
   end
 end
