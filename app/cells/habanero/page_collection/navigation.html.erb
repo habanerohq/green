@@ -8,7 +8,7 @@
       <%= link_to @page.section.site.name, '/', :class => 'brand' %>
 
       <ul class="nav">
-        <% @targets.each do |target| %>
+        <% target_pages(@targets).each do |target| %>
           <li class="<%= @page == target && 'active' %>">
             <%= link_to(target, page_path(target, :id => target, :sorbet_type => target.class._sorbet)) %>
           </li>
