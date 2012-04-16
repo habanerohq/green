@@ -10,8 +10,7 @@ module Habanero
 
     module ClassMethods
       def draw_routes(map)
-        # respect order scoped by section when drawing page routes
-        order('section_position').all.each { |p| p.draw_route(map) }
+        where('route is not null').order('section_position').each { |p| p.draw_route(map) }
       end
     end
 
