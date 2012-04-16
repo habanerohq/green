@@ -64,7 +64,8 @@ module Habanero
 =end
         end
       else
-        value_for(target, ingredient)
+        v = value_for(target, ingredient)
+        link_to v, page_path(@page, :id => v, :sorbet_type => ingredient.inverse_sorbet)
       end
     end
 
