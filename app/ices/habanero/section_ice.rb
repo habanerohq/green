@@ -13,5 +13,9 @@ module Habanero
     def names_idified
       self_and_ancestors.map{ |a| a.name.idify }.join(' ')
     end
+    
+    def page
+      pages.detect { |p| p.route.in? ['/', '/index'] or p.name.downcase == 'index' }
+    end
   end
 end
