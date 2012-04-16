@@ -19,5 +19,9 @@ module Habanero
         end
       end.compact
     end
+    
+    def maybe_use_section_if_index(target)
+      target.name.downcase == 'index' ? target.section : target 
+    end
   end
 end

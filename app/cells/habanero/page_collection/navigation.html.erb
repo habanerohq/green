@@ -10,7 +10,7 @@
       <ul class="nav">
         <% target_pages(@targets).each do |target| %>
           <li class="<%= @page == target && 'active' %>">
-            <%= link_to(target, page_path(target, :id => target, :sorbet_type => target.class._sorbet)) %>
+            <%= link_to(maybe_use_section_if_index(target), page_path(target, :id => target, :sorbet_type => target.class._sorbet)) %>
           </li>
         <% end %>
       </ul>
