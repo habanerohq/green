@@ -37,7 +37,8 @@ module Habanero
 
     def format_habanero_nest_ingredient(target, ingredient)
       ingredient_span(ingredient) do 
-        target.parent.to_s
+        v = target.parent.to_s
+        link_to v, page_path(@page, :id => v, :sorbet_type => ingredient.sorbet)
       end
 =begin
       ingredient_span(ingredient) do 
