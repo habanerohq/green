@@ -6,7 +6,7 @@ module Habanero
     end
     
     def new_sorbet_page
-      Habanero::ScoopPlacement.joins(:scoop, :page).where(:template => 'new', :habanero_scoops => {:type => 'Habanero::SorbetScoop'}).first.page
+      Habanero::Page.find_by_route('/:sorbet_type/new')
     end
     
     def target_pages(targets)
