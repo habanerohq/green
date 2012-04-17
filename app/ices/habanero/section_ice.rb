@@ -4,7 +4,13 @@ module Habanero
 
     included do
       validates :name, :presence => true
-    end
+    end    
+
+    module ClassMethods
+      def indexed_roots
+        roots.select { |r| r.index_page.present? }
+      end
+    end    
 
     def nearest_target
       target || parent.try(:nearest_target)
@@ -14,8 +20,16 @@ module Habanero
       self_and_ancestors.map{ |a| a.name.idify }.join(' ')
     end
     
+    def index_page
+      page
+    end
+    
     def page
-      pages.detect { |p| p.route.in? ['/', '/index'] or p.name.downcase == 'index' }
+      pages.detect { |p| p.is_index_page? }
+    end
+    
+    def indexed_children
+      children.select { |c| c.index_page.present? }
     end
   end
 end

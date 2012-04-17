@@ -1,0 +1,7 @@
+<%= cell_content do %>
+  <div class="btn-group">
+    <% @pages.each do |p| %>
+      <%= link_to(p, page_path(p, :id => p, :sorbet_type => p.class._sorbet), :class => :btn) %>
+    <% end %>
+  </div>
+<% end %>

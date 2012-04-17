@@ -49,5 +49,13 @@ module Habanero
     def nearest_target
       target || section.nearest_target
     end
+    
+    def is_index_page?
+      route.in? ['/', '/index'] or name.downcase == 'index'
+    end
+    
+    def to_s_qual
+      "#{name} (#{section})"
+    end    
   end
 end
