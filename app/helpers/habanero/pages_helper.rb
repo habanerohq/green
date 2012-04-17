@@ -6,7 +6,7 @@ module Habanero
     end
     
     def new_sorbet_page
-      Habanero::Page.find_by_route('/:sorbet_type/new')
+      Habanero::Page.find_all_by_route('/:sorbet_type/new').detect { |p| p.section.route? }
     end
     
     def target_pages(targets)

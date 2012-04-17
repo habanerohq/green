@@ -1,0 +1,1 @@
+{"class_name":"Habanero::Section","attributes":{"name":"Templates","slug":"templates","site_position":5,"id":6,"site_id":1},"action":"update","foreign_values":{"site":{"name":"Habanero"}},"id_values":{"name":"Templates","site":{"name":"Habanero"}},"old_attributes":{"route":"/templates"},"pantry":{}}

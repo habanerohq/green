@@ -10,7 +10,7 @@ module Habanero
 
     module ClassMethods
       def draw_routes(map)
-        where('route is not null').order('section_position').reject { |p| p.section.route.blank? }.each { |p| p.draw_route(map) }
+        where('route is not null').order('section_position').reject { |p| p.route.blank? or p.section.route.blank? }.each { |p| p.draw_route(map) }
       end
     end
 
