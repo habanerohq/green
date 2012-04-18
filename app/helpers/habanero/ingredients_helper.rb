@@ -38,7 +38,7 @@ module Habanero
     def format_habanero_nest_ingredient(target, ingredient)
       ingredient_span(ingredient) do 
         v = target.parent.to_s
-        link_to v, page_path(@page, :id => v, :sorbet_type => ingredient.sorbet) if v
+        link_to v, page_path(@placement.scoop.page, :id => v, :sorbet_type => ingredient.sorbet) if v
       end
 =begin
       ingredient_span(ingredient) do 
@@ -66,7 +66,7 @@ module Habanero
         end
       else
         v = value_for(target, ingredient)
-        link_to v, page_path(@page, :id => v, :sorbet_type => ingredient.inverse_sorbet) if v
+        link_to v, page_path(@placement.scoop.page, :id => v, :sorbet_type => ingredient.inverse_sorbet) if v
       end
     end
 
