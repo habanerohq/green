@@ -12,9 +12,8 @@ module Habanero
 
     def table(options)
       _list(options)
-      if data = params[@placement.params_key]
+      if @targets.any? and data = params[@placement.params_key]
         @targets = data.reduce(@targets) do |result, (method, direction)|
-
           if klass_by_precedence.column_names.include?(method)
             result.order("#{method} #{direction}")
 
@@ -55,7 +54,7 @@ module Habanero
       @targets = targets_by_precedence
       @ingredients = ingredients_by_precedence
 
-      if @placement.scoop.paginate?
+      if @targets.any? and @placement.scoop.paginate?
         @targets = @targets.page(params[:page])
       end
     end
