@@ -21,7 +21,7 @@
   </table>
 <% end %>
 
-<%= paginate @targets if @placement.scoop.paginate? %>
+<%= paginate @targets if @placement.scoop.paginate? and @targets.any? %>
 
 <%= link_to "Create another #{@sorbet}", page_path(new_sorbet_page, :sorbet_type => @sorbet), :class => 'btn' %>
 
