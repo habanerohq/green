@@ -1,6 +1,6 @@
 <%= cell_content do %>
   <div class="btn-group">
-    <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"><%= @placement.scoop.body %><b class="caret"></b></a>
+    <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"><%= @placement.feature.body %><b class="caret"></b></a>
     <ul class="dropdown-menu">
       <% @targets.each do |t| %>
         <li><%= link_to(t, page_path(t, :id => t, :variety_type => t.class._variety)) %><li>

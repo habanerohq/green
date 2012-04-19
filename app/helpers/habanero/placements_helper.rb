@@ -7,7 +7,7 @@ module Habanero
     end
 
     def place(placement)
-      render_cell(placement.scoop.cell_type,
+      render_cell(placement.feature.cell_type,
                   placement.template.present? ? placement.template : 'show',
                   :page => @page,
                   :placement => placement,
@@ -16,8 +16,8 @@ module Habanero
     end
     
     def collection_title
-      unless @placement.scoop.title.blank?
-        @placement.scoop.title.blank?
+      unless @placement.feature.title.blank?
+        @placement.feature.title.blank?
       else
         "#{@variety.to_s} #{@placement.template}"
       end

@@ -5,10 +5,10 @@ kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
 create_page = Habanero::Page.create!(:name => 'Create Variety', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/new', :layout => kit_layout)
 
-# reuse the variety scoop from the edit page
+# reuse the variety feature from the edit page
 edit_page = Habanero::Page.find_by_name('Edit Variety')
-edit_scoop = edit_page.placements.detect { |sp| sp.scoop.is_a?(Habanero::VarietyScoop) && sp.template == 'edit' }.scoop
-Habanero::ScoopPlacement.create!(:page => create_page, :scoop => edit_scoop, :region => edit_page.layout.regions.find_by_name('Content'), :template => 'new')
+edit_feature = edit_page.placements.detect { |sp| sp.feature.is_a?(Habanero::VarietyFeature) && sp.template == 'edit' }.feature
+Habanero::FeaturePlacement.create!(:page => create_page, :feature => edit_feature, :region => edit_page.layout.regions.find_by_name('Content'), :template => 'new')
 
 # move it to the right position, otherwise routes don't work
 show_page = Habanero::Page.find_by_name('Show Variety')
@@ -16,17 +16,17 @@ create_page.insert_at(show_page.section_position)
 
 # Phase 37 - fix variety tree sieve hierarchy
 =begin
-scoop = Habanero::Page.find_by_name('Variety Kitchen').placements.first.scoop
-scoop.sieve = Habanero::Sieve.find_by_name('Brand Tree Sieve')
-scoop.save!
+feature = Habanero::Page.find_by_name('Variety Kitchen').placements.first.feature
+feature.sieve = Habanero::Sieve.find_by_name('Brand Tree Sieve')
+feature.save!
 =end
 # Phase 36 - link kitchen pages to show & edit pages
 =begin
 show_page = Habanero::Page.find_by_name('Show Variety')
-Habanero::Page.find_by_name('Layout Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
-Habanero::Page.find_by_name('Variety Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
-Habanero::Page.find_by_name('Scoop Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
-Habanero::Page.find_by_name('Category Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Layout Kitchen').placements.first.feature.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Variety Kitchen').placements.first.feature.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Feature Kitchen').placements.first.feature.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Category Kitchen').placements.first.feature.update_attribute(:page_id, show_page.id)
 =end
 # Phase 35 - Make our Varieties use NameTrait
 =begin
@@ -51,11 +51,11 @@ kit = Habanero::Section.find_by_name('Kitchens')
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
 edit_page = Habanero::Page.create!(:name => 'Edit Variety', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/:id/edit', :layout => kit_layout)
-edit_scoop = Habanero::VarietyScoop.create!(:name => 'Edit Variety')
+edit_feature = Habanero::VarietyFeature.create!(:name => 'Edit Variety')
 
-Habanero::ScoopPlacement.create!(:page => edit_page, :scoop => edit_scoop, :region => edit_page.layout.regions.find_by_name('Content'), :template => 'edit')
+Habanero::FeaturePlacement.create!(:page => edit_page, :feature => edit_feature, :region => edit_page.layout.regions.find_by_name('Content'), :template => 'edit')
 
-Habanero::Page.find_by_name('Show Variety').placements.first.scoop.update_attribute(:page_id, edit_page.id)
+Habanero::Page.find_by_name('Show Variety').placements.first.feature.update_attribute(:page_id, edit_page.id)
 =end
 # Phase 32a - Build a show page for varieties
 =begin
@@ -64,23 +64,23 @@ kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
 show_page = Habanero::Page.create!(:name => 'Show Variety', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/:id', :layout => kit_layout)
 
-show_scoop = Habanero::VarietyScoop.create!(:name => 'Show Variety')
+show_feature = Habanero::VarietyFeature.create!(:name => 'Show Variety')
 
-Habanero::ScoopPlacement.create!(:page => show_page, :scoop => show_scoop, :region => show_page.layout.regions.find_by_name('Content'), :template => 'show')
+Habanero::FeaturePlacement.create!(:page => show_page, :feature => show_feature, :region => show_page.layout.regions.find_by_name('Content'), :template => 'show')
 
-Habanero::Page.find_by_name('Site Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
+Habanero::Page.find_by_name('Site Kitchen').placements.first.feature.update_attribute(:page_id, show_page.id)
 =end
-# Phase 32 - VarietyScoops belong to a Page
+# Phase 32 - VarietyFeatures belong to a Page
 =begin
-scoop = Habanero::Variety.find_by_name('VarietyScoop')
+feature = Habanero::Variety.find_by_name('VarietyFeature')
 page = Habanero::Variety.find_by_name('Page')
 
 Habanero::RelationTrait.create!(
-  :name => 'Page VarietyScoops',
-  :variety => scoop,
+  :name => 'Page VarietyFeatures',
+  :variety => feature,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Page', :relation => 'belongs_to', :variety => scoop),
-    Habanero::AssociationTrait.new(:name => 'VarietyScoops', :relation => 'has_many', :variety => page)
+    Habanero::AssociationTrait.new(:name => 'Page', :relation => 'belongs_to', :variety => feature),
+    Habanero::AssociationTrait.new(:name => 'VarietyFeatures', :relation => 'has_many', :variety => page)
   ]
 )
 =end
@@ -96,14 +96,14 @@ layout_page.save!
 
 site_page = Habanero::Page.create!(:name => 'Site Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites', :layout => kit_layout)
 variety_page = Habanero::Page.create!(:name => 'Variety Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Variety'), :route => '/varieties', :layout => kit_layout)
-scoop_page = Habanero::Page.create!(:name => 'Scoop Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Scoop'), :route => '/scoops', :layout => kit_layout)
+feature_page = Habanero::Page.create!(:name => 'Feature Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Feature'), :route => '/features', :layout => kit_layout)
 category_page = Habanero::Page.create!(:name => 'Category Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Category'), :route => '/categories', :layout => kit_layout)
 
 placements = layout_page.placements
 
 placements[1].page = site_page
 placements[2].page = variety_page
-placements[3].page = scoop_page
+placements[3].page = feature_page
 placements[4].page = category_page
 
 left = kit_layout.regions.find_by_name('Left')
@@ -131,10 +131,10 @@ page_sieve = Habanero::Sieve.create!(:name => 'Page Tree Sieve', :variety => pag
 page_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => page.traits.find_by_name('Placements'))
 page_sieve.save!
 
-scoop = Habanero::Variety.find_by_name('Scoop')
-scoop_sieve = Habanero::Sieve.create!(:name => 'Scoop Tree Sieve', :variety => scoop)
-scoop_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => scoop.traits.find_by_name('Placements'))
-scoop_sieve.save!
+feature = Habanero::Variety.find_by_name('Feature')
+feature_sieve = Habanero::Sieve.create!(:name => 'Feature Tree Sieve', :variety => feature)
+feature_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => feature.traits.find_by_name('Placements'))
+feature_sieve.save!
 
 brand = Habanero::Variety.find_by_name('Brand')
 brand_sieve = Habanero::Sieve.create!(:name => 'Brand Tree Sieve', :variety => brand)
@@ -153,7 +153,7 @@ variety_sieve.save!
 sieve = Habanero::Variety.find_by_name('Sieve')
 sieve_sieve = Habanero::Sieve.create!(:name => 'Sieve Tree Sieve', :variety => sieve, :parent => variety_sieve)
 sieve_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => sieve.traits.find_by_name('Sieve Traits'))
-sieve_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => sieve.traits.find_by_name('Variety Scoops'))
+sieve_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => sieve.traits.find_by_name('Variety Features'))
 sieve_sieve.save!
 
 category = Habanero::Variety.find_by_name('Category')
@@ -163,17 +163,17 @@ category_sieve.save!
 
 page = Habanero::Page.find_by_name('Layout Kitchen')
 
-# build the scoops
-site_scoop = Habanero::VarietyCollectionScoop.create!(:name => 'Site Tree', :sieve => Habanero::Sieve.find_by_name('Site Tree Sieve'))
-scoop_scoop = Habanero::VarietyCollectionScoop.create!(:name => 'Scoop Tree', :sieve => Habanero::Sieve.find_by_name('Scoop Tree Sieve'))
-variety_scoop = Habanero::VarietyCollectionScoop.create!(:name => 'Variety Tree', :sieve => Habanero::Sieve.find_by_name('Variety Tree Sieve'))
-category_scoop = Habanero::VarietyCollectionScoop.create!(:name => 'Category Tree', :sieve => Habanero::Sieve.find_by_name('Category Tree Sieve'))
+# build the features
+site_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Site Tree', :sieve => Habanero::Sieve.find_by_name('Site Tree Sieve'))
+feature_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Feature Tree', :sieve => Habanero::Sieve.find_by_name('Feature Tree Sieve'))
+variety_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Variety Tree', :sieve => Habanero::Sieve.find_by_name('Variety Tree Sieve'))
+category_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Category Tree', :sieve => Habanero::Sieve.find_by_name('Category Tree Sieve'))
 
 # build the placements
-Habanero::ScoopPlacement.create!(:page => page, :scoop => site_scoop, :region => page.layout.regions.find_by_name('Left'), :template => 'tree')
-Habanero::ScoopPlacement.create!(:page => page, :scoop => variety_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
-Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
-Habanero::ScoopPlacement.create!(:page => page, :scoop => category_scoop, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
+Habanero::FeaturePlacement.create!(:page => page, :feature => site_feature, :region => page.layout.regions.find_by_name('Left'), :template => 'tree')
+Habanero::FeaturePlacement.create!(:page => page, :feature => variety_feature, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
+Habanero::FeaturePlacement.create!(:page => page, :feature => feature_feature, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
+Habanero::FeaturePlacement.create!(:page => page, :feature => category_feature, :region => page.layout.regions.find_by_name('Right'), :template => 'tree')
 =end
 # Phase 29 - Create some Layout Sieves for tree rendering
 =begin
@@ -193,17 +193,17 @@ r_sieve = Habanero::Sieve.create!(:name => 'Region Tree Sieve', :variety => regi
 r_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => region.traits.find_by_name('Placements'))
 r_sieve.save!
 =end
-# Phase 28 - Grader on scoops
+# Phase 28 - Grader on features
 =begin
-scoop = Habanero::Variety.find_by_name('Scoop')
+feature = Habanero::Variety.find_by_name('Feature')
 grader = Habanero::Variety.find_by_name('Grader')
 
 Habanero::RelationTrait.create!(
-  :name => 'Grader Scoops',
+  :name => 'Grader Features',
   :variety => grader,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Grader', :relation => 'belongs_to', :variety => scoop),
-    Habanero::AssociationTrait.new(:name => 'Scoops', :relation => 'has_many', :variety => grader)
+    Habanero::AssociationTrait.new(:name => 'Grader', :relation => 'belongs_to', :variety => feature),
+    Habanero::AssociationTrait.new(:name => 'Features', :relation => 'has_many', :variety => grader)
   ]
 )
 
@@ -247,10 +247,10 @@ Habanero::RelationTrait.create!(
   ]
 )
 =end
-# Phase 26 - add template back into Scoop
+# Phase 26 - add template back into Feature
 =begin
-scoop = Habanero::Variety.find_by_name('Scoop')
-Habanero::StringTrait.create!(:name => 'Template', :variety => scoop)
+feature = Habanero::Variety.find_by_name('Feature')
+Habanero::StringTrait.create!(:name => 'Template', :variety => feature)
 =end
 # Phase 26 - Fix region names 
 =begin
@@ -279,11 +279,11 @@ r.save!
 kit = Habanero::Section.create!(:name => 'Kitchens', :route => '/kitchen', :site => variety2.site, :parent => variety2)
 page = Habanero::Page.create!(:name => 'Layout Kitchen', :section => kit, :target => layout, :route => '/layouts', :layout => kit_layout)
 
-# build the scoops
-scoop = Habanero::LayoutScoop.create!(:name => 'Layout')
+# build the features
+feature = Habanero::LayoutFeature.create!(:name => 'Layout')
 
 # build the placements
-Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :region => kit_layout.regions.find_by_name('Content'), :template => 'layout')
+Habanero::FeaturePlacement.create!(:page => page, :feature => feature, :region => kit_layout.regions.find_by_name('Content'), :template => 'layout')
 =end
 # Phase 24 - Create some Layout Sieves
 =begin
@@ -310,11 +310,11 @@ sieve.sieve_traits << Habanero::SieveTrait.new(:trait => region.traits.find_by_n
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => region.traits.find_by_name('Offset'))
 sieve.save!
 =end
-# Phase 23 - Define LayoutScoop
+# Phase 23 - Define LayoutFeature
 =begin
-parent = Habanero::Variety.find_by_name('VarietyScoop')
+parent = Habanero::Variety.find_by_name('VarietyFeature')
 brand = Habanero::Brand.find_by_name('Habanero')
-Habanero::Variety.create!(:name => 'LayoutScoop', :brand => brand, :parent => parent)
+Habanero::Variety.create!(:name => 'LayoutFeature', :brand => brand, :parent => parent)
 =end
 # Phase 22 - Build a fluid layout for "variety kitchens"
 =begin
@@ -425,8 +425,8 @@ Habanero::SlugTrait.create!(:name => 'Slug', :variety => section, :target => sec
 page = Habanero::Variety.find_by_name('Page')
 Habanero::SlugTrait.create!(:name => 'Slug', :variety => page, :target => page.traits.find_by_name('Name'), :scope => page.traits.find_by_name('Section'))
 
-scoop = Habanero::Variety.find_by_name('Scoop')
-Habanero::SlugTrait.create!(:name => 'Slug', :variety => scoop, :target => scoop.traits.find_by_name('Name'))
+feature = Habanero::Variety.find_by_name('Feature')
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => feature, :target => feature.traits.find_by_name('Name'))
 
 layout = Habanero::Variety.find_by_name('Layout')
 Habanero::SlugTrait.create!(:name => 'Slug', :variety => layout, :target => layout.traits.find_by_name('Name'))
@@ -489,7 +489,7 @@ abbrev = Habanero::StringTrait.create!(:name => 'Abbreviation', :variety => c)
 strat = Habanero::TextTrait.create!(:name => 'Strategy', :variety => c)
 
 sieve = Habanero::Sieve.create!(:name => 'Category Document Sieve', :variety => c)
-scoop = Habanero::DocumentationScoop.create!(:name => 'Category Document', :sieve => sieve)
+feature = Habanero::DocumentationFeature.create!(:name => 'Category Document', :sieve => sieve)
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => name)
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => nest)
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => abbrev)
@@ -499,8 +499,8 @@ ref = Habanero::Section.find_by_name('Reference Manual')
 content_page = Habanero::Page.create!(:name => 'Category Page', :section => ref, :route => '/traits/:id', :target => c)
 edit_page = Habanero::Page.create!(:name => 'Category Edit Page', :section => ref, :route => '/traits/:id/edit', :target => c, :next_page => content_page)
 
-Habanero::ScoopPlacement.create!(:page => edit_page, :scoop => scoop, :template => 'edit')
-Habanero::ScoopPlacement.create!(:page => content_page, :scoop => scoop, :template => 'show')
+Habanero::FeaturePlacement.create!(:page => edit_page, :feature => feature, :template => 'edit')
+Habanero::FeaturePlacement.create!(:page => content_page, :feature => feature, :template => 'show')
 =end
 # Phase 14 - Create a variety edit page
 =begin
@@ -509,8 +509,8 @@ ref = Habanero::Section.find_by_name('Reference Manual')
 next_page = Habanero::Page.find_by_name('Trait Page')
 page = Habanero::Page.create!(:name => 'Trait Edit Page', :section => ref, :route => '/traits/:id/edit', :target => trait, :next_page => next_page)
 
-scoop = Habanero::DocumentationScoop.find_by_name('Trait Document')
-Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'edit')
+feature = Habanero::DocumentationFeature.find_by_name('Trait Document')
+Habanero::FeaturePlacement.create!(:page => page, :feature => feature, :template => 'edit')
 =end
 # Phase 13 - Create a variety edit page
 =begin
@@ -518,8 +518,8 @@ ref = Habanero::Section.find_by_name('Reference Manual')
 next_page = Habanero::Page.find_by_name('Variety Page')
 page = Habanero::Page.create!(:name => 'Variety Edit Page', :section => ref, :route => '/varieties/:id/edit', :next_page => next_page)
 
-scoop = Habanero::DocumentationScoop.find_by_name('Variety Document')
-Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'edit')
+feature = Habanero::DocumentationFeature.find_by_name('Variety Document')
+Habanero::FeaturePlacement.create!(:page => page, :feature => feature, :template => 'edit')
 =end
 # Phase 12 - Add a next page trait to pages, create a variety edit page
 =begin
@@ -555,53 +555,53 @@ Habanero::RelationTrait.create!(
   ]
 )
 =end
-# Phase 9 - Invent collection scoops, reconstruct Scoop inheritance hierarchy
+# Phase 9 - Invent collection features, reconstruct Feature inheritance hierarchy
 =begin
 brand = Habanero::Brand.find_by_name('Habanero')
 
-s = Habanero::Variety.find_by_name('Scoop')
+s = Habanero::Variety.find_by_name('Feature')
 
-variety_scoop = Habanero::Variety.create!(:name => 'VarietyScoop', :brand => brand, :parent => s)
+variety_feature = Habanero::Variety.create!(:name => 'VarietyFeature', :brand => brand, :parent => s)
 
-# rename list scoop to collection scoop and make it a child of variety scoop
-ls = Habanero::Variety.find_by_name('ListScoop')
-ls.name = 'CollectionScoop'
-ls.parent = variety_scoop
+# rename list feature to collection feature and make it a child of variety feature
+ls = Habanero::Variety.find_by_name('ListFeature')
+ls.name = 'CollectionFeature'
+ls.parent = variety_feature
 ls.save!
 
-# move scoop sieve to the level or variety scoop
-Habanero::RelationTrait.find_by_name('Sieve Documentation Scoops').destroy
+# move feature sieve to the level or variety feature
+Habanero::RelationTrait.find_by_name('Sieve Documentation Features').destroy
 
 sieve = Habanero::Variety.find_by_name('Sieve')
 
 Habanero::RelationTrait.create!(
-  :name => 'Sieve Variety Scoops',
+  :name => 'Sieve Variety Features',
   :variety => sieve,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Variety Scoops', :relation => 'has_many', :variety => sieve),
-    Habanero::AssociationTrait.new(:name => 'Sieve', :relation => 'belongs_to', :variety => variety_scoop),
+    Habanero::AssociationTrait.new(:name => 'Variety Features', :relation => 'has_many', :variety => sieve),
+    Habanero::AssociationTrait.new(:name => 'Sieve', :relation => 'belongs_to', :variety => variety_feature),
   ]
 )
 
-# make documentation scoop a child of variety scoop
-ds = Habanero::Variety.find_by_name('DocumentationScoop')
-ds.parent = variety_scoop
+# make documentation feature a child of variety feature
+ds = Habanero::Variety.find_by_name('DocumentationFeature')
+ds.parent = variety_feature
 ds.save!
 
-# create a new type of scoop -- Document Collection Scoop -- and create some instances for placement
+# create a new type of feature -- Document Collection Feature -- and create some instances for placement
 sieve = Habanero::Sieve.find_by_name('Variety Document Sieve')
-variety = Habanero::Variety.create!(:name => 'DocumentationCollectionScoop', :brand => brand, :parent => ls)
+variety = Habanero::Variety.create!(:name => 'DocumentationCollectionFeature', :brand => brand, :parent => ls)
 
-s_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Variety List', :sieve => sieve)
-i_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Trait List', :sieve => sieve)
+s_feature = Habanero::DocumentationCollectionFeature.create!(:name => 'Variety List', :sieve => sieve)
+i_feature = Habanero::DocumentationCollectionFeature.create!(:name => 'Trait List', :sieve => sieve)
 
 # adjust the placements
-s_placement = Habanero::ScoopPlacement.find(1)
-s_placement.scoop = s_scoop
+s_placement = Habanero::FeaturePlacement.find(1)
+s_placement.feature = s_feature
 s_placement.save!
 
-i_placement = Habanero::ScoopPlacement.find(3)
-i_placement.scoop = i_scoop
+i_placement = Habanero::FeaturePlacement.find(3)
+i_placement.feature = i_feature
 i_placement.save!
 =end
 # Phase 8 - start building habanero site variety2 doco section
@@ -609,14 +609,14 @@ i_placement.save!
 variety = Habanero::Variety.find_by_name('Variety')
 trait = Habanero::Variety.find_by_name('Trait')
 
-# move template column from Scoop to ScoopPlacement so we can reuse a scoop and apply a different template when placed
-#Habanero::Variety.find_by_name('Scoop').traits.find_by_name('Template').destroy
+# move template column from Feature to FeaturePlacement so we can reuse a feature and apply a different template when placed
+#Habanero::Variety.find_by_name('Feature').traits.find_by_name('Template').destroy
 
-#placement = Habanero::Variety.find_by_name('ScoopPlacement')
+#placement = Habanero::Variety.find_by_name('FeaturePlacement')
 #Habanero::StringTrait.create!(:name => 'Template', :variety => placement)
 
-#Habanero::Scoop.reset_column_information
-#Habanero::ScoopPlacement.reset_column_information
+#Habanero::Feature.reset_column_information
+#Habanero::FeaturePlacement.reset_column_information
 
 # build the site, section and pages
 site = Habanero::Site.create!(:name => 'Habanero')
@@ -625,9 +625,9 @@ ref = Habanero::Section.create!(:name => 'Reference Manual', :route => '/referen
 page = Habanero::Page.create!(:name => 'Variety Page', :section => ref, :route => '/varieties/:id')
 i_page = Habanero::Page.create!(:name => 'Trait Page', :section => ref, :route => '/traits/:id')
 
-# build the scoops
+# build the features
 sieve = Habanero::Sieve.create!(:name => 'Variety Document Sieve', :variety => variety)
-scoop = Habanero::DocumentationScoop.create!(:name => 'Variety Document', :sieve => sieve)
+feature = Habanero::DocumentationFeature.create!(:name => 'Variety Document', :sieve => sieve)
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Name'))
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Brand'))
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Variety Nest'))
@@ -635,7 +635,7 @@ sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_
 sieve.save!
 
 i_sieve = Habanero::Sieve.create!(:name => 'Trait Document Sieve', :variety => trait)
-i_scoop = Habanero::DocumentationScoop.create!(:name => 'Trait Document', :sieve => i_sieve)
+i_feature = Habanero::DocumentationFeature.create!(:name => 'Trait Document', :sieve => i_sieve)
 i_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => trait.traits.find_by_name('Name'))
 i_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => trait.traits.find_by_name('Type'))
 i_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => trait.traits.find_by_name('Documentation'))
@@ -652,10 +652,10 @@ i_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => trait.traits.find_by_
 i_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => trait.traits.find_by_name('Variety'))
 
 # build the placements
-Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'list')
-Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'show')
-Habanero::ScoopPlacement.create!(:page => i_page, :scoop => i_scoop, :template => 'list')
-Habanero::ScoopPlacement.create!(:page => i_page, :scoop => i_scoop, :template => 'show')
+Habanero::FeaturePlacement.create!(:page => page, :feature => feature, :template => 'list')
+Habanero::FeaturePlacement.create!(:page => page, :feature => feature, :template => 'show')
+Habanero::FeaturePlacement.create!(:page => i_page, :feature => i_feature, :template => 'list')
+Habanero::FeaturePlacement.create!(:page => i_page, :feature => i_feature, :template => 'show')
 =end
 # Phase 7 - add nests to Varieties and Traits
 =begin
@@ -665,7 +665,7 @@ Habanero::NestTrait.create!(:name => 'Variety Nest', :variety => variety)
 trait = Habanero::Variety.find_by_name('Trait')
 Habanero::NestTrait.create!(:name => 'Trait Nest', :variety => trait)
 =end
-# Phase 6 - Documentation Traits, renaming SieveScoop to DocumentationScoop (which is the first specific use of Sieves)
+# Phase 6 - Documentation Traits, renaming SieveFeature to DocumentationFeature (which is the first specific use of Sieves)
 =begin
 Habanero::Variety
 Habanero::Trait
@@ -679,16 +679,16 @@ Habanero::TextTrait.create!(:name => 'Documentation', :variety => brand)
 Habanero::TextTrait.create!(:name => 'Documentation', :variety => variety)
 Habanero::TextTrait.create!(:name => 'Documentation', :variety => trait)
 
-s = Habanero::Variety.find_by_name('SieveScoop')
-s.name = 'DocumentationScoop'
+s = Habanero::Variety.find_by_name('SieveFeature')
+s.name = 'DocumentationFeature'
 s.save!
 
-r = Habanero::RelationTrait.find_by_name('Sieve Sieve Scoops')
-r.name = 'Sieve Documentation Scoops'
+r = Habanero::RelationTrait.find_by_name('Sieve Sieve Features')
+r.name = 'Sieve Documentation Features'
 r.save!
 
-a = Habanero::AssociationTrait.find_by_name('Sieve Scoops')
-a.name = 'Documentation Scoop'
+a = Habanero::AssociationTrait.find_by_name('Sieve Features')
+a.name = 'Documentation Feature'
 a.save!
 =end
 # Phase 5 - Routes
@@ -711,13 +711,13 @@ section.traits << Habanero::RouteTrait.new(:name => 'Route')
 site = Habanero::Variety.find_by_name('Site')
 site.traits << Habanero::StringTrait.new(:name => 'Host')
 
-# Phase 4 - Composite Scoops & Sieves Scoop
+# Phase 4 - Composite Features & Sieves Feature
 =begin
 brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
-scoop = Habanero::Variety.find_by_name('Scoop')
-Habanero::NestTrait.create!(:name => 'Nest', :variety => scoop)
+feature = Habanero::Variety.find_by_name('Feature')
+Habanero::NestTrait.create!(:name => 'Nest', :variety => feature)
 
 section = Habanero::Variety.find_by_name('Section')
 variety = Habanero::Variety.find_by_name('Variety')
@@ -766,41 +766,41 @@ Habanero::RelationTrait.create!(
   ]
 )
 
-sieve_scoop = Habanero::Variety.create!(:name => 'SieveScoop', :brand => brand, :parent => scoop)
+sieve_feature = Habanero::Variety.create!(:name => 'SieveFeature', :brand => brand, :parent => feature)
 
 Habanero::RelationTrait.create!(
-  :name => 'Sieve Sieve Scoops',
+  :name => 'Sieve Sieve Features',
   :variety => sieve,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Sieve Scoops', :relation => 'has_many', :variety => sieve),
-    Habanero::AssociationTrait.new(:name => 'Sieve', :relation => 'belongs_to', :variety => sieve_scoop),
+    Habanero::AssociationTrait.new(:name => 'Sieve Features', :relation => 'has_many', :variety => sieve),
+    Habanero::AssociationTrait.new(:name => 'Sieve', :relation => 'belongs_to', :variety => sieve_feature),
   ]
 )
 =end
-# Phase 3 - Basic Scoops, Placements & Regions
+# Phase 3 - Basic Features, Placements & Regions
 =begin
 brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
 page = Habanero::Variety.find_by_name('Page')
 
-scoop = Habanero::Variety.create!(:name => 'Scoop', :brand => brand, :parent => active_record)
-Habanero::StringTrait.create!(:name => 'Type', :variety => scoop)
-Habanero::StringTrait.create!(:name => 'Name', :variety => scoop)
-Habanero::StringTrait.create!(:name => 'Title', :variety => scoop)
-Habanero::TextTrait.create!(:name => 'Body', :variety => scoop)
-Habanero::StringTrait.create!(:name => 'Body Format', :variety => scoop)
-Habanero::StringTrait.create!(:name => 'Template', :variety => scoop)
+feature = Habanero::Variety.create!(:name => 'Feature', :brand => brand, :parent => active_record)
+Habanero::StringTrait.create!(:name => 'Type', :variety => feature)
+Habanero::StringTrait.create!(:name => 'Name', :variety => feature)
+Habanero::StringTrait.create!(:name => 'Title', :variety => feature)
+Habanero::TextTrait.create!(:name => 'Body', :variety => feature)
+Habanero::StringTrait.create!(:name => 'Body Format', :variety => feature)
+Habanero::StringTrait.create!(:name => 'Template', :variety => feature)
 
-Habanero::Variety.create!(:name => 'ContentScoop', :brand => brand, :parent => scoop)
+Habanero::Variety.create!(:name => 'ContentFeature', :brand => brand, :parent => feature)
 
-list_scoop = Habanero::Variety.create!(:name => 'ListScoop', :brand => brand, :parent => scoop)
-Habanero::IntegerTrait.create!(:name => 'Columns', :variety => list_scoop)
+list_feature = Habanero::Variety.create!(:name => 'ListFeature', :brand => brand, :parent => feature)
+Habanero::IntegerTrait.create!(:name => 'Columns', :variety => list_feature)
 
-placement = Habanero::Variety.create!(:name => 'ScoopPlacement', :brand => brand, :parent => active_record)
+placement = Habanero::Variety.create!(:name => 'FeaturePlacement', :brand => brand, :parent => active_record)
 
 Habanero::RelationTrait.create!(
-  :name => 'Scoop Placements',
+  :name => 'Feature Placements',
   :variety => page,
   :children => [
     Habanero::AssociationTrait.new(:name => 'Placements', :relation => 'has_many', :variety => page),
@@ -809,11 +809,11 @@ Habanero::RelationTrait.create!(
 )
 
 Habanero::RelationTrait.create!(
-  :name => 'Scoop Placements',
-  :variety => scoop,
+  :name => 'Feature Placements',
+  :variety => feature,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Placements', :relation => 'has_many', :variety => scoop),
-    Habanero::AssociationTrait.new(:name => 'Scoop', :relation => 'belongs_to', :variety => placement),
+    Habanero::AssociationTrait.new(:name => 'Placements', :relation => 'has_many', :variety => feature),
+    Habanero::AssociationTrait.new(:name => 'Feature', :relation => 'belongs_to', :variety => placement),
   ]
 )
 

@@ -5,7 +5,7 @@ class HabaneroSitePantry < Pantry::Base
     if i = Habanero::Variety.find_by_name('Trait')
       i.descendants.map(&:klass)
     end
-    if i = Habanero::Variety.find_by_name('Scoop')
+    if i = Habanero::Variety.find_by_name('Feature')
       i.descendants.map(&:klass)
     end
     
@@ -63,16 +63,16 @@ class HabaneroSitePantry < Pantry::Base
     can_stack 'Habanero::Condition', 
       :id_value_methods => [:grader, :trait]
 
-    can_stack 'Habanero::Scoop',
+    can_stack 'Habanero::Feature',
       :id_value_methods => [:name, :brand],
       :scope => {
         :includes => :brand,
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
-    can_stack 'Habanero::ScoopPlacement', 
-      :id_value_methods => [:template, :page, :scoop, :region],
+    can_stack 'Habanero::FeaturePlacement', 
+      :id_value_methods => [:template, :page, :feature, :region],
       :scope => {
-        :includes => {:scoop => :brand},
+        :includes => {:feature => :brand},
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
 

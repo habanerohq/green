@@ -38,7 +38,7 @@ module Habanero
     def format_habanero_nest_trait(target, trait)
       trait_span(trait) do 
         v = target.parent.to_s
-        link_to v, page_path(@placement.scoop.page, :id => v, :variety_type => trait.variety) if v
+        link_to v, page_path(@placement.feature.page, :id => v, :variety_type => trait.variety) if v
       end
 =begin
       trait_span(trait) do 
@@ -66,7 +66,7 @@ module Habanero
         end
       else
         v = value_for(target, trait)
-        link_to v, page_path(@placement.scoop.page, :id => v, :variety_type => trait.inverse_variety) if v
+        link_to v, page_path(@placement.feature.page, :id => v, :variety_type => trait.inverse_variety) if v
       end
     end
 

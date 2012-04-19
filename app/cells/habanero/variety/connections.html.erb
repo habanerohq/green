@@ -9,7 +9,7 @@
         <ul>
           <%- @target.send(i.method_name).each do  |c| -%>
             <li>
-              <%= link_to(c, page_path((@placement.scoop.page || @page), :id => c, :variety_type => c.class._variety)) %>
+              <%= link_to(c, page_path((@placement.feature.page || @page), :id => c, :variety_type => c.class._variety)) %>
             </li>
           <%- end -%>
         </ul>

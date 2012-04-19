@@ -20,7 +20,7 @@ module Habanero
 
       if params[@placement.params_key] && request.put?
         @target.update_attributes(params[@placement.params_key])
-        redirect_to page_path(@placement.scoop.page || @page, :id => @target, :variety_type => @target._variety)
+        redirect_to page_path(@placement.feature.page || @page, :id => @target, :variety_type => @target._variety)
       end
 
       render
@@ -34,7 +34,7 @@ module Habanero
         @target.transaction do
           if @target.save
             @target.post_create if @target.respond_to?(:post_create)
-            redirect_to page_path(@placement.scoop.page || @page, :id => @target, :variety_type => @target._variety)
+            redirect_to page_path(@placement.feature.page || @page, :id => @target, :variety_type => @target._variety)
           end
         end
       end

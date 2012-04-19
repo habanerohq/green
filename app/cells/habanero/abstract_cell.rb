@@ -3,7 +3,7 @@ module Habanero
     helper 'habanero/cells'
     helper 'habanero/pages'
 
-    layout 'scoop'
+    layout 'feature'
 
     protected
 

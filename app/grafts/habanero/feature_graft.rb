@@ -1,5 +1,5 @@
 module Habanero
-  module ScoopGraft
+  module FeatureGraft
     extend ActiveSupport::Concern
 
     attr_accessor :search
@@ -23,7 +23,7 @@ module Habanero
     
     module ClassMethods
       def cell_type
-        name.gsub('Scoop', '')
+        name.gsub('Feature', '')
       end
     end
 

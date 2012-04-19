@@ -21,7 +21,7 @@
   </table>
 <% end %>
 
-<%= paginate @targets if @placement.scoop.paginate? and @targets.any? %>
+<%= paginate @targets if @placement.feature.paginate? and @targets.any? %>
 
 <%= link_to "Create another #{@variety}", page_path(new_variety_page, :variety_type => @variety), :class => 'btn' %>
 

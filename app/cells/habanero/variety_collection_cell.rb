@@ -32,7 +32,7 @@ module Habanero
 
     def tree(options)
       _list(options)
-      @sieve = @placement.scoop.sieve
+      @sieve = @placement.feature.sieve
       @targets = roots_only
       render
     end
@@ -48,13 +48,13 @@ module Habanero
     def _list(options)
       instance_variables_from(options)
       @grader = @placement.grader
-      @sieve = @placement.scoop.sieve
+      @sieve = @placement.feature.sieve
       @variety = variety_by_precedence
       @search = @placement.search
       @targets = targets_by_precedence
       @traits = traits_by_precedence
 
-      if @targets.any? and @placement.scoop.paginate?
+      if @targets.any? and @placement.feature.paginate?
         @targets = @targets.page(params[:page])
       end
     end

@@ -1,9 +1,9 @@
 <div class="hero-unit">
-  <% if @scoop.title.present? %>
-    <h1><%= @placement.scoop.title %></h1>
+  <% if @feature.title.present? %>
+    <h1><%= @placement.feature.title %></h1>
   <% end %>
 
   <%= cell_content do %>
-    <p><%= @placement.scoop.body %></p>
+    <p><%= @placement.feature.body %></p>
   <% end %>
 </div>

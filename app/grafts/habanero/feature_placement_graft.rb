@@ -1,5 +1,5 @@
 module Habanero
-  module ScoopPlacementGraft
+  module FeaturePlacementGraft
     extend ActiveSupport::Concern
 
     def region_name
@@ -7,21 +7,21 @@ module Habanero
     end
 
     def grader
-      scoop.grader
+      feature.grader
     end
 
     def search
-      scoop.search
+      feature.search
     end
 
     def traits
-      scoop.traits
+      feature.traits
     end
 
    def prepare_search(params, page)
       if data = params[params_key]
-        scoop.translate_search(data)
-        page.all_placements.each { |p| p.scoop.search = scoop.search if p.scoop.id == scoop.id }
+        feature.translate_search(data)
+        page.all_placements.each { |p| p.feature.search = feature.search if p.feature.id == feature.id }
       end
     end
 
