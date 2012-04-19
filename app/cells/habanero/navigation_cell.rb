@@ -4,19 +4,19 @@ module Habanero
   
     def site(options)
       instance_variables_from(options)
-      @sections = Habanero::Section.indexed_roots
+      @gardens = Habanero::Garden.indexed_roots
       render
     end
     
-    def subsections(options)
+    def subgardens(options)
       instance_variables_from(options)
-      @index_pages = @page.section.siblings.map { |s| s.index_page }.compact
+      @index_pages = @page.garden.siblings.map { |s| s.index_page }.compact
       render
     end
     
     def siblings(options)
       instance_variables_from(options)
-      @pages = @page.section.pages
+      @pages = @page.garden.pages
       render
     end
   end

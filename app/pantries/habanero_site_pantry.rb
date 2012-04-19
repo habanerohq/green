@@ -28,16 +28,16 @@ class HabaneroSitePantry < Pantry::Base
       }
 
     can_stack 'Habanero::Site', :scope => {:where => {:name => 'Habanero'}}
-    can_stack 'Habanero::Section', 
+    can_stack 'Habanero::Garden', 
       :id_value_methods => [:name, :site, :parent],
       :scope => {
         :includes => :site,
         :where => {:habanero_sites => {:name => 'Habanero'}}
       }      
     can_stack 'Habanero::Page', 
-      :id_value_methods => [:name, :section],
+      :id_value_methods => [:name, :garden],
       :scope => {
-        :includes =>  {:section => :site},
+        :includes =>  {:garden => :site},
         :where => {:habanero_sites => {:name => 'Habanero'}}
       }      
     can_stack 'Habanero::Sieve', 

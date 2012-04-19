@@ -1,20 +1,20 @@
 require 'spec_helper'
 
 describe Habanero::Page do
-  it { should belong_to(:section) }
+  it { should belong_to(:garden) }
   it { should belong_to(:layout) }
   it { should belong_to(:target) } # needs rethinking
 
   it { should validate_presence_of(:name) }
-# it { should validate_uniqueness_of(:name).scoped_to('section_id') }
+# it { should validate_uniqueness_of(:name).scoped_to('garden_id') }
 
   before(:each) do
     @page = Habanero::Page.new
   end
 
-  it 'should duck type section as parent' do
-    section = @page.build_section(:name => 'Foo')
-    @page.parent.should == section
+  it 'should duck type garden as parent' do
+    garden = @page.build_garden(:name => 'Foo')
+    @page.parent.should == garden
   end
 
   it 'should have a path' do
@@ -29,7 +29,7 @@ describe Habanero::Page do
   end
 
   it 'should qualify path using parent' do
-    @page.build_section(:name => 'Foo', :route => '/foo')
+    @page.build_garden(:name => 'Foo', :route => '/foo')
     @page.route = '/bar'
     @page.qualified_path.should == '/foo/bar'
   end

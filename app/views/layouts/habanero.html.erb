@@ -6,7 +6,7 @@
   <%= csrf_meta_tags %>
 </head>
 
-<body class="page <%= @page.section.names_idified %> <%= @page.name.idify %>">
+<body class="page <%= @page.garden.names_idified %> <%= @page.name.idify %>">
 
 <div class="<%= layout_class(@page.layout) %>">
   <% @page.layout.rows.each do |r| %>

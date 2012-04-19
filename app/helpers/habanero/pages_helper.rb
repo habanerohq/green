@@ -6,7 +6,7 @@ module Habanero
     end
     
     def new_variety_page
-      Habanero::Page.find_all_by_route('/:variety_type/new').detect { |p| p.section.route? }
+      Habanero::Page.find_all_by_route('/:variety_type/new').detect { |p| p.garden.route? }
     end
     
     def target_pages(targets)
@@ -20,8 +20,8 @@ module Habanero
       end.compact
     end
     
-    def maybe_use_section_if_index(target)
-      target.name.downcase == 'index' ? target.section : target 
+    def maybe_use_garden_if_index(target)
+      target.name.downcase == 'index' ? target.garden : target 
     end
   end
 end

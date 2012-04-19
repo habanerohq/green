@@ -5,10 +5,10 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to @page.section.site.name, '/', :class => 'brand' %>
+      <%= link_to @page.garden.site.name, '/', :class => 'brand' %>
 
       <ul class="nav">
-        <% @sections.each do |s| %>
+        <% @gardens.each do |s| %>
           <% s_path = page_path(s.index_page, :id => s.index_page, :variety_type => s.class._variety) %>
           
           <% unless s.indexed_children.any? %>

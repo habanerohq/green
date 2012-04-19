@@ -5,21 +5,21 @@ module Habanero
     included do
       validates :name,
                 :presence => true,
-                :uniqueness => { :scope => 'section_id' }
+                :uniqueness => { :scope => 'garden_id' }
     end
 
     module ClassMethods
       def draw_routes(map)
-        where('route is not null').order('section_position').reject { |p| p.route.blank? or p.section.try(:route).blank? }.each { |p| p.draw_route(map) }
+        where('route is not null').order('garden_position').reject { |p| p.route.blank? or p.garden.try(:route).blank? }.each { |p| p.draw_route(map) }
       end
     end
 
     def parent
-      section
+      garden
     end
 
     def draw_route(map, options = {})
-      options[:constraints] = { :host => section.site.host } unless section.site.host.blank?
+      options[:constraints] = { :host => garden.site.host } unless garden.site.host.blank?
       options[:as] = "page_#{id}"
       options[:defaults] = { :draw_type => self.class.name, :draw_id => id }
 
@@ -47,7 +47,7 @@ module Habanero
     end
 
     def nearest_target
-      target || section.nearest_target
+      target || garden.nearest_target
     end
     
     def is_index_page?
@@ -55,7 +55,7 @@ module Habanero
     end
     
     def to_s_qual
-      "#{name} (#{section})"
+      "#{name} (#{garden})"
     end    
   end
 end

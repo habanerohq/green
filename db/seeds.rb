@@ -1,9 +1,9 @@
 # Phase 38 - variety create page
 
-kit = Habanero::Section.find_by_name('Kitchens')
+kit = Habanero::Garden.find_by_name('Kitchens')
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
-create_page = Habanero::Page.create!(:name => 'Create Variety', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/new', :layout => kit_layout)
+create_page = Habanero::Page.create!(:name => 'Create Variety', :garden => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/new', :layout => kit_layout)
 
 # reuse the variety feature from the edit page
 edit_page = Habanero::Page.find_by_name('Edit Variety')
@@ -12,7 +12,7 @@ Habanero::FeaturePlacement.create!(:page => create_page, :feature => edit_featur
 
 # move it to the right position, otherwise routes don't work
 show_page = Habanero::Page.find_by_name('Show Variety')
-create_page.insert_at(show_page.section_position)
+create_page.insert_at(show_page.garden_position)
 
 # Phase 37 - fix variety tree sieve hierarchy
 =begin
@@ -47,10 +47,10 @@ Habanero::StringTrait.create!(:name => 'Format', :variety => name_trait)
 =end
 # Phase 33 - Build an edit page for varieties
 =begin
-kit = Habanero::Section.find_by_name('Kitchens')
+kit = Habanero::Garden.find_by_name('Kitchens')
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
-edit_page = Habanero::Page.create!(:name => 'Edit Variety', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/:id/edit', :layout => kit_layout)
+edit_page = Habanero::Page.create!(:name => 'Edit Variety', :garden => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/:id/edit', :layout => kit_layout)
 edit_feature = Habanero::VarietyFeature.create!(:name => 'Edit Variety')
 
 Habanero::FeaturePlacement.create!(:page => edit_page, :feature => edit_feature, :region => edit_page.layout.regions.find_by_name('Content'), :template => 'edit')
@@ -59,10 +59,10 @@ Habanero::Page.find_by_name('Show Variety').placements.first.feature.update_attr
 =end
 # Phase 32a - Build a show page for varieties
 =begin
-kit = Habanero::Section.find_by_name('Kitchens')
+kit = Habanero::Garden.find_by_name('Kitchens')
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
-show_page = Habanero::Page.create!(:name => 'Show Variety', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/:id', :layout => kit_layout)
+show_page = Habanero::Page.create!(:name => 'Show Variety', :garden => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites/:variety_type/:id', :layout => kit_layout)
 
 show_feature = Habanero::VarietyFeature.create!(:name => 'Show Variety')
 
@@ -87,17 +87,17 @@ Habanero::RelationTrait.create!(
 
 # Phase 31 - Build one kitchen per tree
 =begin
-kit = Habanero::Section.find_by_name('Kitchens')
+kit = Habanero::Garden.find_by_name('Kitchens')
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
 layout_page = kit.pages.first
 layout_page.route = '/layouts'
 layout_page.save!
 
-site_page = Habanero::Page.create!(:name => 'Site Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites', :layout => kit_layout)
-variety_page = Habanero::Page.create!(:name => 'Variety Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Variety'), :route => '/varieties', :layout => kit_layout)
-feature_page = Habanero::Page.create!(:name => 'Feature Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Feature'), :route => '/features', :layout => kit_layout)
-category_page = Habanero::Page.create!(:name => 'Category Kitchen', :section => kit, :target => Habanero::Variety.find_by_name('Category'), :route => '/categories', :layout => kit_layout)
+site_page = Habanero::Page.create!(:name => 'Site Kitchen', :garden => kit, :target => Habanero::Variety.find_by_name('Site'), :route => '/sites', :layout => kit_layout)
+variety_page = Habanero::Page.create!(:name => 'Variety Kitchen', :garden => kit, :target => Habanero::Variety.find_by_name('Variety'), :route => '/varieties', :layout => kit_layout)
+feature_page = Habanero::Page.create!(:name => 'Feature Kitchen', :garden => kit, :target => Habanero::Variety.find_by_name('Feature'), :route => '/features', :layout => kit_layout)
+category_page = Habanero::Page.create!(:name => 'Category Kitchen', :garden => kit, :target => Habanero::Variety.find_by_name('Category'), :route => '/categories', :layout => kit_layout)
 
 placements = layout_page.placements
 
@@ -118,16 +118,16 @@ placements.each { |p| p.save!}
 # build the sieves
 site = Habanero::Variety.find_by_name('Site')
 site_sieve = Habanero::Sieve.create!(:name => 'Site Tree Sieve', :variety => site)
-site_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => site.traits.find_by_name('Sections'))
+site_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => site.traits.find_by_name('Gardens'))
 site_sieve.save!
 
-section = Habanero::Variety.find_by_name('Section')
-section_sieve = Habanero::Sieve.create!(:name => 'Section Tree Sieve', :variety => section, :parent => site_sieve)
-section_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => section.traits.find_by_name('Pages'))
-section_sieve.save!
+garden = Habanero::Variety.find_by_name('Garden')
+garden_sieve = Habanero::Sieve.create!(:name => 'Garden Tree Sieve', :variety => garden, :parent => site_sieve)
+garden_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => garden.traits.find_by_name('Pages'))
+garden_sieve.save!
 
 page = Habanero::Variety.find_by_name('Page')
-page_sieve = Habanero::Sieve.create!(:name => 'Page Tree Sieve', :variety => page, :parent => section_sieve)
+page_sieve = Habanero::Sieve.create!(:name => 'Page Tree Sieve', :variety => page, :parent => garden_sieve)
 page_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => page.traits.find_by_name('Placements'))
 page_sieve.save!
 
@@ -146,7 +146,7 @@ variety_sieve = Habanero::Sieve.create!(:name => 'Variety Tree Sieve', :variety 
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Traits'))
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Sieves'))
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Graders'))
-variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Sections'))
+variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Gardens'))
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Pages'))
 variety_sieve.save!
 
@@ -267,7 +267,7 @@ Habanero::Region.create!(:name => 'Right', :span => 3, :layout => layout, :row =
 # Phase 25 - Start Layout Kitchen
 =begin
 layout = Habanero::Variety.find_by_name('Layout')
-variety2 = Habanero::Section.find_by_name('Sorbet2')
+variety2 = Habanero::Garden.find_by_name('Sorbet2')
 
 kit_layout = Habanero::Layout.find_by_name('Kitchen')
 
@@ -276,8 +276,8 @@ r = kit_layout.regions.find_all_by_name('Left').last
 r.name = 'Right'
 r.save!
 
-kit = Habanero::Section.create!(:name => 'Kitchens', :route => '/kitchen', :site => variety2.site, :parent => variety2)
-page = Habanero::Page.create!(:name => 'Layout Kitchen', :section => kit, :target => layout, :route => '/layouts', :layout => kit_layout)
+kit = Habanero::Garden.create!(:name => 'Kitchens', :route => '/kitchen', :site => variety2.site, :parent => variety2)
+page = Habanero::Page.create!(:name => 'Layout Kitchen', :garden => kit, :target => layout, :route => '/layouts', :layout => kit_layout)
 
 # build the features
 feature = Habanero::LayoutFeature.create!(:name => 'Layout')
@@ -419,11 +419,11 @@ Habanero::SlugTrait.create!(:name => 'Slug', :variety => category, :target => ca
 site = Habanero::Variety.find_by_name('Site')
 Habanero::SlugTrait.create!(:name => 'Slug', :variety => site, :target => site.traits.find_by_name('Name'))
 
-section = Habanero::Variety.find_by_name('Section')
-Habanero::SlugTrait.create!(:name => 'Slug', :variety => section, :target => section.traits.find_by_name('Name'), :scope => section.traits.find_by_name('Site'))
+garden = Habanero::Variety.find_by_name('Garden')
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => garden, :target => garden.traits.find_by_name('Name'), :scope => garden.traits.find_by_name('Site'))
 
 page = Habanero::Variety.find_by_name('Page')
-Habanero::SlugTrait.create!(:name => 'Slug', :variety => page, :target => page.traits.find_by_name('Name'), :scope => page.traits.find_by_name('Section'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => page, :target => page.traits.find_by_name('Name'), :scope => page.traits.find_by_name('Garden'))
 
 feature = Habanero::Variety.find_by_name('Feature')
 Habanero::SlugTrait.create!(:name => 'Slug', :variety => feature, :target => feature.traits.find_by_name('Name'))
@@ -495,9 +495,9 @@ sieve.sieve_traits << Habanero::SieveTrait.new(:trait => nest)
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => abbrev)
 sieve.sieve_traits << Habanero::SieveTrait.new(:trait => strat)
 
-ref = Habanero::Section.find_by_name('Reference Manual')
-content_page = Habanero::Page.create!(:name => 'Category Page', :section => ref, :route => '/traits/:id', :target => c)
-edit_page = Habanero::Page.create!(:name => 'Category Edit Page', :section => ref, :route => '/traits/:id/edit', :target => c, :next_page => content_page)
+ref = Habanero::Garden.find_by_name('Reference Manual')
+content_page = Habanero::Page.create!(:name => 'Category Page', :garden => ref, :route => '/traits/:id', :target => c)
+edit_page = Habanero::Page.create!(:name => 'Category Edit Page', :garden => ref, :route => '/traits/:id/edit', :target => c, :next_page => content_page)
 
 Habanero::FeaturePlacement.create!(:page => edit_page, :feature => feature, :template => 'edit')
 Habanero::FeaturePlacement.create!(:page => content_page, :feature => feature, :template => 'show')
@@ -505,18 +505,18 @@ Habanero::FeaturePlacement.create!(:page => content_page, :feature => feature, :
 # Phase 14 - Create a variety edit page
 =begin
 trait = Habanero::Variety.find_by_name('Trait')
-ref = Habanero::Section.find_by_name('Reference Manual')
+ref = Habanero::Garden.find_by_name('Reference Manual')
 next_page = Habanero::Page.find_by_name('Trait Page')
-page = Habanero::Page.create!(:name => 'Trait Edit Page', :section => ref, :route => '/traits/:id/edit', :target => trait, :next_page => next_page)
+page = Habanero::Page.create!(:name => 'Trait Edit Page', :garden => ref, :route => '/traits/:id/edit', :target => trait, :next_page => next_page)
 
 feature = Habanero::DocumentationFeature.find_by_name('Trait Document')
 Habanero::FeaturePlacement.create!(:page => page, :feature => feature, :template => 'edit')
 =end
 # Phase 13 - Create a variety edit page
 =begin
-ref = Habanero::Section.find_by_name('Reference Manual')
+ref = Habanero::Garden.find_by_name('Reference Manual')
 next_page = Habanero::Page.find_by_name('Variety Page')
-page = Habanero::Page.create!(:name => 'Variety Edit Page', :section => ref, :route => '/varieties/:id/edit', :next_page => next_page)
+page = Habanero::Page.create!(:name => 'Variety Edit Page', :garden => ref, :route => '/varieties/:id/edit', :next_page => next_page)
 
 feature = Habanero::DocumentationFeature.find_by_name('Variety Document')
 Habanero::FeaturePlacement.create!(:page => page, :feature => feature, :template => 'edit')
@@ -604,7 +604,7 @@ i_placement = Habanero::FeaturePlacement.find(3)
 i_placement.feature = i_feature
 i_placement.save!
 =end
-# Phase 8 - start building habanero site variety2 doco section
+# Phase 8 - start building habanero site variety2 doco garden
 =begin
 variety = Habanero::Variety.find_by_name('Variety')
 trait = Habanero::Variety.find_by_name('Trait')
@@ -618,12 +618,12 @@ trait = Habanero::Variety.find_by_name('Trait')
 #Habanero::Feature.reset_column_information
 #Habanero::FeaturePlacement.reset_column_information
 
-# build the site, section and pages
+# build the site, garden and pages
 site = Habanero::Site.create!(:name => 'Habanero')
-variety2 = Habanero::Section.create!(:name => 'Sorbet2', :route => '/variety2', :site => site)
-ref = Habanero::Section.create!(:name => 'Reference Manual', :route => '/reference', :site => site, :target => variety, :parent => variety2)
-page = Habanero::Page.create!(:name => 'Variety Page', :section => ref, :route => '/varieties/:id')
-i_page = Habanero::Page.create!(:name => 'Trait Page', :section => ref, :route => '/traits/:id')
+variety2 = Habanero::Garden.create!(:name => 'Sorbet2', :route => '/variety2', :site => site)
+ref = Habanero::Garden.create!(:name => 'Reference Manual', :route => '/reference', :site => site, :target => variety, :parent => variety2)
+page = Habanero::Page.create!(:name => 'Variety Page', :garden => ref, :route => '/varieties/:id')
+i_page = Habanero::Page.create!(:name => 'Trait Page', :garden => ref, :route => '/traits/:id')
 
 # build the features
 sieve = Habanero::Sieve.create!(:name => 'Variety Document Sieve', :variety => variety)
@@ -705,8 +705,8 @@ route = Habanero::Variety.create!(:name => 'RouteTrait', :brand => brand, :paren
 page = Habanero::Variety.find_by_name('Page')
 page.traits << Habanero::RouteTrait.new(:name => 'Route')
 
-section = Habanero::Variety.find_by_name('Section')
-section.traits << Habanero::RouteTrait.new(:name => 'Route')
+garden = Habanero::Variety.find_by_name('Garden')
+garden.traits << Habanero::RouteTrait.new(:name => 'Route')
 
 site = Habanero::Variety.find_by_name('Site')
 site.traits << Habanero::StringTrait.new(:name => 'Host')
@@ -719,15 +719,15 @@ active_record = Habanero::Variety.find_by_name('Base')
 feature = Habanero::Variety.find_by_name('Feature')
 Habanero::NestTrait.create!(:name => 'Nest', :variety => feature)
 
-section = Habanero::Variety.find_by_name('Section')
+garden = Habanero::Variety.find_by_name('Garden')
 variety = Habanero::Variety.find_by_name('Variety')
 
 Habanero::RelationTrait.create!(
-  :name => 'Target Sections',
+  :name => 'Target Gardens',
   :variety => variety,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Sections', :relation => 'has_many', :variety => variety),
-    Habanero::AssociationTrait.new(:name => 'Target', :relation => 'belongs_to', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Gardens', :relation => 'has_many', :variety => variety),
+    Habanero::AssociationTrait.new(:name => 'Target', :relation => 'belongs_to', :variety => garden),
   ]
 )
 
@@ -841,7 +841,7 @@ Habanero::RelationTrait.create!(
   ]
 )
 =end
-# Phase 2 - Sites, Sections & Pages
+# Phase 2 - Sites, Gardens & Pages
 =begin
 brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
@@ -849,26 +849,26 @@ active_record = Habanero::Variety.find_by_name('Base')
 site = Habanero::Variety.create!(:name => 'Site', :brand => brand, :parent => active_record)
 Habanero::StringTrait.create!(:name => 'Name', :variety => site)
 
-section = Habanero::Variety.create!(:name => 'Section', :brand => brand, :parent => active_record)
-Habanero::StringTrait.create!(:name => 'Name', :variety => section)
-Habanero::NestTrait.create!(:name => 'Nest', :variety => section)
+garden = Habanero::Variety.create!(:name => 'Garden', :brand => brand, :parent => active_record)
+Habanero::StringTrait.create!(:name => 'Name', :variety => garden)
+Habanero::NestTrait.create!(:name => 'Nest', :variety => garden)
 
 Habanero::RelationTrait.create!(
-  :name => 'Site Sections',
+  :name => 'Site Gardens',
   :variety => site,
   :ordered => true,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Sections', :relation => 'has_many', :variety => site),
-    Habanero::AssociationTrait.new(:name => 'Site', :relation => 'belongs_to', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Gardens', :relation => 'has_many', :variety => site),
+    Habanero::AssociationTrait.new(:name => 'Site', :relation => 'belongs_to', :variety => garden),
   ]
 )
 
 Habanero::RelationTrait.create!(
-  :name => 'Template Sections',
-  :variety => section,
+  :name => 'Template Gardens',
+  :variety => garden,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Sections', :relation => 'has_many', :variety => section),
-    Habanero::AssociationTrait.new(:name => 'Template', :relation => 'belongs_to', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Gardens', :relation => 'has_many', :variety => garden),
+    Habanero::AssociationTrait.new(:name => 'Template', :relation => 'belongs_to', :variety => garden),
   ]
 )
 
@@ -879,12 +879,12 @@ l = Habanero::Variety.create!(:name => 'Layout', :brand => brand, :parent => act
 Habanero::StringTrait.create!(:name => 'Name', :variety => l)
 
 Habanero::RelationTrait.create!(
-  :name => 'Section Pages',
-  :variety => section,
+  :name => 'Garden Pages',
+  :variety => garden,
   :ordered => true,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Pages', :relation => 'has_many', :variety => section),
-    Habanero::AssociationTrait.new(:name => 'Section', :relation => 'belongs_to', :variety => page),
+    Habanero::AssociationTrait.new(:name => 'Pages', :relation => 'has_many', :variety => garden),
+    Habanero::AssociationTrait.new(:name => 'Garden', :relation => 'belongs_to', :variety => page),
   ]
 )
 

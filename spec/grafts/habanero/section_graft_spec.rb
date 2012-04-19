@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Habanero::Section do
+describe Habanero::Garden do
   it { should belong_to(:site) }
   it { should have_many(:pages) }
 
@@ -11,11 +11,11 @@ describe Habanero::Section do
   it { should validate_presence_of(:name) }
 
   before(:each) do
-    @section = Habanero::Section.new :name => 'Foo', :route => '/foo'
+    @garden = Habanero::Garden.new :name => 'Foo', :route => '/foo'
   end
 
-  it 'should have a qualified path consisting of nested sections' do
-    @section.build_parent(:name => 'Bar', :route => '/bar')
-    @section.qualified_path.should == '/bar/foo'
+  it 'should have a qualified path consisting of nested gardens' do
+    @garden.build_parent(:name => 'Bar', :route => '/bar')
+    @garden.qualified_path.should == '/bar/foo'
   end
 end

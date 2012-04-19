@@ -1,5 +1,5 @@
 module Habanero
-  module SectionGraft
+  module GardenGraft
     extend ActiveSupport::Concern
 
     included do
