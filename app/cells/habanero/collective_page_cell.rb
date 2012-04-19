@@ -1,5 +1,5 @@
 module Habanero
-  class PageCollectionCell < Habanero::VarietyCollectionCell
+  class CollectivePageCell < Habanero::CollectiveVarietyCell
     def button_group(options)
       _list(options)
       render

@@ -1,5 +1,5 @@
 module Habanero
-  class VarietyCollectionCell < Habanero::AbstractCell
+  class CollectiveVarietyCell < Habanero::AbstractCell
     def list(options)
       _list(options)
       render

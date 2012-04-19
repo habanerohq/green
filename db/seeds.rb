@@ -164,10 +164,10 @@ category_sieve.save!
 page = Habanero::Page.find_by_name('Layout Kitchen')
 
 # build the features
-site_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Site Tree', :sieve => Habanero::Sieve.find_by_name('Site Tree Sieve'))
-feature_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Feature Tree', :sieve => Habanero::Sieve.find_by_name('Feature Tree Sieve'))
-variety_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Variety Tree', :sieve => Habanero::Sieve.find_by_name('Variety Tree Sieve'))
-category_feature = Habanero::VarietyCollectionFeature.create!(:name => 'Category Tree', :sieve => Habanero::Sieve.find_by_name('Category Tree Sieve'))
+site_feature = Habanero::CollectiveVarietyFeature.create!(:name => 'Site Tree', :sieve => Habanero::Sieve.find_by_name('Site Tree Sieve'))
+feature_feature = Habanero::CollectiveVarietyFeature.create!(:name => 'Feature Tree', :sieve => Habanero::Sieve.find_by_name('Feature Tree Sieve'))
+variety_feature = Habanero::CollectiveVarietyFeature.create!(:name => 'Variety Tree', :sieve => Habanero::Sieve.find_by_name('Variety Tree Sieve'))
+category_feature = Habanero::CollectiveVarietyFeature.create!(:name => 'Category Tree', :sieve => Habanero::Sieve.find_by_name('Category Tree Sieve'))
 
 # build the placements
 Habanero::FeaturePlacement.create!(:page => page, :feature => site_feature, :region => page.layout.regions.find_by_name('Left'), :template => 'tree')
