@@ -1,6 +1,6 @@
 module Habanero
   class Search
-    attr_accessor :parameters, :translators, :query_chain
+    attr_accessor :parameters, :translators, :grader_chain
 
     def initialize(a = {}, t = [])
       @parameters = a
@@ -8,7 +8,7 @@ module Habanero
     end
     
     def translate(chain)
-      @query_chain = to_conditions.reduce(chain) { |result, c| c.apply_to(result) }
+      @grader_chain = to_conditions.reduce(chain) { |result, c| c.apply_to(result) }
     end
     
     def to_conditions

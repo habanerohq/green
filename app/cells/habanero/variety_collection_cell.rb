@@ -47,7 +47,7 @@ module Habanero
 
     def _list(options)
       instance_variables_from(options)
-      @query = @placement.query
+      @grader = @placement.grader
       @sieve = @placement.scoop.sieve
       @variety = variety_by_precedence
       @search = @placement.search
@@ -60,15 +60,15 @@ module Habanero
     end
     
     def klass_by_precedence
-      @query.try(:klass) || @variety.try(:klass)
+      @grader.try(:klass) || @variety.try(:klass)
     end
     
     def variety_by_precedence
-      @query.try(:variety) || @sieve.try(:variety) || @page.nearest_target
+      @grader.try(:variety) || @sieve.try(:variety) || @page.nearest_target
     end
     
     def targets_by_precedence
-      @search.try(:query_chain) || @query.try(:evaluate, params) || (@variety.klass.unscoped if @variety.present?) || []
+      @search.try(:grader_chain) || @grader.try(:evaluate, params) || (@variety.klass.unscoped if @variety.present?) || []
     end
     
     def traits_by_precedence

@@ -145,7 +145,7 @@ variety = Habanero::Variety.find_by_name('Variety')
 variety_sieve = Habanero::Sieve.create!(:name => 'Variety Tree Sieve', :variety => variety, :parent => brand_sieve)
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Traits'))
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Sieves'))
-variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Queries'))
+variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Graders'))
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Sections'))
 variety_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => variety.traits.find_by_name('Pages'))
 variety_sieve.save!
@@ -193,34 +193,34 @@ r_sieve = Habanero::Sieve.create!(:name => 'Region Tree Sieve', :variety => regi
 r_sieve.sieve_traits << Habanero::SieveTrait.new(:trait => region.traits.find_by_name('Placements'))
 r_sieve.save!
 =end
-# Phase 28 - queries on scoops
+# Phase 28 - Grader on scoops
 =begin
 scoop = Habanero::Variety.find_by_name('Scoop')
-query = Habanero::Variety.find_by_name('Query')
+grader = Habanero::Variety.find_by_name('Grader')
 
 Habanero::RelationTrait.create!(
-  :name => 'Query Scoops',
-  :variety => query,
+  :name => 'Grader Scoops',
+  :variety => grader,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Query', :relation => 'belongs_to', :variety => scoop),
-    Habanero::AssociationTrait.new(:name => 'Scoops', :relation => 'has_many', :variety => query)
+    Habanero::AssociationTrait.new(:name => 'Grader', :relation => 'belongs_to', :variety => scoop),
+    Habanero::AssociationTrait.new(:name => 'Scoops', :relation => 'has_many', :variety => grader)
   ]
 )
 
-# Phase 27 - queries
+# Phase 27 - Grader
 =begin
 brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
-query = Habanero::Variety.create!(:name => 'Query', :parent => active_record, :brand => brand)
-query.traits << Habanero::StringTrait.new(:name => 'Name')
+grader = Habanero::Variety.create!(:name => 'Grader', :parent => active_record, :brand => brand)
+grader.traits << Habanero::StringTrait.new(:name => 'Name')
 
 Habanero::RelationTrait.create!(
-  :name => 'Variety Queries',
-  :variety => query,
+  :name => 'Variety Graders',
+  :variety => grader,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Variety', :relation => 'belongs_to', :variety => query),
-    Habanero::AssociationTrait.new(:name => 'Queries', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Variety'))
+    Habanero::AssociationTrait.new(:name => 'Variety', :relation => 'belongs_to', :variety => grader),
+    Habanero::AssociationTrait.new(:name => 'Graders', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Variety'))
   ]
 )
 
@@ -238,12 +238,12 @@ Habanero::RelationTrait.create!(
 )
 
 Habanero::RelationTrait.create!(
-  :name => 'Query Conditions',
-  :variety => query,
+  :name => 'Grader Conditions',
+  :variety => grader,
   :ordered => true,
   :children => [
-    Habanero::AssociationTrait.new(:name => 'Query', :relation => 'belongs_to', :variety => condition),
-    Habanero::AssociationTrait.new(:name => 'Conditions', :relation => 'has_many', :variety => query)
+    Habanero::AssociationTrait.new(:name => 'Grader', :relation => 'belongs_to', :variety => condition),
+    Habanero::AssociationTrait.new(:name => 'Conditions', :relation => 'has_many', :variety => grader)
   ]
 )
 =end

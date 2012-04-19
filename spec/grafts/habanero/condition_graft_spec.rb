@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Habanero::Condition do
-  it { should belong_to(:query) }
+  it { should belong_to(:grader) }
   it { should belong_to(:trait) }
 
   it 'should allow valid values for predicate' do

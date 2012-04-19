@@ -54,14 +54,14 @@ class HabaneroSitePantry < Pantry::Base
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     
-    can_stack 'Habanero::Query', 
+    can_stack 'Habanero::Grader', 
       :id_value_methods => [:name, :variety],
       :scope => {
         :includes => {:variety => :brand},
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     can_stack 'Habanero::Condition', 
-      :id_value_methods => [:query, :trait]
+      :id_value_methods => [:grader, :trait]
 
     can_stack 'Habanero::Scoop',
       :id_value_methods => [:name, :brand],

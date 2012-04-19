@@ -6,8 +6,8 @@ module Habanero
       region ? region.name.attrify.to_sym : :content
     end
 
-    def query
-      scoop.query
+    def grader
+      scoop.grader
     end
 
     def search

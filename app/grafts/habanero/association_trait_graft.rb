@@ -98,8 +98,8 @@ module Habanero
       is.klass.arel_table[is.name_trait_column_name]
     end
 
-    def apply_inclusions(query_chain)
-      query_chain.includes(method_name)
+    def apply_inclusions(grader_chain)
+      grader_chain.includes(method_name)
     end
 
     protected

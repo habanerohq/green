@@ -5,7 +5,7 @@ module Habanero
     attr_accessor :search
     
     def variety
-      query.try(:variety)
+      grader.try(:variety)
     end
     
     def traits
@@ -18,7 +18,7 @@ module Habanero
     
     def translate_search(data)
       self.search = Habanero::Search.new(data, translators)      
-      search.translate(query.evaluate)
+      search.translate(grader.evaluate)
     end
     
     module ClassMethods

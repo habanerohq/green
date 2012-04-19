@@ -55,8 +55,8 @@ module Habanero
       params[method_name]
     end
 
-    def apply_inclusions(query_chain)
-      query_chain
+    def apply_inclusions(grader_chain)
+      grader_chain
     end
 
     protected
