@@ -20,7 +20,7 @@ module Habanero
           else
             k = klass_by_precedence.reflect_on_association(method.to_sym).klass
             tn = k.table_name
-            cn = @variety.name_ingredient_column_name
+            cn = @variety.name_trait_column_name
             result.includes(method).order("#{tn}.#{cn} #{direction}")
           end
         end
@@ -52,7 +52,7 @@ module Habanero
       @variety = variety_by_precedence
       @search = @placement.search
       @targets = targets_by_precedence
-      @ingredients = ingredients_by_precedence
+      @traits = traits_by_precedence
 
       if @targets.any? and @placement.scoop.paginate?
         @targets = @targets.page(params[:page])
@@ -71,8 +71,8 @@ module Habanero
       @search.try(:query_chain) || @query.try(:evaluate, params) || (@variety.klass.unscoped if @variety.present?) || []
     end
     
-    def ingredients_by_precedence
-      @placement.ingredients || @variety.try(:all_displayable_ingredients)
+    def traits_by_precedence
+      @placement.traits || @variety.try(:all_displayable_traits)
     end
     
     def roots_only

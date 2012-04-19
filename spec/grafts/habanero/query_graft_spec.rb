@@ -17,7 +17,7 @@ describe Habanero::Query do
 
   it 'should return only records matching conditions' do
     condition = @query.conditions.build(
-      :ingredient => @variety.ingredients.find_by_name('Name'),
+      :trait => @variety.traits.find_by_name('Name'),
       :predicate => 'eq',
       :value => 'Variety'
     )
@@ -27,7 +27,7 @@ describe Habanero::Query do
 
   it 'should support chaniging value of conditions via params' do
     condition = @query.conditions.build(
-      :ingredient => @variety.ingredients.find_by_name('Name'),
+      :trait => @variety.traits.find_by_name('Name'),
       :predicate => 'eq',
       :value => 'Variety'
     )

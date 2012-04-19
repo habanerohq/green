@@ -8,7 +8,7 @@ end
 describe Habanero::Variety do
   it { should belong_to(:brand) }
   it { should belong_to(:parent) }
-  it { should have_many(:ingredients) }
+  it { should have_many(:traits) }
 
   # defined by awesome_nested_set 
   it { should belong_to(:parent) }

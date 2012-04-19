@@ -16,7 +16,7 @@ module Habanero
       private
 
       def collection
-        ingredient.variety.base.klass.unscoped.order(:name)
+        trait.variety.base.klass.unscoped.order(:name)
       end
     end
   end

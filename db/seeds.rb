@@ -28,22 +28,22 @@ Habanero::Page.find_by_name('Variety Kitchen').placements.first.scoop.update_att
 Habanero::Page.find_by_name('Scoop Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
 Habanero::Page.find_by_name('Category Kitchen').placements.first.scoop.update_attribute(:page_id, show_page.id)
 =end
-# Phase 35 - Make our Varieties use NameIngredient
+# Phase 35 - Make our Varieties use NameTrait
 =begin
-Habanero::Ingredient.update_all("type = 'Habanero::NameIngredient'", "type = 'Habanero::StringIngredient' AND name = 'Name'")
+Habanero::Trait.update_all("type = 'Habanero::NameTrait'", "type = 'Habanero::StringTrait' AND name = 'Name'")
 =end
-# Phase 34 - Fix NameIngredient
+# Phase 34 - Fix NameTrait
 =begin
-ingredient = Habanero::Variety.find_by_name('Ingredient')
+trait = Habanero::Variety.find_by_name('Trait')
 brand = Habanero::Brand.find_by_name('Habanero')
 
-name_ingredient = Habanero::Variety.create!(
-  :name => 'NameIngredient',
-  :parent => ingredient,
+name_trait = Habanero::Variety.create!(
+  :name => 'NameTrait',
+  :parent => trait,
   :brand => brand
 )
 
-Habanero::StringIngredient.create!(:name => 'Format', :variety => name_ingredient)
+Habanero::StringTrait.create!(:name => 'Format', :variety => name_trait)
 =end
 # Phase 33 - Build an edit page for varieties
 =begin
@@ -75,12 +75,12 @@ Habanero::Page.find_by_name('Site Kitchen').placements.first.scoop.update_attrib
 scoop = Habanero::Variety.find_by_name('VarietyScoop')
 page = Habanero::Variety.find_by_name('Page')
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Page VarietyScoops',
   :variety => scoop,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Page', :relation => 'belongs_to', :variety => scoop),
-    Habanero::AssociationIngredient.new(:name => 'VarietyScoops', :relation => 'has_many', :variety => page)
+    Habanero::AssociationTrait.new(:name => 'Page', :relation => 'belongs_to', :variety => scoop),
+    Habanero::AssociationTrait.new(:name => 'VarietyScoops', :relation => 'has_many', :variety => page)
   ]
 )
 =end
@@ -118,47 +118,47 @@ placements.each { |p| p.save!}
 # build the masks
 site = Habanero::Variety.find_by_name('Site')
 site_mask = Habanero::Mask.create!(:name => 'Site Tree Mask', :variety => site)
-site_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => site.ingredients.find_by_name('Sections'))
+site_mask.mask_traits << Habanero::MaskTrait.new(:trait => site.traits.find_by_name('Sections'))
 site_mask.save!
 
 section = Habanero::Variety.find_by_name('Section')
 section_mask = Habanero::Mask.create!(:name => 'Section Tree Mask', :variety => section, :parent => site_mask)
-section_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => section.ingredients.find_by_name('Pages'))
+section_mask.mask_traits << Habanero::MaskTrait.new(:trait => section.traits.find_by_name('Pages'))
 section_mask.save!
 
 page = Habanero::Variety.find_by_name('Page')
 page_mask = Habanero::Mask.create!(:name => 'Page Tree Mask', :variety => page, :parent => section_mask)
-page_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => page.ingredients.find_by_name('Placements'))
+page_mask.mask_traits << Habanero::MaskTrait.new(:trait => page.traits.find_by_name('Placements'))
 page_mask.save!
 
 scoop = Habanero::Variety.find_by_name('Scoop')
 scoop_mask = Habanero::Mask.create!(:name => 'Scoop Tree Mask', :variety => scoop)
-scoop_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => scoop.ingredients.find_by_name('Placements'))
+scoop_mask.mask_traits << Habanero::MaskTrait.new(:trait => scoop.traits.find_by_name('Placements'))
 scoop_mask.save!
 
 brand = Habanero::Variety.find_by_name('Brand')
 brand_mask = Habanero::Mask.create!(:name => 'Brand Tree Mask', :variety => brand)
-brand_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => brand.ingredients.find_by_name('Varieties'))
+brand_mask.mask_traits << Habanero::MaskTrait.new(:trait => brand.traits.find_by_name('Varieties'))
 brand_mask.save!
 
 variety = Habanero::Variety.find_by_name('Variety')
 variety_mask = Habanero::Mask.create!(:name => 'Variety Tree Mask', :variety => variety, :parent => brand_mask)
-variety_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Ingredients'))
-variety_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Masks'))
-variety_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Queries'))
-variety_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Sections'))
-variety_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Pages'))
+variety_mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Traits'))
+variety_mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Masks'))
+variety_mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Queries'))
+variety_mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Sections'))
+variety_mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Pages'))
 variety_mask.save!
 
 mask = Habanero::Variety.find_by_name('Mask')
 mask_mask = Habanero::Mask.create!(:name => 'Mask Tree Mask', :variety => mask, :parent => variety_mask)
-mask_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => mask.ingredients.find_by_name('Mask Ingredients'))
-mask_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => mask.ingredients.find_by_name('Variety Scoops'))
+mask_mask.mask_traits << Habanero::MaskTrait.new(:trait => mask.traits.find_by_name('Mask Traits'))
+mask_mask.mask_traits << Habanero::MaskTrait.new(:trait => mask.traits.find_by_name('Variety Scoops'))
 mask_mask.save!
 
 category = Habanero::Variety.find_by_name('Category')
 category_mask = Habanero::Mask.create!(:name => 'Category Tree Mask', :variety => category)
-category_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => category.ingredients.find_by_name('Ingredients'))
+category_mask.mask_traits << Habanero::MaskTrait.new(:trait => category.traits.find_by_name('Traits'))
 category_mask.save!
 
 page = Habanero::Page.find_by_name('Layout Kitchen')
@@ -179,18 +179,18 @@ Habanero::ScoopPlacement.create!(:page => page, :scoop => category_scoop, :regio
 =begin
 layout = Habanero::Variety.find_by_name('Layout')
 l_mask = Habanero::Mask.create!(:name => 'Layout Tree Mask', :variety => layout)
-l_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Rows'))
-l_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Pages'))
+l_mask.mask_traits << Habanero::MaskTrait.new(:trait => layout.traits.find_by_name('Rows'))
+l_mask.mask_traits << Habanero::MaskTrait.new(:trait => layout.traits.find_by_name('Pages'))
 l_mask.save!
 
 row = Habanero::Variety.find_by_name('LayoutRow')
 row_mask = Habanero::Mask.create!(:name => 'Layout Row Tree Mask', :variety => row, :parent => l_mask)
-row_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Regions'))
+row_mask.mask_traits << Habanero::MaskTrait.new(:trait => row.traits.find_by_name('Regions'))
 row_mask.save!
 
 region = Habanero::Variety.find_by_name('Region')
 r_mask = Habanero::Mask.create!(:name => 'Region Tree Mask', :variety => region, :parent => row_mask)
-r_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Placements'))
+r_mask.mask_traits << Habanero::MaskTrait.new(:trait => region.traits.find_by_name('Placements'))
 r_mask.save!
 =end
 # Phase 28 - queries on scoops
@@ -198,12 +198,12 @@ r_mask.save!
 scoop = Habanero::Variety.find_by_name('Scoop')
 query = Habanero::Variety.find_by_name('Query')
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Query Scoops',
   :variety => query,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Query', :relation => 'belongs_to', :variety => scoop),
-    Habanero::AssociationIngredient.new(:name => 'Scoops', :relation => 'has_many', :variety => query)
+    Habanero::AssociationTrait.new(:name => 'Query', :relation => 'belongs_to', :variety => scoop),
+    Habanero::AssociationTrait.new(:name => 'Scoops', :relation => 'has_many', :variety => query)
   ]
 )
 
@@ -213,44 +213,44 @@ brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
 query = Habanero::Variety.create!(:name => 'Query', :parent => active_record, :brand => brand)
-query.ingredients << Habanero::StringIngredient.new(:name => 'Name')
+query.traits << Habanero::StringTrait.new(:name => 'Name')
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Variety Queries',
   :variety => query,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Variety', :relation => 'belongs_to', :variety => query),
-    Habanero::AssociationIngredient.new(:name => 'Queries', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Variety'))
+    Habanero::AssociationTrait.new(:name => 'Variety', :relation => 'belongs_to', :variety => query),
+    Habanero::AssociationTrait.new(:name => 'Queries', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Variety'))
   ]
 )
 
 condition = Habanero::Variety.create!(:name => 'Condition', :parent => active_record, :brand => brand)
-condition.ingredients << Habanero::StringIngredient.new(:name => 'Predicate') # todo: should not be a StringIngredient
-condition.ingredients << Habanero::StringIngredient.new(:name => 'Value')
+condition.traits << Habanero::StringTrait.new(:name => 'Predicate') # todo: should not be a StringTrait
+condition.traits << Habanero::StringTrait.new(:name => 'Value')
 
-Habanero::RelationIngredient.create!(
-  :name => 'Ingredient Conditions',
+Habanero::RelationTrait.create!(
+  :name => 'Trait Conditions',
   :variety => condition,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Ingredient', :relation => 'belongs_to', :variety => condition),
-    Habanero::AssociationIngredient.new(:name => 'Conditions', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Ingredient'))
+    Habanero::AssociationTrait.new(:name => 'Trait', :relation => 'belongs_to', :variety => condition),
+    Habanero::AssociationTrait.new(:name => 'Conditions', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Trait'))
   ]
 )
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Query Conditions',
   :variety => query,
   :ordered => true,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Query', :relation => 'belongs_to', :variety => condition),
-    Habanero::AssociationIngredient.new(:name => 'Conditions', :relation => 'has_many', :variety => query)
+    Habanero::AssociationTrait.new(:name => 'Query', :relation => 'belongs_to', :variety => condition),
+    Habanero::AssociationTrait.new(:name => 'Conditions', :relation => 'has_many', :variety => query)
   ]
 )
 =end
 # Phase 26 - add template back into Scoop
 =begin
 scoop = Habanero::Variety.find_by_name('Scoop')
-Habanero::StringIngredient.create!(:name => 'Template', :variety => scoop)
+Habanero::StringTrait.create!(:name => 'Template', :variety => scoop)
 =end
 # Phase 26 - Fix region names 
 =begin
@@ -289,25 +289,25 @@ Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :region => kit_
 =begin
 layout = Habanero::Variety.find_by_name('Layout')
 mask = Habanero::Mask.create!(:name => 'Layout Mask', :variety => layout)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Name'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Template Name'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => layout.ingredients.find_by_name('Fluid'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => layout.traits.find_by_name('Name'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => layout.traits.find_by_name('Template Name'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => layout.traits.find_by_name('Fluid'))
 mask.save!
 
 row = Habanero::Variety.find_by_name('LayoutRow')
 mask = Habanero::Mask.create!(:name => 'Layout Row Mask', :variety => row)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Layout'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Name'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => row.ingredients.find_by_name('Fluid'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => row.traits.find_by_name('Layout'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => row.traits.find_by_name('Name'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => row.traits.find_by_name('Fluid'))
 mask.save!
 
 region = Habanero::Variety.find_by_name('Region')
 mask = Habanero::Mask.create!(:name => 'Region Mask', :variety => region)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Layout'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Row'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Name'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Span'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => region.ingredients.find_by_name('Offset'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => region.traits.find_by_name('Layout'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => region.traits.find_by_name('Row'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => region.traits.find_by_name('Name'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => region.traits.find_by_name('Span'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => region.traits.find_by_name('Offset'))
 mask.save!
 =end
 # Phase 23 - Define LayoutScoop
@@ -338,7 +338,7 @@ Habanero::Region.create!(:name => 'Footer', :span => 12, :layout => layout, :row
 # Phase 21 - Add a template name to Layout
 =begin
 layout = Habanero::Variety.find_by_name('Layout')
-Habanero::StringIngredient.create!(:name => 'Template Name', :variety => layout)
+Habanero::StringTrait.create!(:name => 'Template Name', :variety => layout)
 =end
 # Phase 20 - Define a layout with rows and regions
 =begin
@@ -369,111 +369,111 @@ brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
 layout = Habanero::Variety.find_by_name('Layout')
-Habanero::TrueFalseIngredient.create!(:name => 'Fluid', :variety => layout)
+Habanero::TrueFalseTrait.create!(:name => 'Fluid', :variety => layout)
 
 region = Habanero::Variety.find_by_name('Region')
-Habanero::IntegerIngredient.create!(:name => 'Span', :variety => region)
-Habanero::IntegerIngredient.create!(:name => 'Offset', :variety => region)
+Habanero::IntegerTrait.create!(:name => 'Span', :variety => region)
+Habanero::IntegerTrait.create!(:name => 'Offset', :variety => region)
 
 layout_row = Habanero::Variety.create!(:name => 'LayoutRow', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => layout_row)
-Habanero::TrueFalseIngredient.create!(:name => 'Fluid', :variety => layout_row)
+Habanero::StringTrait.create!(:name => 'Name', :variety => layout_row)
+Habanero::TrueFalseTrait.create!(:name => 'Fluid', :variety => layout_row)
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Layout Rows',
   :variety => layout,
   :ordered => true,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Rows', :relation => 'has_many', :variety => layout),
-    Habanero::AssociationIngredient.new(:name => 'Layout', :relation => 'belongs_to', :variety => layout_row),
+    Habanero::AssociationTrait.new(:name => 'Rows', :relation => 'has_many', :variety => layout),
+    Habanero::AssociationTrait.new(:name => 'Layout', :relation => 'belongs_to', :variety => layout_row),
   ]
 )
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Row Regions',
   :variety => layout_row,
   :ordered => true,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Regions', :relation => 'has_many', :variety => layout_row),
-    Habanero::AssociationIngredient.new(:name => 'Row', :relation => 'belongs_to', :variety => region),
+    Habanero::AssociationTrait.new(:name => 'Regions', :relation => 'has_many', :variety => layout_row),
+    Habanero::AssociationTrait.new(:name => 'Row', :relation => 'belongs_to', :variety => region),
   ]
 )
 =end
-# Phase 18 - Add Slug Ingredients
+# Phase 18 - Add Slug Traits
 =begin
 brand = Habanero::Variety.find_by_name('Brand')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => brand, :target => brand.ingredients.find_by_name('Name'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => brand, :target => brand.traits.find_by_name('Name'))
 
 variety = Habanero::Variety.find_by_name('Variety')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => variety, :target => variety.ingredients.find_by_name('Name'), :scope => variety.ingredients.find_by_name('Brand'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => variety, :target => variety.traits.find_by_name('Name'), :scope => variety.traits.find_by_name('Brand'))
 
-ingredient = Habanero::Variety.find_by_name('Ingredient')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => ingredient, :target => ingredient.ingredients.find_by_name('Name'), :scope => ingredient.ingredients.find_by_name('Variety'))
+trait = Habanero::Variety.find_by_name('Trait')
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => trait, :target => trait.traits.find_by_name('Name'), :scope => trait.traits.find_by_name('Variety'))
 
 mask = Habanero::Variety.find_by_name('Mask')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => mask, :target => mask.ingredients.find_by_name('Name'), :scope => mask.ingredients.find_by_name('Variety'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => mask, :target => mask.traits.find_by_name('Name'), :scope => mask.traits.find_by_name('Variety'))
 
 category = Habanero::Variety.find_by_name('Category')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => category, :target => category.ingredients.find_by_name('Name'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => category, :target => category.traits.find_by_name('Name'))
 
 site = Habanero::Variety.find_by_name('Site')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => site, :target => site.ingredients.find_by_name('Name'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => site, :target => site.traits.find_by_name('Name'))
 
 section = Habanero::Variety.find_by_name('Section')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => section, :target => section.ingredients.find_by_name('Name'), :scope => section.ingredients.find_by_name('Site'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => section, :target => section.traits.find_by_name('Name'), :scope => section.traits.find_by_name('Site'))
 
 page = Habanero::Variety.find_by_name('Page')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => page, :target => page.ingredients.find_by_name('Name'), :scope => page.ingredients.find_by_name('Section'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => page, :target => page.traits.find_by_name('Name'), :scope => page.traits.find_by_name('Section'))
 
 scoop = Habanero::Variety.find_by_name('Scoop')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => scoop, :target => scoop.ingredients.find_by_name('Name'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => scoop, :target => scoop.traits.find_by_name('Name'))
 
 layout = Habanero::Variety.find_by_name('Layout')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => layout, :target => layout.ingredients.find_by_name('Name'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => layout, :target => layout.traits.find_by_name('Name'))
 
 region = Habanero::Variety.find_by_name('Region')
-Habanero::SlugIngredient.create!(:name => 'Slug', :variety => region, :target => region.ingredients.find_by_name('Name'), :scope => region.ingredients.find_by_name('Layout'))
+Habanero::SlugTrait.create!(:name => 'Slug', :variety => region, :target => region.traits.find_by_name('Name'), :scope => region.traits.find_by_name('Layout'))
 =end
-# Phase 17 - Invent Slug Ingredient
+# Phase 17 - Invent Slug Trait
 =begin
 brand = Habanero::Brand.find_by_name('Habanero')
-ingredient = Habanero::Variety.find_by_name('Ingredient')
-assoc_ingredient = Habanero::Variety.find_by_name('AssociationIngredient')
+trait = Habanero::Variety.find_by_name('Trait')
+assoc_trait = Habanero::Variety.find_by_name('AssociationTrait')
 
-s_ingredient = Habanero::Variety.create!(:name => 'SlugIngredient', :brand => brand, :parent => ingredient)
+s_trait = Habanero::Variety.create!(:name => 'SlugTrait', :brand => brand, :parent => trait)
 
-Habanero::RelationIngredient.create!(
-  :name => 'Target Slug Ingredients',
-  :variety => s_ingredient,
+Habanero::RelationTrait.create!(
+  :name => 'Target Slug Traits',
+  :variety => s_trait,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Slug Ingredients', :relation => 'has_many', :variety => ingredient),
-    Habanero::AssociationIngredient.new(:name => 'Target', :relation => 'belongs_to', :variety => s_ingredient),
+    Habanero::AssociationTrait.new(:name => 'Slug Traits', :relation => 'has_many', :variety => trait),
+    Habanero::AssociationTrait.new(:name => 'Target', :relation => 'belongs_to', :variety => s_trait),
   ]
 )
 
-Habanero::RelationIngredient.create!(
-  :name => 'Scope Slug Ingredients',
-  :variety => s_ingredient,
+Habanero::RelationTrait.create!(
+  :name => 'Scope Slug Traits',
+  :variety => s_trait,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Slug Ingredients', :relation => 'has_many', :variety => assoc_ingredient),
-    Habanero::AssociationIngredient.new(:name => 'Scope', :relation => 'belongs_to', :variety => s_ingredient),
+    Habanero::AssociationTrait.new(:name => 'Slug Traits', :relation => 'has_many', :variety => assoc_trait),
+    Habanero::AssociationTrait.new(:name => 'Scope', :relation => 'belongs_to', :variety => s_trait),
   ]
 )
 =end
-# Phase 16 - Category Ingredient
+# Phase 16 - Category Trait
 =begin
 brand = Habanero::Brand.find_by_name('Habanero')
-ingredient = Habanero::Variety.find_by_name('Ingredient')
+trait = Habanero::Variety.find_by_name('Trait')
 category = Habanero::Variety.find_by_name('Category')
 
-c_ingredient = Habanero::Variety.create!(:name => 'CategoryIngredient', :brand => brand, :parent => ingredient)
+c_trait = Habanero::Variety.create!(:name => 'CategoryTrait', :brand => brand, :parent => trait)
 
-Habanero::RelationIngredient.create!(
-  :name => 'Category Ingredients',
-  :variety => c_ingredient,
+Habanero::RelationTrait.create!(
+  :name => 'Category Traits',
+  :variety => c_trait,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Ingredients', :relation => 'has_many', :variety => category),
-    Habanero::AssociationIngredient.new(:name => 'Category', :relation => 'belongs_to', :variety => c_ingredient),
+    Habanero::AssociationTrait.new(:name => 'Traits', :relation => 'has_many', :variety => category),
+    Habanero::AssociationTrait.new(:name => 'Category', :relation => 'belongs_to', :variety => c_trait),
   ]
 )
 =end
@@ -483,33 +483,33 @@ brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
 c = Habanero::Variety.create!(:name => 'Category', :brand => brand, :parent => active_record)
-nest = Habanero::NestIngredient.create!(:name => 'Nest', :variety => c)
-name = Habanero::StringIngredient.create!(:name => 'Name', :variety => c)
-abbrev = Habanero::StringIngredient.create!(:name => 'Abbreviation', :variety => c)
-strat = Habanero::TextIngredient.create!(:name => 'Strategy', :variety => c)
+nest = Habanero::NestTrait.create!(:name => 'Nest', :variety => c)
+name = Habanero::StringTrait.create!(:name => 'Name', :variety => c)
+abbrev = Habanero::StringTrait.create!(:name => 'Abbreviation', :variety => c)
+strat = Habanero::TextTrait.create!(:name => 'Strategy', :variety => c)
 
 mask = Habanero::Mask.create!(:name => 'Category Document Mask', :variety => c)
 scoop = Habanero::DocumentationScoop.create!(:name => 'Category Document', :mask => mask)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => name)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => nest)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => abbrev)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => strat)
+mask.mask_traits << Habanero::MaskTrait.new(:trait => name)
+mask.mask_traits << Habanero::MaskTrait.new(:trait => nest)
+mask.mask_traits << Habanero::MaskTrait.new(:trait => abbrev)
+mask.mask_traits << Habanero::MaskTrait.new(:trait => strat)
 
 ref = Habanero::Section.find_by_name('Reference Manual')
-content_page = Habanero::Page.create!(:name => 'Category Page', :section => ref, :route => '/ingredients/:id', :target => c)
-edit_page = Habanero::Page.create!(:name => 'Category Edit Page', :section => ref, :route => '/ingredients/:id/edit', :target => c, :next_page => content_page)
+content_page = Habanero::Page.create!(:name => 'Category Page', :section => ref, :route => '/traits/:id', :target => c)
+edit_page = Habanero::Page.create!(:name => 'Category Edit Page', :section => ref, :route => '/traits/:id/edit', :target => c, :next_page => content_page)
 
 Habanero::ScoopPlacement.create!(:page => edit_page, :scoop => scoop, :template => 'edit')
 Habanero::ScoopPlacement.create!(:page => content_page, :scoop => scoop, :template => 'show')
 =end
 # Phase 14 - Create a variety edit page
 =begin
-ingredient = Habanero::Variety.find_by_name('Ingredient')
+trait = Habanero::Variety.find_by_name('Trait')
 ref = Habanero::Section.find_by_name('Reference Manual')
-next_page = Habanero::Page.find_by_name('Ingredient Page')
-page = Habanero::Page.create!(:name => 'Ingredient Edit Page', :section => ref, :route => '/ingredients/:id/edit', :target => ingredient, :next_page => next_page)
+next_page = Habanero::Page.find_by_name('Trait Page')
+page = Habanero::Page.create!(:name => 'Trait Edit Page', :section => ref, :route => '/traits/:id/edit', :target => trait, :next_page => next_page)
 
-scoop = Habanero::DocumentationScoop.find_by_name('Ingredient Document')
+scoop = Habanero::DocumentationScoop.find_by_name('Trait Document')
 Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'edit')
 =end
 # Phase 13 - Create a variety edit page
@@ -521,24 +521,24 @@ page = Habanero::Page.create!(:name => 'Variety Edit Page', :section => ref, :ro
 scoop = Habanero::DocumentationScoop.find_by_name('Variety Document')
 Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'edit')
 =end
-# Phase 12 - Add a next page ingredient to pages, create a variety edit page
+# Phase 12 - Add a next page trait to pages, create a variety edit page
 =begin
 p_variety = Habanero::Variety.find_by_name('Page')
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Previous Next Pages',
   :variety => p_variety,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Previous Pages', :relation => 'has_many', :variety => p_variety),
-    Habanero::AssociationIngredient.new(:name => 'Next Page', :relation => 'belongs_to', :variety => p_variety),
+    Habanero::AssociationTrait.new(:name => 'Previous Pages', :relation => 'has_many', :variety => p_variety),
+    Habanero::AssociationTrait.new(:name => 'Next Page', :relation => 'belongs_to', :variety => p_variety),
   ]
 )
 =end
-# Phase 11 - Fix the ingredients documentation phase
+# Phase 11 - Fix the traits documentation phase
 =begin
-ingredient = Habanero::Variety.find_by_name('Ingredient')
-i_page = Habanero::Page.find_by_name('Ingredient Page')
-i_page.target = ingredient
+trait = Habanero::Variety.find_by_name('Trait')
+i_page = Habanero::Page.find_by_name('Trait Page')
+i_page.target = trait
 i_page.save!
 =end
 # Phase 10 - Add a target variety to page
@@ -546,12 +546,12 @@ i_page.save!
 page = Habanero::Variety.find_by_name('Page')
 variety = Habanero::Variety.find_by_name('Variety')
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Target Pages',
   :variety => variety,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :variety => variety),
-    Habanero::AssociationIngredient.new(:name => 'Target', :relation => 'belongs_to', :variety => page),
+    Habanero::AssociationTrait.new(:name => 'Pages', :relation => 'has_many', :variety => variety),
+    Habanero::AssociationTrait.new(:name => 'Target', :relation => 'belongs_to', :variety => page),
   ]
 )
 =end
@@ -570,16 +570,16 @@ ls.parent = variety_scoop
 ls.save!
 
 # move scoop mask to the level or variety scoop
-Habanero::RelationIngredient.find_by_name('Mask Documentation Scoops').destroy
+Habanero::RelationTrait.find_by_name('Mask Documentation Scoops').destroy
 
 mask = Habanero::Variety.find_by_name('Mask')
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Mask Variety Scoops',
   :variety => mask,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Variety Scoops', :relation => 'has_many', :variety => mask),
-    Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :variety => variety_scoop),
+    Habanero::AssociationTrait.new(:name => 'Variety Scoops', :relation => 'has_many', :variety => mask),
+    Habanero::AssociationTrait.new(:name => 'Mask', :relation => 'belongs_to', :variety => variety_scoop),
   ]
 )
 
@@ -593,7 +593,7 @@ mask = Habanero::Mask.find_by_name('Variety Document Mask')
 variety = Habanero::Variety.create!(:name => 'DocumentationCollectionScoop', :brand => brand, :parent => ls)
 
 s_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Variety List', :mask => mask)
-i_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Ingredient List', :mask => mask)
+i_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Trait List', :mask => mask)
 
 # adjust the placements
 s_placement = Habanero::ScoopPlacement.find(1)
@@ -607,13 +607,13 @@ i_placement.save!
 # Phase 8 - start building habanero site variety2 doco section
 =begin
 variety = Habanero::Variety.find_by_name('Variety')
-ingredient = Habanero::Variety.find_by_name('Ingredient')
+trait = Habanero::Variety.find_by_name('Trait')
 
 # move template column from Scoop to ScoopPlacement so we can reuse a scoop and apply a different template when placed
-#Habanero::Variety.find_by_name('Scoop').ingredients.find_by_name('Template').destroy
+#Habanero::Variety.find_by_name('Scoop').traits.find_by_name('Template').destroy
 
 #placement = Habanero::Variety.find_by_name('ScoopPlacement')
-#Habanero::StringIngredient.create!(:name => 'Template', :variety => placement)
+#Habanero::StringTrait.create!(:name => 'Template', :variety => placement)
 
 #Habanero::Scoop.reset_column_information
 #Habanero::ScoopPlacement.reset_column_information
@@ -623,33 +623,33 @@ site = Habanero::Site.create!(:name => 'Habanero')
 variety2 = Habanero::Section.create!(:name => 'Sorbet2', :route => '/variety2', :site => site)
 ref = Habanero::Section.create!(:name => 'Reference Manual', :route => '/reference', :site => site, :target => variety, :parent => variety2)
 page = Habanero::Page.create!(:name => 'Variety Page', :section => ref, :route => '/varieties/:id')
-i_page = Habanero::Page.create!(:name => 'Ingredient Page', :section => ref, :route => '/ingredients/:id')
+i_page = Habanero::Page.create!(:name => 'Trait Page', :section => ref, :route => '/traits/:id')
 
 # build the scoops
 mask = Habanero::Mask.create!(:name => 'Variety Document Mask', :variety => variety)
 scoop = Habanero::DocumentationScoop.create!(:name => 'Variety Document', :mask => mask)
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Name'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Brand'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Variety Nest'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => variety.ingredients.find_by_name('Documentation'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Name'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Brand'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Variety Nest'))
+mask.mask_traits << Habanero::MaskTrait.new(:trait => variety.traits.find_by_name('Documentation'))
 mask.save!
 
-i_mask = Habanero::Mask.create!(:name => 'Ingredient Document Mask', :variety => ingredient)
-i_scoop = Habanero::DocumentationScoop.create!(:name => 'Ingredient Document', :mask => i_mask)
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Name'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Type'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Documentation'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Derived'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Limit'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Precision'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Scale'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Default'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Nullable'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Sortable'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Sort Direction'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Ordered'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Relation'))
-i_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => ingredient.ingredients.find_by_name('Variety'))
+i_mask = Habanero::Mask.create!(:name => 'Trait Document Mask', :variety => trait)
+i_scoop = Habanero::DocumentationScoop.create!(:name => 'Trait Document', :mask => i_mask)
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Name'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Type'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Documentation'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Derived'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Limit'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Precision'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Scale'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Default'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Nullable'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Sortable'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Sort Direction'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Ordered'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Relation'))
+i_mask.mask_traits << Habanero::MaskTrait.new(:trait => trait.traits.find_by_name('Variety'))
 
 # build the placements
 Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 'list')
@@ -657,59 +657,59 @@ Habanero::ScoopPlacement.create!(:page => page, :scoop => scoop, :template => 's
 Habanero::ScoopPlacement.create!(:page => i_page, :scoop => i_scoop, :template => 'list')
 Habanero::ScoopPlacement.create!(:page => i_page, :scoop => i_scoop, :template => 'show')
 =end
-# Phase 7 - add nests to Varieties and Ingredients
+# Phase 7 - add nests to Varieties and Traits
 =begin
 variety = Habanero::Variety.find_by_name('Variety')
-Habanero::NestIngredient.create!(:name => 'Variety Nest', :variety => variety)
+Habanero::NestTrait.create!(:name => 'Variety Nest', :variety => variety)
 
-ingredient = Habanero::Variety.find_by_name('Ingredient')
-Habanero::NestIngredient.create!(:name => 'Ingredient Nest', :variety => ingredient)
+trait = Habanero::Variety.find_by_name('Trait')
+Habanero::NestTrait.create!(:name => 'Trait Nest', :variety => trait)
 =end
-# Phase 6 - Documentation Ingredients, renaming MaskScoop to DocumentationScoop (which is the first specific use of Masks)
+# Phase 6 - Documentation Traits, renaming MaskScoop to DocumentationScoop (which is the first specific use of Masks)
 =begin
 Habanero::Variety
-Habanero::Ingredient
+Habanero::Trait
 Habanero::Brand
 
 brand = Habanero::Variety.find_by_name('Brand')
 variety = Habanero::Variety.find_by_name('Variety')
-ingredient = Habanero::Variety.find_by_name('Ingredient')
+trait = Habanero::Variety.find_by_name('Trait')
 
-Habanero::TextIngredient.create!(:name => 'Documentation', :variety => brand)
-Habanero::TextIngredient.create!(:name => 'Documentation', :variety => variety)
-Habanero::TextIngredient.create!(:name => 'Documentation', :variety => ingredient)
+Habanero::TextTrait.create!(:name => 'Documentation', :variety => brand)
+Habanero::TextTrait.create!(:name => 'Documentation', :variety => variety)
+Habanero::TextTrait.create!(:name => 'Documentation', :variety => trait)
 
 s = Habanero::Variety.find_by_name('MaskScoop')
 s.name = 'DocumentationScoop'
 s.save!
 
-r = Habanero::RelationIngredient.find_by_name('Mask Mask Scoops')
+r = Habanero::RelationTrait.find_by_name('Mask Mask Scoops')
 r.name = 'Mask Documentation Scoops'
 r.save!
 
-a = Habanero::AssociationIngredient.find_by_name('Mask Scoops')
+a = Habanero::AssociationTrait.find_by_name('Mask Scoops')
 a.name = 'Documentation Scoop'
 a.save!
 =end
 # Phase 5 - Routes
 =begin
 Habanero::Variety
-Habanero::Ingredient
+Habanero::Trait
 Habanero::Brand
 
 brand = Habanero::Brand.find_by_name('Habanero')
-ingredient = Habanero::Variety.find_by_name('Ingredient')
+trait = Habanero::Variety.find_by_name('Trait')
 
-route = Habanero::Variety.create!(:name => 'RouteIngredient', :brand => brand, :parent => ingredient)
+route = Habanero::Variety.create!(:name => 'RouteTrait', :brand => brand, :parent => trait)
 
 page = Habanero::Variety.find_by_name('Page')
-page.ingredients << Habanero::RouteIngredient.new(:name => 'Route')
+page.traits << Habanero::RouteTrait.new(:name => 'Route')
 
 section = Habanero::Variety.find_by_name('Section')
-section.ingredients << Habanero::RouteIngredient.new(:name => 'Route')
+section.traits << Habanero::RouteTrait.new(:name => 'Route')
 
 site = Habanero::Variety.find_by_name('Site')
-site.ingredients << Habanero::StringIngredient.new(:name => 'Host')
+site.traits << Habanero::StringTrait.new(:name => 'Host')
 
 # Phase 4 - Composite Scoops & Masks Scoop
 =begin
@@ -717,63 +717,63 @@ brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
 scoop = Habanero::Variety.find_by_name('Scoop')
-Habanero::NestIngredient.create!(:name => 'Nest', :variety => scoop)
+Habanero::NestTrait.create!(:name => 'Nest', :variety => scoop)
 
 section = Habanero::Variety.find_by_name('Section')
 variety = Habanero::Variety.find_by_name('Variety')
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Target Sections',
   :variety => variety,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Sections', :relation => 'has_many', :variety => variety),
-    Habanero::AssociationIngredient.new(:name => 'Target', :relation => 'belongs_to', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Sections', :relation => 'has_many', :variety => variety),
+    Habanero::AssociationTrait.new(:name => 'Target', :relation => 'belongs_to', :variety => section),
   ]
 )
 
 mask = Habanero::Variety.create!(:name => 'Mask', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => mask)
-Habanero::NestIngredient.create!(:name => 'Nest', :variety => mask)
+Habanero::StringTrait.create!(:name => 'Name', :variety => mask)
+Habanero::NestTrait.create!(:name => 'Nest', :variety => mask)
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Variety Masks',
   :variety => variety,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Masks', :relation => 'has_many', :variety => variety),
-    Habanero::AssociationIngredient.new(:name => 'Variety', :relation => 'belongs_to', :variety => mask),
+    Habanero::AssociationTrait.new(:name => 'Masks', :relation => 'has_many', :variety => variety),
+    Habanero::AssociationTrait.new(:name => 'Variety', :relation => 'belongs_to', :variety => mask),
   ]
 )
 
-mask_ingredient = Habanero::Variety.create!(:name => 'MaskIngredient', :brand => brand, :parent => active_record)
-ingredient = Habanero::Variety.find_by_name('Ingredient')
+mask_trait = Habanero::Variety.create!(:name => 'MaskTrait', :brand => brand, :parent => active_record)
+trait = Habanero::Variety.find_by_name('Trait')
 
-Habanero::RelationIngredient.create!(
-  :name => 'Mask Mask Ingredients',
+Habanero::RelationTrait.create!(
+  :name => 'Mask Mask Traits',
   :variety => mask,
   :ordered => true,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Mask Ingredients', :relation => 'has_many', :variety => mask),
-    Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :variety => mask_ingredient),
+    Habanero::AssociationTrait.new(:name => 'Mask Traits', :relation => 'has_many', :variety => mask),
+    Habanero::AssociationTrait.new(:name => 'Mask', :relation => 'belongs_to', :variety => mask_trait),
   ]
 )
 
-Habanero::RelationIngredient.create!(
-  :name => 'Ingredient Mask Ingredients',
-  :variety => ingredient,
+Habanero::RelationTrait.create!(
+  :name => 'Trait Mask Traits',
+  :variety => trait,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Mask Ingredients', :relation => 'has_many', :variety => ingredient),
-    Habanero::AssociationIngredient.new(:name => 'Ingredient', :relation => 'belongs_to', :variety => mask_ingredient),
+    Habanero::AssociationTrait.new(:name => 'Mask Traits', :relation => 'has_many', :variety => trait),
+    Habanero::AssociationTrait.new(:name => 'Trait', :relation => 'belongs_to', :variety => mask_trait),
   ]
 )
 
 mask_scoop = Habanero::Variety.create!(:name => 'MaskScoop', :brand => brand, :parent => scoop)
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Mask Mask Scoops',
   :variety => mask,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Mask Scoops', :relation => 'has_many', :variety => mask),
-    Habanero::AssociationIngredient.new(:name => 'Mask', :relation => 'belongs_to', :variety => mask_scoop),
+    Habanero::AssociationTrait.new(:name => 'Mask Scoops', :relation => 'has_many', :variety => mask),
+    Habanero::AssociationTrait.new(:name => 'Mask', :relation => 'belongs_to', :variety => mask_scoop),
   ]
 )
 =end
@@ -785,59 +785,59 @@ active_record = Habanero::Variety.find_by_name('Base')
 page = Habanero::Variety.find_by_name('Page')
 
 scoop = Habanero::Variety.create!(:name => 'Scoop', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Type', :variety => scoop)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => scoop)
-Habanero::StringIngredient.create!(:name => 'Title', :variety => scoop)
-Habanero::TextIngredient.create!(:name => 'Body', :variety => scoop)
-Habanero::StringIngredient.create!(:name => 'Body Format', :variety => scoop)
-Habanero::StringIngredient.create!(:name => 'Template', :variety => scoop)
+Habanero::StringTrait.create!(:name => 'Type', :variety => scoop)
+Habanero::StringTrait.create!(:name => 'Name', :variety => scoop)
+Habanero::StringTrait.create!(:name => 'Title', :variety => scoop)
+Habanero::TextTrait.create!(:name => 'Body', :variety => scoop)
+Habanero::StringTrait.create!(:name => 'Body Format', :variety => scoop)
+Habanero::StringTrait.create!(:name => 'Template', :variety => scoop)
 
 Habanero::Variety.create!(:name => 'ContentScoop', :brand => brand, :parent => scoop)
 
 list_scoop = Habanero::Variety.create!(:name => 'ListScoop', :brand => brand, :parent => scoop)
-Habanero::IntegerIngredient.create!(:name => 'Columns', :variety => list_scoop)
+Habanero::IntegerTrait.create!(:name => 'Columns', :variety => list_scoop)
 
 placement = Habanero::Variety.create!(:name => 'ScoopPlacement', :brand => brand, :parent => active_record)
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Scoop Placements',
   :variety => page,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Placements', :relation => 'has_many', :variety => page),
-    Habanero::AssociationIngredient.new(:name => 'Page', :relation => 'belongs_to', :variety => placement),
+    Habanero::AssociationTrait.new(:name => 'Placements', :relation => 'has_many', :variety => page),
+    Habanero::AssociationTrait.new(:name => 'Page', :relation => 'belongs_to', :variety => placement),
   ]
 )
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Scoop Placements',
   :variety => scoop,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Placements', :relation => 'has_many', :variety => scoop),
-    Habanero::AssociationIngredient.new(:name => 'Scoop', :relation => 'belongs_to', :variety => placement),
+    Habanero::AssociationTrait.new(:name => 'Placements', :relation => 'has_many', :variety => scoop),
+    Habanero::AssociationTrait.new(:name => 'Scoop', :relation => 'belongs_to', :variety => placement),
   ]
 )
 
 lay = Habanero::Variety.find_by_name('Layout')
 
 region = Habanero::Variety.create!(:name => 'Region', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => region)
+Habanero::StringTrait.create!(:name => 'Name', :variety => region)
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Layout Regions',
   :variety => lay,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Regions', :relation => 'has_many', :variety => lay),
-    Habanero::AssociationIngredient.new(:name => 'Layout', :relation => 'belongs_to', :variety => region),
+    Habanero::AssociationTrait.new(:name => 'Regions', :relation => 'has_many', :variety => lay),
+    Habanero::AssociationTrait.new(:name => 'Layout', :relation => 'belongs_to', :variety => region),
   ]
 )
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Region Placements',
   :variety => region,
   :ordered => true,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Placements', :relation => 'has_many', :variety => region),
-    Habanero::AssociationIngredient.new(:name => 'Region', :relation => 'belongs_to', :variety => placement),
+    Habanero::AssociationTrait.new(:name => 'Placements', :relation => 'has_many', :variety => region),
+    Habanero::AssociationTrait.new(:name => 'Region', :relation => 'belongs_to', :variety => placement),
   ]
 )
 =end
@@ -847,66 +847,66 @@ brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Variety.find_by_name('Base')
 
 site = Habanero::Variety.create!(:name => 'Site', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => site)
+Habanero::StringTrait.create!(:name => 'Name', :variety => site)
 
 section = Habanero::Variety.create!(:name => 'Section', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => section)
-Habanero::NestIngredient.create!(:name => 'Nest', :variety => section)
+Habanero::StringTrait.create!(:name => 'Name', :variety => section)
+Habanero::NestTrait.create!(:name => 'Nest', :variety => section)
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Site Sections',
   :variety => site,
   :ordered => true,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Sections', :relation => 'has_many', :variety => site),
-    Habanero::AssociationIngredient.new(:name => 'Site', :relation => 'belongs_to', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Sections', :relation => 'has_many', :variety => site),
+    Habanero::AssociationTrait.new(:name => 'Site', :relation => 'belongs_to', :variety => section),
   ]
 )
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Template Sections',
   :variety => section,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Sections', :relation => 'has_many', :variety => section),
-    Habanero::AssociationIngredient.new(:name => 'Template', :relation => 'belongs_to', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Sections', :relation => 'has_many', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Template', :relation => 'belongs_to', :variety => section),
   ]
 )
 
 page = Habanero::Variety.create!(:name => 'Page', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => page)
+Habanero::StringTrait.create!(:name => 'Name', :variety => page)
 
 l = Habanero::Variety.create!(:name => 'Layout', :brand => brand, :parent => active_record)
-Habanero::StringIngredient.create!(:name => 'Name', :variety => l)
+Habanero::StringTrait.create!(:name => 'Name', :variety => l)
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Section Pages',
   :variety => section,
   :ordered => true,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :variety => section),
-    Habanero::AssociationIngredient.new(:name => 'Section', :relation => 'belongs_to', :variety => page),
+    Habanero::AssociationTrait.new(:name => 'Pages', :relation => 'has_many', :variety => section),
+    Habanero::AssociationTrait.new(:name => 'Section', :relation => 'belongs_to', :variety => page),
   ]
 )
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Layout Pages',
   :variety => l,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :variety => l),
-    Habanero::AssociationIngredient.new(:name => 'Layout', :relation => 'belongs_to', :variety => page),
+    Habanero::AssociationTrait.new(:name => 'Pages', :relation => 'has_many', :variety => l),
+    Habanero::AssociationTrait.new(:name => 'Layout', :relation => 'belongs_to', :variety => page),
   ]
 )
 
-Habanero::RelationIngredient.create!(
+Habanero::RelationTrait.create!(
   :name => 'Template Pages',
   :variety => page,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Pages', :relation => 'has_many', :variety => page),
-    Habanero::AssociationIngredient.new(:name => 'Template', :relation => 'belongs_to', :variety => page),
+    Habanero::AssociationTrait.new(:name => 'Pages', :relation => 'has_many', :variety => page),
+    Habanero::AssociationTrait.new(:name => 'Template', :relation => 'belongs_to', :variety => page),
   ]
 )
 =end
-# Phase 1 - Brand, Variety & Ingredient Definition
+# Phase 1 - Brand, Variety & Trait Definition
 =begin
 active_record = Habanero::Variety.create!(
   :brand => Habanero::Brand.new(:name => 'ActiveRecord'),
@@ -915,60 +915,60 @@ active_record = Habanero::Variety.create!(
 
 brand = Habanero::Brand.create!(:name => 'Habanero')
 
-ingredient = Habanero::Variety.create!(:name => 'Ingredient', :brand => brand, :parent => active_record)
+trait = Habanero::Variety.create!(:name => 'Trait', :brand => brand, :parent => active_record)
 
-Habanero::Variety.create!(:name => 'StringIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'IntegerIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'TrueFalseIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'TextIngredient', :brand => brand, :parent => ingredient)
+Habanero::Variety.create!(:name => 'StringTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'IntegerTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'TrueFalseTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'TextTrait', :brand => brand, :parent => trait)
 
-ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Name')
-ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Type')
-ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Derived')
-ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Limit')
-ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Precision')
-ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Scale')
-ingredient.ingredients << Habanero::IntegerIngredient.new(:name => 'Default')
-ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Nullable')
-ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Sortable')
-ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Sort Direction')
-ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Ordered')
-ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Relation')
-ingredient.save!
+trait.traits << Habanero::StringTrait.new(:name => 'Name')
+trait.traits << Habanero::StringTrait.new(:name => 'Type')
+trait.traits << Habanero::TrueFalseTrait.new(:name => 'Derived')
+trait.traits << Habanero::IntegerTrait.new(:name => 'Limit')
+trait.traits << Habanero::IntegerTrait.new(:name => 'Precision')
+trait.traits << Habanero::IntegerTrait.new(:name => 'Scale')
+trait.traits << Habanero::IntegerTrait.new(:name => 'Default')
+trait.traits << Habanero::TrueFalseTrait.new(:name => 'Nullable')
+trait.traits << Habanero::TrueFalseTrait.new(:name => 'Sortable')
+trait.traits << Habanero::StringTrait.new(:name => 'Sort Direction')
+trait.traits << Habanero::TrueFalseTrait.new(:name => 'Ordered')
+trait.traits << Habanero::StringTrait.new(:name => 'Relation')
+trait.save!
 
 variety = Habanero::Variety.create!(:name => 'Variety', :brand => brand, :parent => active_record)
 brand_variety = Habanero::Variety.create!(:name => 'Brand', :brand => brand, :parent => active_record)
 
-Habanero::Variety.create!(:name => 'BlobIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'CurrencyIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'DateIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'DateTimeIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'DecimalIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'NumberIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'PercentageIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'TimeIngredient', :brand => brand, :parent => ingredient)
+Habanero::Variety.create!(:name => 'BlobTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'CurrencyTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'DateTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'DateTimeTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'DecimalTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'NumberTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'PercentageTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'TimeTrait', :brand => brand, :parent => trait)
 
-Habanero::Variety.create!(:name => 'RelationIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'AssociationIngredient', :brand => brand, :parent => ingredient)
-Habanero::Variety.create!(:name => 'NestIngredient', :brand => brand, :parent => ingredient)
+Habanero::Variety.create!(:name => 'RelationTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'AssociationTrait', :brand => brand, :parent => trait)
+Habanero::Variety.create!(:name => 'NestTrait', :brand => brand, :parent => trait)
 
-Habanero::StringIngredient.create!(:name => 'Name', :variety => variety)
-Habanero::RelationIngredient.create!(
-  :name => 'Variety Ingredients',
+Habanero::StringTrait.create!(:name => 'Name', :variety => variety)
+Habanero::RelationTrait.create!(
+  :name => 'Variety Traits',
   :variety => variety,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Ingredients', :relation => 'has_many', :variety => variety),
-    Habanero::AssociationIngredient.new(:name => 'Variety', :relation => 'belongs_to', :variety => ingredient),
+    Habanero::AssociationTrait.new(:name => 'Traits', :relation => 'has_many', :variety => variety),
+    Habanero::AssociationTrait.new(:name => 'Variety', :relation => 'belongs_to', :variety => trait),
   ]
 )
 
-Habanero::StringIngredient.create!(:name => 'Name', :variety => brand_variety)
-Habanero::RelationIngredient.create!(
+Habanero::StringTrait.create!(:name => 'Name', :variety => brand_variety)
+Habanero::RelationTrait.create!(
   :name => 'Brand Varieties',
   :variety => brand_variety,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Varieties', :relation => 'has_many', :variety => brand_variety),
-    Habanero::AssociationIngredient.new(:name => 'Brand', :relation => 'belongs_to', :variety => variety),
+    Habanero::AssociationTrait.new(:name => 'Varieties', :relation => 'has_many', :variety => brand_variety),
+    Habanero::AssociationTrait.new(:name => 'Brand', :relation => 'belongs_to', :variety => variety),
   ]
 )
 =end

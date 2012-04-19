@@ -3,8 +3,8 @@
                       :builder => Habanero::SearchFormBuilder,
                       :html => {:method => :put}) do |f| -%>
 
-  <% @ingredients.each do |ingredient| -%>
-    <%= f.input ingredient.method_name, :ingredient => ingredient %>
+  <% @traits.each do |trait| -%>
+    <%= f.input trait.method_name, :trait => trait %>
   <% end %>
 
   <div class="form-actions">

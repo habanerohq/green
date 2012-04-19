@@ -1,68 +1,68 @@
 module Habanero  
   module TablesHelper
-    def table_format(target, ingredient)
+    def table_format(target, trait)
       if @placement.scoop.page
 
         case
-        when ingredient.relation == 'belongs_to'
-          v = target.send(ingredient.method_name)
+        when trait.relation == 'belongs_to'
+          v = target.send(trait.method_name)
           if v.present?
-            link_to format_ingredient(target, ingredient), 
-              page_path(@placement.scoop.page, :id => target.send(ingredient.method_name), :variety_type => ingredient.inverse_variety)
+            link_to format_trait(target, trait), 
+              page_path(@placement.scoop.page, :id => target.send(trait.method_name), :variety_type => trait.inverse_variety)
           end
 
-        when ingredient.type == 'Habanero::NameIngredient'
-          link_to_unless_current format_ingredient(target, ingredient), 
+        when trait.type == 'Habanero::NameTrait'
+          link_to_unless_current format_trait(target, trait), 
             page_path(@placement.scoop.page, :id => target, :variety_type => target.class._variety)
 
         else
-          format_ingredient(target, ingredient)
+          format_trait(target, trait)
         end
 
       else
-        format_ingredient(target, ingredient)
+        format_trait(target, trait)
       end
     end
 
-    def table_header(ingredient)
+    def table_header(trait)
       options = {
-        :class => header_classes(ingredient)
+        :class => header_classes(trait)
       }
       content_tag(:th, options) do
-        path = page_path(@page, @placement.params_key => {ingredient.method_name => new_sort_direction(ingredient)})
-        (link_to ingredient.to_s, path) + sort_direction_marker(ingredient)
+        path = page_path(@page, @placement.params_key => {trait.method_name => new_sort_direction(trait)})
+        (link_to trait.to_s, path) + sort_direction_marker(trait)
       end
     end
 
-    def header_classes(ingredient)
-      sort_direction(ingredient)
+    def header_classes(trait)
+      sort_direction(trait)
     end
 
-    def sort_direction(ingredient)
-      sort_params[ingredient.method_name] if sort_params
+    def sort_direction(trait)
+      sort_params[trait.method_name] if sort_params
     end
 
-    def sorted?(ingredient)
-      sort_direction(ingredient).present?
+    def sorted?(trait)
+      sort_direction(trait).present?
     end
 
-    def new_sort_direction(ingredient)
-     sort_direction(ingredient) == 'asc' ? 'desc' : 'asc'
+    def new_sort_direction(trait)
+     sort_direction(trait) == 'asc' ? 'desc' : 'asc'
     end
     
     def sort_params
       params[@placement.params_key]
     end
 
-    def sort_direction_marker(ingredient)
+    def sort_direction_marker(trait)
       content_tag(:span) do
-        content_tag(:i, nil, :class => sort_direction_class(ingredient))
+        content_tag(:i, nil, :class => sort_direction_class(trait))
       end
     end
     
-    def sort_direction_class(ingredient)
-      if sorted?(ingredient)
-        sort_direction(ingredient) == 'desc' ? 'icon-chevron-down' : 'icon-chevron-up'
+    def sort_direction_class(trait)
+      if sorted?(trait)
+        sort_direction(trait) == 'desc' ? 'icon-chevron-down' : 'icon-chevron-up'
       else
         ''
       end

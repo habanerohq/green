@@ -3,7 +3,7 @@ module Habanero
     class CategoryInput < Base
       def input
         @builder.collection_select(
-          ingredient.column_name, collection, :id, :to_s_qual,
+          trait.column_name, collection, :id, :to_s_qual,
           input_options, input_html_options
         )
       end
@@ -11,14 +11,14 @@ module Habanero
       def input_options
         options.reverse_merge!(
           :include_blank => true,
-          :prompt => "-- select one #{ingredient.category.name.downcase} --"
+          :prompt => "-- select one #{trait.category.name.downcase} --"
         )
       end
 
       private
 
       def collection
-        ingredient.category.children
+        trait.category.children
       end
     end
   end

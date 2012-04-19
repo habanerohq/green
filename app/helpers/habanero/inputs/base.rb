@@ -3,8 +3,8 @@ module Habanero
     class Base < SimpleForm::Inputs::Base
       protected
 
-      def ingredient
-        options[:ingredient]
+      def trait
+        options[:trait]
       end
     end
   end

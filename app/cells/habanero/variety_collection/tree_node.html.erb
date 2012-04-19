@@ -13,11 +13,11 @@
           <%= render({:state => :tree_node}, t.children, @mask) -%>
       <%- end -%>
 
-      <%- @mask.mask_ingredients.each do |mi| -%>
+      <%- @mask.mask_traits.each do |mi| -%>
           <%= 
-            i = mi.ingredient
+            i = mi.trait
             unless i.relation == 'has_many'
-              format_ingredient(t, i)
+              format_trait(t, i)
             else
               manies = t.send(i.method_name)
               manies = manies.reject { |m| m.respond_to?(:parent_id) && m.parent_id }

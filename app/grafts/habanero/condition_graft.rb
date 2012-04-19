@@ -9,15 +9,15 @@ module Habanero
     def apply_to(chain, params = {})
       params = (params || {}).stringify_keys
 
-      column = ingredient.arel_column
-      self.value = params["#{ingredient.method_name}"] if params["#{ingredient.method_name}"] 
+      column = trait.arel_column
+      self.value = params["#{trait.method_name}"] if params["#{trait.method_name}"] 
       self.value = "%#{value}%" if predicate.include?('match')
-      chain = ingredient.apply_inclusions(chain)
+      chain = trait.apply_inclusions(chain)
       chain.where(column.send(predicate, value))
     end
     
     def to_s
-      "#{ingredient} #{predicate} '#{value}'"
+      "#{trait} #{predicate} '#{value}'"
     end
   end
 end

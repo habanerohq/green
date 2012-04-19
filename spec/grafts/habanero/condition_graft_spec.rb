@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Habanero::Condition do
   it { should belong_to(:query) }
-  it { should belong_to(:ingredient) }
+  it { should belong_to(:trait) }
 
   it 'should allow valid values for predicate' do
     %w(eq not_eq matches does_not_match lt lteq gt gteq in not_in).each { |v| should allow_value(v).for(:predicate) }

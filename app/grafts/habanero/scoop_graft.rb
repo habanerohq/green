@@ -8,12 +8,12 @@ module Habanero
       query.try(:variety)
     end
     
-    def ingredients
-      mask ? mask.ingredients : variety.try(:primary_ingredients)
+    def traits
+      mask ? mask.traits : variety.try(:primary_traits)
     end
 
     def translators
-      @prompts || ingredients
+      @prompts || traits
     end
     
     def translate_search(data)

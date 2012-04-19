@@ -2,8 +2,8 @@ module Habanero
   module MaskGraft
     extend ActiveSupport::Concern
     
-    def ingredients
-      mask_ingredients.map(&:ingredient)
+    def traits
+      mask_traits.map(&:trait)
     end
   end
 end

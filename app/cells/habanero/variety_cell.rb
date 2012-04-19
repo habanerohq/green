@@ -45,7 +45,7 @@ module Habanero
     def connections(options)
       instance_variables_from(options)
       @variety = Habanero::Variety.find(params[:variety_type])
-      @ingredients = @variety.connections
+      @traits = @variety.connections
       @target = @variety.klass.find(params[:id]) if params[:id]
       
       render
@@ -56,7 +56,7 @@ module Habanero
     def _get_started(options)
       instance_variables_from(options)
       @variety = Habanero::Variety.find(params[:variety_type])
-      @ingredients = @placement.ingredients || @variety.primary_ingredients
+      @traits = @placement.traits || @variety.primary_traits
     end
   end
 end

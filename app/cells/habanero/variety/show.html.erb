@@ -2,9 +2,9 @@
 
 <%= cell_content do %>
   <dl>
-    <% @ingredients.each do |i| %>
+    <% @traits.each do |i| %>
       <dt><%= i.name %></dt>
-      <dd><%= format_ingredient(@target, i) %></dd>
+      <dd><%= format_trait(@target, i) %></dd>
     <% end %>
   </dl>
 <% end %>

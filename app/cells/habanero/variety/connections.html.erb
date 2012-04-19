@@ -1,7 +1,7 @@
 <%= cell_title('connections') %>
 
 <ul>
-  <%- @ingredients.each do |i| -%>
+  <%- @traits.each do |i| -%>
     <li>
       <%= i.to_s %> 
       <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), page_path(new_variety_page, :variety_type => i.inverse_variety)) %>

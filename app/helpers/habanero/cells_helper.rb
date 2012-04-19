@@ -1,7 +1,7 @@
 module Habanero
   module CellsHelper
     include PlacementsHelper
-    include IngredientsHelper
+    include TraitsHelper
     include TablesHelper
 
     def cell_div(options={}, &block)

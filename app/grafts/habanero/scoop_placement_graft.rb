@@ -14,8 +14,8 @@ module Habanero
       scoop.search
     end
 
-    def ingredients
-      scoop.ingredients
+    def traits
+      scoop.traits
     end
 
    def prepare_search(params, page)

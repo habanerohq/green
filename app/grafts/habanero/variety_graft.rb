@@ -4,8 +4,8 @@ module Habanero
 
     included do
       belongs_to :brand, :class_name => '::Habanero::Brand'
-      has_many :ingredients,
-               :class_name => '::Habanero::Ingredient',
+      has_many :traits,
+               :class_name => '::Habanero::Trait',
                :inverse_of => :variety,
                :dependent => :destroy
 
@@ -17,7 +17,7 @@ module Habanero
                 :presence => true,
                 :uniqueness => { :scope => :brand_id }
 
-      validates_associated :ingredients
+      validates_associated :traits
 
       before_create :create_table # failed create leaves empty table?
       after_destroy :remove_const
@@ -29,8 +29,8 @@ module Habanero
       "#{brand.qualified_name}::#{klass_name}"
     end
 
-    def primary_ingredients
-      primary_mask.present? ? primary_mask.ingredients : all_displayable_ingredients
+    def primary_traits
+      primary_mask.present? ? primary_mask.traits : all_displayable_traits
     end
 
     def primary_mask
@@ -41,34 +41,34 @@ module Habanero
       self_and_ancestors.includes(:masks).map(&:masks).flatten.reverse
     end
     
-    def all_ingredients
-      self_and_ancestors.includes(:ingredients).map(&:ingredients).flatten
+    def all_traits
+      self_and_ancestors.includes(:traits).map(&:traits).flatten
     end
 
-    def displayable_ingredients(ingreds = nil)
-      (ingreds || ingredients).
+    def displayable_traits(ingreds = nil)
+      (ingreds || traits).
       reject do |i| 
-        i.type.in? ['Habanero::RelationIngredient', 'Habanero::SlugIngredient'] or
-          (i.type == 'Habanero::AssociationIngredient' and i.relation == 'has_many')
+        i.type.in? ['Habanero::RelationTrait', 'Habanero::SlugTrait'] or
+          (i.type == 'Habanero::AssociationTrait' and i.relation == 'has_many')
       end
     end
 
-    def all_displayable_ingredients
-      displayable_ingredients(all_ingredients)
+    def all_displayable_traits
+      displayable_traits(all_traits)
     end
     
     def connections
-      h = all_ingredients.select { |i| i.relation =~ /has/ }
+      h = all_traits.select { |i| i.relation =~ /has/ }
       p = h.select { |i| i.primary? }
       p.any? ? p : h
     end
     
-    def name_ingredient
-      all_ingredients.detect{ |i| i.type == 'Habanero::NameIngredient' }
+    def name_trait
+      all_traits.detect{ |i| i.type == 'Habanero::NameTrait' }
     end
     
-    def name_ingredient_column_name
-      name_ingredient.try(:method_name) || (respond_to?(:name) ? :name : :id)
+    def name_trait_column_name
+      name_trait.try(:method_name) || (respond_to?(:name) ? :name : :id)
     end
 
     def table_name
@@ -117,18 +117,18 @@ module Habanero
     end
 
     def adapt
-      ingredients.each { |i| i.adapt(klass) }
+      traits.each { |i| i.adapt(klass) }
     end
     
     def post_create
       if !respond_to?(:suppress_automatic_naming) or (respond_to?(:suppress_automatic_naming) and !suppress_automatic_naming?)
         begin
-          ni = Habanero::NameIngredient.create!(:name => 'Name', :variety => self)
-          Habanero::SlugIngredient.create!(:name => 'Slug', :variety => self, :target => ni)
+          ni = Habanero::NameTrait.create!(:name => 'Name', :variety => self)
+          Habanero::SlugTrait.create!(:name => 'Slug', :variety => self, :target => ni)
         rescue ActiveRecord::UnknownAttributeError => e
           nil
         rescue NameError => e
-          e.message =~ /Ingredient$/ ? nil : raise
+          e.message =~ /Trait$/ ? nil : raise
         end
       end
     end
