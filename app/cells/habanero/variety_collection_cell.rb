@@ -32,13 +32,13 @@ module Habanero
 
     def tree(options)
       _list(options)
-      @mask = @placement.scoop.mask
+      @sieve = @placement.scoop.sieve
       @targets = roots_only
       render
     end
 
-    def tree_node(targets, mask)
-      @mask = mask
+    def tree_node(targets, sieve)
+      @sieve = sieve
       @targets = targets
       render
     end
@@ -48,7 +48,7 @@ module Habanero
     def _list(options)
       instance_variables_from(options)
       @query = @placement.query
-      @mask = @placement.scoop.mask
+      @sieve = @placement.scoop.sieve
       @variety = variety_by_precedence
       @search = @placement.search
       @targets = targets_by_precedence
@@ -64,7 +64,7 @@ module Habanero
     end
     
     def variety_by_precedence
-      @query.try(:variety) || @mask.try(:variety) || @page.nearest_target
+      @query.try(:variety) || @sieve.try(:variety) || @page.nearest_target
     end
     
     def targets_by_precedence
@@ -76,7 +76,7 @@ module Habanero
     end
     
     def roots_only
-      @mask.variety.klass.respond_to?(:roots) ? @targets.where(:parent_id => nil) : @targets
+      @sieve.variety.klass.respond_to?(:roots) ? @targets.where(:parent_id => nil) : @targets
     end
   end
 end

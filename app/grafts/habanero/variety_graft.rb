@@ -30,15 +30,15 @@ module Habanero
     end
 
     def primary_traits
-      primary_mask.present? ? primary_mask.traits : all_displayable_traits
+      primary_sieve.present? ? primary_sieve.traits : all_displayable_traits
     end
 
-    def primary_mask
-      all_masks.detect { |m| m.primary? }
+    def primary_sieve
+      all_sieves.detect { |m| m.primary? }
     end
     
-    def all_masks
-      self_and_ancestors.includes(:masks).map(&:masks).flatten.reverse
+    def all_sieves
+      self_and_ancestors.includes(:sieves).map(&:sieves).flatten.reverse
     end
     
     def all_traits
