@@ -1,5 +1,5 @@
-class AddNameToHabaneroNamespaces < ActiveRecord::Migration
+class AddNameToHabaneroBrands < ActiveRecord::Migration
   def change
-    add_column :habanero_namespaces, :name, :string
+    add_column :habanero_brands, :name, :string
   end
 end

@@ -1,5 +1,5 @@
 module Habanero
-  module NamespaceGraft
+  module BrandGraft
     extend ActiveSupport::Concern
 
     included do

@@ -38,8 +38,8 @@ describe Habanero::Query do
     condition.save
     condition.should be_persisted
 
-    params = { :q => { condition.id => 'Namespace' }}
-    @query.evaluate(params).should == [Habanero::Sorbet.find_by_name('Namespace')]
+    params = { :q => { condition.id => 'Brand' }}
+    @query.evaluate(params).should == [Habanero::Sorbet.find_by_name('Brand')]
 
     # make sure this works with the id as a string too
     params = { :q => { "#{condition.id}" => 'Page' }}

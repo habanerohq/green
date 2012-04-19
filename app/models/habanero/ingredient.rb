@@ -96,9 +96,9 @@ module Habanero
 end
 
 if Habanero::Sorbet.table_exists?
-  Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first.try(:adapt)
+  Habanero::Sorbet.branded('Habanero').where(:name => 'Ingredient').first.try(:adapt)
   Habanero::Ingredient.class_attribute :_sorbet
-  Habanero::Ingredient._sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first
+  Habanero::Ingredient._sorbet = Habanero::Sorbet.branded('Habanero').where(:name => 'Ingredient').first
 end
 
 Habanero::Ingredient.class_eval { include Habanero::IngredientGraft }

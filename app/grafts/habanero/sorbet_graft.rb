@@ -3,7 +3,7 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      belongs_to :namespace, :class_name => '::Habanero::Namespace'
+      belongs_to :brand, :class_name => '::Habanero::Brand'
       has_many :ingredients,
                :class_name => '::Habanero::Ingredient',
                :inverse_of => :sorbet,
@@ -11,11 +11,11 @@ module Habanero
 
       acts_as_nested_set
 
-      scope :namespaced, lambda { |n| joins(:namespace).where('habanero_namespaces.name = ?', n) }
+      scope :branded, lambda { |n| joins(:brand).where('habanero_brands.name = ?', n) }
 
       validates :name,
                 :presence => true,
-                :uniqueness => { :scope => :namespace_id }
+                :uniqueness => { :scope => :brand_id }
 
       validates_associated :ingredients
 
@@ -26,7 +26,7 @@ module Habanero
     end
 
     def qualified_name
-      "#{namespace.qualified_name}::#{klass_name}"
+      "#{brand.qualified_name}::#{klass_name}"
     end
 
     def primary_ingredients
@@ -82,7 +82,7 @@ module Habanero
     def chill!
       return klass if chilled?
 
-      namespace.klass.const_set(klass_name, Class.new(parent.klass))
+      brand.klass.const_set(klass_name, Class.new(parent.klass))
       klass.unloadable
 
       klass.class_attribute :_sorbet
@@ -103,11 +103,11 @@ module Habanero
     end
 
     def chilled?
-      namespace.klass.constants.include?(klass_name)
+      brand.klass.constants.include?(klass_name)
     end
 
     def klass
-      namespace.klass.const_get(klass_name)
+      brand.klass.const_get(klass_name)
     end
 
     def base
@@ -143,7 +143,7 @@ module Habanero
     end
 
     def remove_const
-      namespace.klass.send(:remove_const, klass_name) if chilled?
+      brand.klass.send(:remove_const, klass_name) if chilled?
     end
   end
 end

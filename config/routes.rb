@@ -39,8 +39,8 @@ Sorbet2::Application.routes.draw do
   #     end
   #   end
 
-  # Sample resource route within a namespace:
-  #   namespace :admin do
+  # Sample resource route within a brand:
+  #   brand :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products

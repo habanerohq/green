@@ -32,8 +32,8 @@ module Habanero
 
         ActiveRecord::Base.logger.level = 2
 
-        mod = self.name != 'Object' && Habanero::Sorbet.namespaced(self.name).where(:name => const_name).first.try(:chill!) ||
-              Habanero::Namespace.where(:name => qualified_name).first.try(:chill!)
+        mod = self.name != 'Object' && Habanero::Sorbet.branded(self.name).where(:name => const_name).first.try(:chill!) ||
+              Habanero::Brand.where(:name => qualified_name).first.try(:chill!)
 
         # todo: take the log level from rails configuration
         ActiveRecord::Base.logger.level = 0

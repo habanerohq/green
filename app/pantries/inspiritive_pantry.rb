@@ -1,12 +1,12 @@
 class InspiritivePantry < Pantry::Base
   
   def define_stacks
-    can_stack 'Habanero::Namespace', :scope => {:where => {:name => 'Inspiritive'}}
+    can_stack 'Habanero::Brand', :scope => {:where => {:name => 'Inspiritive'}}
     can_stack 'Habanero::Sorbet', 
-      :id_value_methods => [:name, :namespace], 
+      :id_value_methods => [:name, :brand], 
       :scope => {
-        :includes => :namespace,
-        :where => {:habanero_namespaces => {:name => 'Inspiritive'}}
+        :includes => :brand,
+        :where => {:habanero_brands => {:name => 'Inspiritive'}}
       }
     
     [
@@ -35,8 +35,8 @@ class InspiritivePantry < Pantry::Base
       can_stack i, 
       :id_value_methods => [:name, :sorbet, :parent],
       :scope => {
-        :includes => {:sorbet => :namespace},
-        :where => {:habanero_namespaces => {:name => 'Inspiritive'}}
+        :includes => {:sorbet => :brand},
+        :where => {:habanero_brands => {:name => 'Inspiritive'}}
       }
     end
     

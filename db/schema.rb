@@ -28,6 +28,11 @@ ActiveRecord::Schema.define(:version => 20120306055304) do
 
   add_index "cellar_migrations", ["version"], :name => "index_cellar_migrations_on_version", :unique => true
 
+  create_table "habanero_brands", :force => true do |t|
+    t.string "name"
+    t.string "slug"
+  end
+
   create_table "habanero_ingredients", :force => true do |t|
     t.integer "sorbet_id"
     t.string  "name"
@@ -40,13 +45,8 @@ ActiveRecord::Schema.define(:version => 20120306055304) do
 
   add_index "habanero_ingredients", ["sorbet_id"], :name => "index_habanero_ingredients_on_sorbet_id"
 
-  create_table "habanero_namespaces", :force => true do |t|
-    t.string "name"
-    t.string "slug"
-  end
-
   create_table "habanero_sorbets", :force => true do |t|
-    t.integer "namespace_id"
+    t.integer "brand_id"
     t.string  "name"
     t.integer "parent_id"
     t.integer "lft"

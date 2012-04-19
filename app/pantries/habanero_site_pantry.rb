@@ -9,8 +9,8 @@ class HabaneroSitePantry < Pantry::Base
       i.descendants.map(&:klass)
     end
     
-    refers_to 'Habanero::Namespace'
-    refers_to 'Habanero::Sorbet', :id_value_methods => [:name, :namespace]
+    refers_to 'Habanero::Brand'
+    refers_to 'Habanero::Sorbet', :id_value_methods => [:name, :brand]
     refers_to 'Habanero::Ingredient', :id_value_methods => [:name, :sorbet]
 
     can_stack 'Habanero::Layout', :scope => {:where => {:name => ['Habanero', 'Kitchen']}}
@@ -43,37 +43,37 @@ class HabaneroSitePantry < Pantry::Base
     can_stack 'Habanero::Mask', 
       :id_value_methods => [:name, :sorbet],
       :scope => {
-        :includes => {:sorbet => :namespace},
-        :where => {:habanero_namespaces => {:name => 'Habanero'}}
+        :includes => {:sorbet => :brand},
+        :where => {:habanero_brands => {:name => 'Habanero'}}
       }
       
     can_stack 'Habanero::MaskIngredient', 
       :id_value_methods => [:mask, :ingredient],
       :scope => {
-        :includes => {:mask => {:sorbet => :namespace}},
-        :where => {:habanero_namespaces => {:name => 'Habanero'}}
+        :includes => {:mask => {:sorbet => :brand}},
+        :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     
     can_stack 'Habanero::Query', 
       :id_value_methods => [:name, :sorbet],
       :scope => {
-        :includes => {:sorbet => :namespace},
-        :where => {:habanero_namespaces => {:name => 'Habanero'}}
+        :includes => {:sorbet => :brand},
+        :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     can_stack 'Habanero::Condition', 
       :id_value_methods => [:query, :ingredient]
 
     can_stack 'Habanero::Scoop',
-      :id_value_methods => [:name, :namespace],
+      :id_value_methods => [:name, :brand],
       :scope => {
-        :includes => :namespace,
-        :where => {:habanero_namespaces => {:name => 'Habanero'}}
+        :includes => :brand,
+        :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     can_stack 'Habanero::ScoopPlacement', 
       :id_value_methods => [:template, :page, :scoop, :region],
       :scope => {
-        :includes => {:scoop => :namespace},
-        :where => {:habanero_namespaces => {:name => 'Habanero'}}
+        :includes => {:scoop => :brand},
+        :where => {:habanero_brands => {:name => 'Habanero'}}
       }
 
     can_stack 'Habanero::Category', 

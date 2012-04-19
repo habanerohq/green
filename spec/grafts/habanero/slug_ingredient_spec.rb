@@ -7,8 +7,8 @@ describe Habanero::SlugIngredient do
   before(:each) do
     @book = Habanero::Sorbet.new(
       :name => 'Book',
-      :parent => Habanero::Sorbet.namespaced('ActiveRecord').where(:name => 'Base').first,
-      :namespace => Habanero::Namespace.find_by_name('Habanero')
+      :parent => Habanero::Sorbet.branded('ActiveRecord').where(:name => 'Base').first,
+      :brand => Habanero::Brand.find_by_name('Habanero')
     )
 
     title = Habanero::StringIngredient.new(:name => 'Title')
@@ -17,8 +17,8 @@ describe Habanero::SlugIngredient do
     # a related sorbet with which we can test scoped slugs
     @author = Habanero::Sorbet.new(
       :name => 'Author',
-      :parent => Habanero::Sorbet.namespaced('ActiveRecord').where(:name => 'Base').first,
-      :namespace => Habanero::Namespace.find_by_name('Habanero')
+      :parent => Habanero::Sorbet.branded('ActiveRecord').where(:name => 'Base').first,
+      :brand => Habanero::Brand.find_by_name('Habanero')
     )
 
     name = Habanero::StringIngredient.new(:name => 'Name')
@@ -77,13 +77,13 @@ describe Habanero::SlugIngredient do
         @book.ingredients.find_by_name('Author').id
       )
 
-      @book.namespace.klass.send :remove_const, 'Book'
+      @book.brand.klass.send :remove_const, 'Book'
       @book.chill!
     end
 
     it 'is invalid when scope ingredient does not belong to the same sorbet' do
       slug = @book.ingredients.find_by_name('Slug')
-      slug.scope = Habanero::Sorbet.find_by_name('Sorbet').ingredients.find_by_name('Namespace')
+      slug.scope = Habanero::Sorbet.find_by_name('Sorbet').ingredients.find_by_name('Brand')
       slug.should_not be_valid
       slug.errors_on(:scope).should include "is not present on the target sorbet"
     end

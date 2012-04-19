@@ -27,7 +27,7 @@ describe Habanero::Ingredient do
   end
 =begin
   it 'should maintain a column in the sorbet database table' do
-    sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Sorbet').first
+    sorbet = Habanero::Sorbet.branded('Habanero').where(:name => 'Sorbet').first
 
     ingredient = sorbet.ingredients.create(:name => 'Foo')
     ActiveRecord::Base.connection.columns(sorbet.table_name).map(&:name).should include ingredient.column_name
@@ -39,7 +39,7 @@ describe Habanero::Ingredient do
   end
 
   it 'should adapt sorbet as ingredients are added' do
-    sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Sorbet').first
+    sorbet = Habanero::Sorbet.branded('Habanero').where(:name => 'Sorbet').first
 
     # todo: we need to actually do something to klass in #adapt to make sure
     #       that whatever changes were made to it stick

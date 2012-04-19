@@ -4,8 +4,8 @@ describe Habanero::AssociationIngredient do
   before(:each) do
     @sorbet = Habanero::Sorbet.new(
       :name => 'AssocDummy',
-      :parent => Habanero::Sorbet.namespaced('ActiveRecord').where(:name => 'Base').first,
-      :namespace => Habanero::Namespace.find_by_name('Habanero'),
+      :parent => Habanero::Sorbet.branded('ActiveRecord').where(:name => 'Base').first,
+      :brand => Habanero::Brand.find_by_name('Habanero'),
       :ingredients => [
         Habanero::StringIngredient.new(:name => 'Foo')
       ]
@@ -93,7 +93,7 @@ describe Habanero::AssociationIngredient do
       :name => 'Context Dummies',
       :sorbet => @sorbet,
       :children => [
-        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Namespace')),
+        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Brand')),
         Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Layout')),
         Habanero::AssociationIngredient.new(:name => 'Context', :relation => 'belongs_to', :sorbet => @sorbet)
       ]
@@ -102,7 +102,7 @@ describe Habanero::AssociationIngredient do
     poly.children.count.should == 3
     poly.children.each { |c| c.should be_polymorphic }
 
-    a = Habanero::Namespace.reflect_on_association(:dummies)
+    a = Habanero::Brand.reflect_on_association(:dummies)
     a.should be_present
     a.class_name.should == '::Habanero::AssocDummy'
     a.options[:as].should == 'context'

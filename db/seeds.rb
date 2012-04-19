@@ -17,7 +17,7 @@ create_page.insert_at(show_page.section_position)
 # Phase 37 - fix sorbet tree mask hierarchy
 =begin
 scoop = Habanero::Page.find_by_name('Sorbet Kitchen').placements.first.scoop
-scoop.mask = Habanero::Mask.find_by_name('Namespace Tree Mask')
+scoop.mask = Habanero::Mask.find_by_name('Brand Tree Mask')
 scoop.save!
 =end
 # Phase 36 - link kitchen pages to show & edit pages
@@ -35,12 +35,12 @@ Habanero::Ingredient.update_all("type = 'Habanero::NameIngredient'", "type = 'Ha
 # Phase 34 - Fix NameIngredient
 =begin
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 
 name_ingredient = Habanero::Sorbet.create!(
   :name => 'NameIngredient',
   :parent => ingredient,
-  :namespace => namespace
+  :brand => brand
 )
 
 Habanero::StringIngredient.create!(:name => 'Format', :sorbet => name_ingredient)
@@ -136,13 +136,13 @@ scoop_mask = Habanero::Mask.create!(:name => 'Scoop Tree Mask', :sorbet => scoop
 scoop_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => scoop.ingredients.find_by_name('Placements'))
 scoop_mask.save!
 
-namespace = Habanero::Sorbet.find_by_name('Namespace')
-namespace_mask = Habanero::Mask.create!(:name => 'Namespace Tree Mask', :sorbet => namespace)
-namespace_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => namespace.ingredients.find_by_name('Sorbets'))
-namespace_mask.save!
+brand = Habanero::Sorbet.find_by_name('Brand')
+brand_mask = Habanero::Mask.create!(:name => 'Brand Tree Mask', :sorbet => brand)
+brand_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => brand.ingredients.find_by_name('Sorbets'))
+brand_mask.save!
 
 sorbet = Habanero::Sorbet.find_by_name('Sorbet')
-sorbet_mask = Habanero::Mask.create!(:name => 'Sorbet Tree Mask', :sorbet => sorbet, :parent => namespace_mask)
+sorbet_mask = Habanero::Mask.create!(:name => 'Sorbet Tree Mask', :sorbet => sorbet, :parent => brand_mask)
 sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Ingredients'))
 sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Masks'))
 sorbet_mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Queries'))
@@ -209,10 +209,10 @@ Habanero::RelationIngredient.create!(
 
 # Phase 27 - queries
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
-query = Habanero::Sorbet.create!(:name => 'Query', :parent => active_record, :namespace => namespace)
+query = Habanero::Sorbet.create!(:name => 'Query', :parent => active_record, :brand => brand)
 query.ingredients << Habanero::StringIngredient.new(:name => 'Name')
 
 Habanero::RelationIngredient.create!(
@@ -224,7 +224,7 @@ Habanero::RelationIngredient.create!(
   ]
 )
 
-condition = Habanero::Sorbet.create!(:name => 'Condition', :parent => active_record, :namespace => namespace)
+condition = Habanero::Sorbet.create!(:name => 'Condition', :parent => active_record, :brand => brand)
 condition.ingredients << Habanero::StringIngredient.new(:name => 'Predicate') # todo: should not be a StringIngredient
 condition.ingredients << Habanero::StringIngredient.new(:name => 'Value')
 
@@ -313,8 +313,8 @@ mask.save!
 # Phase 23 - Define LayoutScoop
 =begin
 parent = Habanero::Sorbet.find_by_name('SorbetScoop')
-namespace = Habanero::Namespace.find_by_name('Habanero')
-Habanero::Sorbet.create!(:name => 'LayoutScoop', :namespace => namespace, :parent => parent)
+brand = Habanero::Brand.find_by_name('Habanero')
+Habanero::Sorbet.create!(:name => 'LayoutScoop', :brand => brand, :parent => parent)
 =end
 # Phase 22 - Build a fluid layout for "sorbet kitchens"
 =begin
@@ -365,7 +365,7 @@ Habanero::Region.create!(:name => 'Footer', :span => 12, :layout => layout, :row
 =end
 # Phase 19 - Layout Rows
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
 layout = Habanero::Sorbet.find_by_name('Layout')
@@ -375,7 +375,7 @@ region = Habanero::Sorbet.find_by_name('Region')
 Habanero::IntegerIngredient.create!(:name => 'Span', :sorbet => region)
 Habanero::IntegerIngredient.create!(:name => 'Offset', :sorbet => region)
 
-layout_row = Habanero::Sorbet.create!(:name => 'LayoutRow', :namespace => namespace, :parent => active_record)
+layout_row = Habanero::Sorbet.create!(:name => 'LayoutRow', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => layout_row)
 Habanero::TrueFalseIngredient.create!(:name => 'Fluid', :sorbet => layout_row)
 
@@ -401,11 +401,11 @@ Habanero::RelationIngredient.create!(
 =end
 # Phase 18 - Add Slug Ingredients
 =begin
-namespace = Habanero::Sorbet.find_by_name('Namespace')
-Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => namespace, :target => namespace.ingredients.find_by_name('Name'))
+brand = Habanero::Sorbet.find_by_name('Brand')
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => brand, :target => brand.ingredients.find_by_name('Name'))
 
 sorbet = Habanero::Sorbet.find_by_name('Sorbet')
-Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => sorbet, :target => sorbet.ingredients.find_by_name('Name'), :scope => sorbet.ingredients.find_by_name('Namespace'))
+Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => sorbet, :target => sorbet.ingredients.find_by_name('Name'), :scope => sorbet.ingredients.find_by_name('Brand'))
 
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => ingredient, :target => ingredient.ingredients.find_by_name('Name'), :scope => ingredient.ingredients.find_by_name('Sorbet'))
@@ -436,11 +436,11 @@ Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => region, :target => 
 =end
 # Phase 17 - Invent Slug Ingredient
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 assoc_ingredient = Habanero::Sorbet.find_by_name('AssociationIngredient')
 
-s_ingredient = Habanero::Sorbet.create!(:name => 'SlugIngredient', :namespace => namespace, :parent => ingredient)
+s_ingredient = Habanero::Sorbet.create!(:name => 'SlugIngredient', :brand => brand, :parent => ingredient)
 
 Habanero::RelationIngredient.create!(
   :name => 'Target Slug Ingredients',
@@ -462,11 +462,11 @@ Habanero::RelationIngredient.create!(
 =end
 # Phase 16 - Category Ingredient
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 category = Habanero::Sorbet.find_by_name('Category')
 
-c_ingredient = Habanero::Sorbet.create!(:name => 'CategoryIngredient', :namespace => namespace, :parent => ingredient)
+c_ingredient = Habanero::Sorbet.create!(:name => 'CategoryIngredient', :brand => brand, :parent => ingredient)
 
 Habanero::RelationIngredient.create!(
   :name => 'Category Ingredients',
@@ -479,10 +479,10 @@ Habanero::RelationIngredient.create!(
 =end
 # Phase 15 - Create category sorbet
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
-c = Habanero::Sorbet.create!(:name => 'Category', :namespace => namespace, :parent => active_record)
+c = Habanero::Sorbet.create!(:name => 'Category', :brand => brand, :parent => active_record)
 nest = Habanero::NestIngredient.create!(:name => 'Nest', :sorbet => c)
 name = Habanero::StringIngredient.create!(:name => 'Name', :sorbet => c)
 abbrev = Habanero::StringIngredient.create!(:name => 'Abbreviation', :sorbet => c)
@@ -557,11 +557,11 @@ Habanero::RelationIngredient.create!(
 =end
 # Phase 9 - Invent collection scoops, reconstruct Scoop inheritance hierarchy
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 
 s = Habanero::Sorbet.find_by_name('Scoop')
 
-sorbet_scoop = Habanero::Sorbet.create!(:name => 'SorbetScoop', :namespace => namespace, :parent => s)
+sorbet_scoop = Habanero::Sorbet.create!(:name => 'SorbetScoop', :brand => brand, :parent => s)
 
 # rename list scoop to collection scoop and make it a child of sorbet scoop
 ls = Habanero::Sorbet.find_by_name('ListScoop')
@@ -590,7 +590,7 @@ ds.save!
 
 # create a new type of scoop -- Document Collection Scoop -- and create some instances for placement
 mask = Habanero::Mask.find_by_name('Sorbet Document Mask')
-sorbet = Habanero::Sorbet.create!(:name => 'DocumentationCollectionScoop', :namespace => namespace, :parent => ls)
+sorbet = Habanero::Sorbet.create!(:name => 'DocumentationCollectionScoop', :brand => brand, :parent => ls)
 
 s_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Sorbet List', :mask => mask)
 i_scoop = Habanero::DocumentationCollectionScoop.create!(:name => 'Ingredient List', :mask => mask)
@@ -629,7 +629,7 @@ i_page = Habanero::Page.create!(:name => 'Ingredient Page', :section => ref, :ro
 mask = Habanero::Mask.create!(:name => 'Sorbet Document Mask', :sorbet => sorbet)
 scoop = Habanero::DocumentationScoop.create!(:name => 'Sorbet Document', :mask => mask)
 mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Name'))
-mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Namespace'))
+mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Brand'))
 mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Sorbet Nest'))
 mask.mask_ingredients << Habanero::MaskIngredient.new(:ingredient => sorbet.ingredients.find_by_name('Documentation'))
 mask.save!
@@ -669,13 +669,13 @@ Habanero::NestIngredient.create!(:name => 'Ingredient Nest', :sorbet => ingredie
 =begin
 Habanero::Sorbet
 Habanero::Ingredient
-Habanero::Namespace
+Habanero::Brand
 
-namespace = Habanero::Sorbet.find_by_name('Namespace')
+brand = Habanero::Sorbet.find_by_name('Brand')
 sorbet = Habanero::Sorbet.find_by_name('Sorbet')
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 
-Habanero::TextIngredient.create!(:name => 'Documentation', :sorbet => namespace)
+Habanero::TextIngredient.create!(:name => 'Documentation', :sorbet => brand)
 Habanero::TextIngredient.create!(:name => 'Documentation', :sorbet => sorbet)
 Habanero::TextIngredient.create!(:name => 'Documentation', :sorbet => ingredient)
 
@@ -695,12 +695,12 @@ a.save!
 =begin
 Habanero::Sorbet
 Habanero::Ingredient
-Habanero::Namespace
+Habanero::Brand
 
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 
-route = Habanero::Sorbet.create!(:name => 'RouteIngredient', :namespace => namespace, :parent => ingredient)
+route = Habanero::Sorbet.create!(:name => 'RouteIngredient', :brand => brand, :parent => ingredient)
 
 page = Habanero::Sorbet.find_by_name('Page')
 page.ingredients << Habanero::RouteIngredient.new(:name => 'Route')
@@ -713,7 +713,7 @@ site.ingredients << Habanero::StringIngredient.new(:name => 'Host')
 
 # Phase 4 - Composite Scoops & Masks Scoop
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
 scoop = Habanero::Sorbet.find_by_name('Scoop')
@@ -731,7 +731,7 @@ Habanero::RelationIngredient.create!(
   ]
 )
 
-mask = Habanero::Sorbet.create!(:name => 'Mask', :namespace => namespace, :parent => active_record)
+mask = Habanero::Sorbet.create!(:name => 'Mask', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => mask)
 Habanero::NestIngredient.create!(:name => 'Nest', :sorbet => mask)
 
@@ -744,7 +744,7 @@ Habanero::RelationIngredient.create!(
   ]
 )
 
-mask_ingredient = Habanero::Sorbet.create!(:name => 'MaskIngredient', :namespace => namespace, :parent => active_record)
+mask_ingredient = Habanero::Sorbet.create!(:name => 'MaskIngredient', :brand => brand, :parent => active_record)
 ingredient = Habanero::Sorbet.find_by_name('Ingredient')
 
 Habanero::RelationIngredient.create!(
@@ -766,7 +766,7 @@ Habanero::RelationIngredient.create!(
   ]
 )
 
-mask_scoop = Habanero::Sorbet.create!(:name => 'MaskScoop', :namespace => namespace, :parent => scoop)
+mask_scoop = Habanero::Sorbet.create!(:name => 'MaskScoop', :brand => brand, :parent => scoop)
 
 Habanero::RelationIngredient.create!(
   :name => 'Mask Mask Scoops',
@@ -779,12 +779,12 @@ Habanero::RelationIngredient.create!(
 =end
 # Phase 3 - Basic Scoops, Placements & Regions
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
 page = Habanero::Sorbet.find_by_name('Page')
 
-scoop = Habanero::Sorbet.create!(:name => 'Scoop', :namespace => namespace, :parent => active_record)
+scoop = Habanero::Sorbet.create!(:name => 'Scoop', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Type', :sorbet => scoop)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => scoop)
 Habanero::StringIngredient.create!(:name => 'Title', :sorbet => scoop)
@@ -792,12 +792,12 @@ Habanero::TextIngredient.create!(:name => 'Body', :sorbet => scoop)
 Habanero::StringIngredient.create!(:name => 'Body Format', :sorbet => scoop)
 Habanero::StringIngredient.create!(:name => 'Template', :sorbet => scoop)
 
-Habanero::Sorbet.create!(:name => 'ContentScoop', :namespace => namespace, :parent => scoop)
+Habanero::Sorbet.create!(:name => 'ContentScoop', :brand => brand, :parent => scoop)
 
-list_scoop = Habanero::Sorbet.create!(:name => 'ListScoop', :namespace => namespace, :parent => scoop)
+list_scoop = Habanero::Sorbet.create!(:name => 'ListScoop', :brand => brand, :parent => scoop)
 Habanero::IntegerIngredient.create!(:name => 'Columns', :sorbet => list_scoop)
 
-placement = Habanero::Sorbet.create!(:name => 'ScoopPlacement', :namespace => namespace, :parent => active_record)
+placement = Habanero::Sorbet.create!(:name => 'ScoopPlacement', :brand => brand, :parent => active_record)
 
 Habanero::RelationIngredient.create!(
   :name => 'Scoop Placements',
@@ -819,7 +819,7 @@ Habanero::RelationIngredient.create!(
 
 lay = Habanero::Sorbet.find_by_name('Layout')
 
-region = Habanero::Sorbet.create!(:name => 'Region', :namespace => namespace, :parent => active_record)
+region = Habanero::Sorbet.create!(:name => 'Region', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => region)
 
 Habanero::RelationIngredient.create!(
@@ -843,13 +843,13 @@ Habanero::RelationIngredient.create!(
 =end
 # Phase 2 - Sites, Sections & Pages
 =begin
-namespace = Habanero::Namespace.find_by_name('Habanero')
+brand = Habanero::Brand.find_by_name('Habanero')
 active_record = Habanero::Sorbet.find_by_name('Base')
 
-site = Habanero::Sorbet.create!(:name => 'Site', :namespace => namespace, :parent => active_record)
+site = Habanero::Sorbet.create!(:name => 'Site', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => site)
 
-section = Habanero::Sorbet.create!(:name => 'Section', :namespace => namespace, :parent => active_record)
+section = Habanero::Sorbet.create!(:name => 'Section', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => section)
 Habanero::NestIngredient.create!(:name => 'Nest', :sorbet => section)
 
@@ -872,10 +872,10 @@ Habanero::RelationIngredient.create!(
   ]
 )
 
-page = Habanero::Sorbet.create!(:name => 'Page', :namespace => namespace, :parent => active_record)
+page = Habanero::Sorbet.create!(:name => 'Page', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => page)
 
-l = Habanero::Sorbet.create!(:name => 'Layout', :namespace => namespace, :parent => active_record)
+l = Habanero::Sorbet.create!(:name => 'Layout', :brand => brand, :parent => active_record)
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => l)
 
 Habanero::RelationIngredient.create!(
@@ -906,21 +906,21 @@ Habanero::RelationIngredient.create!(
   ]
 )
 =end
-# Phase 1 - Namespace, Sorbet & Ingredient Definition
+# Phase 1 - Brand, Sorbet & Ingredient Definition
 =begin
 active_record = Habanero::Sorbet.create!(
-  :namespace => Habanero::Namespace.new(:name => 'ActiveRecord'),
+  :brand => Habanero::Brand.new(:name => 'ActiveRecord'),
   :name => 'Base'
 )
 
-namespace = Habanero::Namespace.create!(:name => 'Habanero')
+brand = Habanero::Brand.create!(:name => 'Habanero')
 
-ingredient = Habanero::Sorbet.create!(:name => 'Ingredient', :namespace => namespace, :parent => active_record)
+ingredient = Habanero::Sorbet.create!(:name => 'Ingredient', :brand => brand, :parent => active_record)
 
-Habanero::Sorbet.create!(:name => 'StringIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'IntegerIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'TrueFalseIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'TextIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'StringIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'IntegerIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'TrueFalseIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'TextIngredient', :brand => brand, :parent => ingredient)
 
 ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Name')
 ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Type')
@@ -936,21 +936,21 @@ ingredient.ingredients << Habanero::TrueFalseIngredient.new(:name => 'Ordered')
 ingredient.ingredients << Habanero::StringIngredient.new(:name => 'Relation')
 ingredient.save!
 
-sorbet = Habanero::Sorbet.create!(:name => 'Sorbet', :namespace => namespace, :parent => active_record)
-namespace_sorbet = Habanero::Sorbet.create!(:name => 'Namespace', :namespace => namespace, :parent => active_record)
+sorbet = Habanero::Sorbet.create!(:name => 'Sorbet', :brand => brand, :parent => active_record)
+brand_sorbet = Habanero::Sorbet.create!(:name => 'Brand', :brand => brand, :parent => active_record)
 
-Habanero::Sorbet.create!(:name => 'BlobIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'CurrencyIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'DateIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'DateTimeIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'DecimalIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'NumberIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'PercentageIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'TimeIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'BlobIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'CurrencyIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'DateIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'DateTimeIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'DecimalIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'NumberIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'PercentageIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'TimeIngredient', :brand => brand, :parent => ingredient)
 
-Habanero::Sorbet.create!(:name => 'RelationIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'AssociationIngredient', :namespace => namespace, :parent => ingredient)
-Habanero::Sorbet.create!(:name => 'NestIngredient', :namespace => namespace, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'RelationIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'AssociationIngredient', :brand => brand, :parent => ingredient)
+Habanero::Sorbet.create!(:name => 'NestIngredient', :brand => brand, :parent => ingredient)
 
 Habanero::StringIngredient.create!(:name => 'Name', :sorbet => sorbet)
 Habanero::RelationIngredient.create!(
@@ -962,13 +962,13 @@ Habanero::RelationIngredient.create!(
   ]
 )
 
-Habanero::StringIngredient.create!(:name => 'Name', :sorbet => namespace_sorbet)
+Habanero::StringIngredient.create!(:name => 'Name', :sorbet => brand_sorbet)
 Habanero::RelationIngredient.create!(
-  :name => 'Namespace Sorbets',
-  :sorbet => namespace_sorbet,
+  :name => 'Brand Sorbets',
+  :sorbet => brand_sorbet,
   :children => [
-    Habanero::AssociationIngredient.new(:name => 'Sorbets', :relation => 'has_many', :sorbet => namespace_sorbet),
-    Habanero::AssociationIngredient.new(:name => 'Namespace', :relation => 'belongs_to', :sorbet => sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Sorbets', :relation => 'has_many', :sorbet => brand_sorbet),
+    Habanero::AssociationIngredient.new(:name => 'Brand', :relation => 'belongs_to', :sorbet => sorbet),
   ]
 )
 =end

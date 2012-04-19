@@ -7,7 +7,7 @@ describe Habanero::CategoryIngredient do
     @sorbet = Habanero::Sorbet.create!(
       :name => 'Dummy',
       :parent => Habanero::Sorbet.find_by_name('Base'),
-      :namespace => Habanero::Namespace.find_by_name('Habanero')
+      :brand => Habanero::Brand.find_by_name('Habanero')
     )
 
     @sorbet.ingredients << Habanero::StringIngredient.new(:name => 'Foo')

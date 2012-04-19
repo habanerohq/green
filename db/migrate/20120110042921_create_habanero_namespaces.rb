@@ -1,6 +1,6 @@
-class CreateHabaneroNamespaces < ActiveRecord::Migration
+class CreateHabaneroBrands < ActiveRecord::Migration
   def change
-    create_table :habanero_namespaces do |t|
+    create_table :habanero_brands do |t|
     end
   end
 end
