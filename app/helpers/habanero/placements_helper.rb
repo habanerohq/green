@@ -1,7 +1,7 @@
 module Habanero
   module PlacementsHelper
-    def arrange(page)
-      page.all_placements.each do |p|
+    def arrange(scene)
+      scene.all_placements.each do |p|
         content_for(p.region_name) { place(p) }
       end
     end
@@ -9,7 +9,7 @@ module Habanero
     def place(placement)
       render_cell(placement.feature.cell_type,
                   placement.template.present? ? placement.template : 'show',
-                  :page => @page,
+                  :scene => @scene,
                   :placement => placement,
                   :target => @target
       )

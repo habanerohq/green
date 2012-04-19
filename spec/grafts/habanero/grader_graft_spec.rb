@@ -42,8 +42,8 @@ describe Habanero::Grader do
     @grader.evaluate(params).should == [Habanero::Variety.find_by_name('Brand')]
 
     # make sure this works with the id as a string too
-    params = { :q => { "#{condition.id}" => 'Page' }}
-    @grader.evaluate(params).should == [Habanero::Variety.find_by_name('Page')]
+    params = { :q => { "#{condition.id}" => 'Scene' }}
+    @grader.evaluate(params).should == [Habanero::Variety.find_by_name('Scene')]
   end
 
 end

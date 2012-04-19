@@ -2,8 +2,8 @@
   <ul>
     <%- @targets.each do |t| -%>
       <li>
-        <% if @placement.feature.page %>
-          <%= link_to(t, page_path(@placement.feature.page, :id => t, :variety_type => t.class._variety)) %>
+        <% if @placement.feature.scene %>
+          <%= link_to(t, scene_path(@placement.feature.scene, :id => t, :variety_type => t.class._variety)) %>
         <% else %>
           <%= t %>
         <% end %>

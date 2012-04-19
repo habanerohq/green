@@ -18,10 +18,10 @@ module Habanero
       feature.traits
     end
 
-   def prepare_search(params, page)
+   def prepare_search(params, scene)
       if data = params[params_key]
         feature.translate_search(data)
-        page.all_placements.each { |p| p.feature.search = feature.search if p.feature.id == feature.id }
+        scene.all_placements.each { |p| p.feature.search = feature.search if p.feature.id == feature.id }
       end
     end
 
@@ -35,7 +35,7 @@ module Habanero
     end
 
     def to_s
-      "#{template} on #{page}"
+      "#{template} on #{scene}"
     end
   end
 end

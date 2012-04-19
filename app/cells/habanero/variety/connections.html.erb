@@ -4,12 +4,12 @@
   <%- @traits.each do |i| -%>
     <li>
       <%= i.to_s %> 
-      <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), page_path(new_variety_page, :variety_type => i.inverse_variety)) %>
+      <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), scene_path(new_variety_scene, :variety_type => i.inverse_variety)) %>
       <%- if @target.present? -%>
         <ul>
           <%- @target.send(i.method_name).each do  |c| -%>
             <li>
-              <%= link_to(c, page_path((@placement.feature.page || @page), :id => c, :variety_type => c.class._variety)) %>
+              <%= link_to(c, scene_path((@placement.feature.scene || @scene), :id => c, :variety_type => c.class._variety)) %>
             </li>
           <%- end -%>
         </ul>

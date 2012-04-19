@@ -23,5 +23,5 @@
 
 <%= paginate @targets if @placement.feature.paginate? and @targets.any? %>
 
-<%= link_to "Create another #{@variety}", page_path(new_variety_page, :variety_type => @variety), :class => 'btn' %>
+<%= link_to "Create another #{@variety}", scene_path(new_variety_scene, :variety_type => @variety), :class => 'btn' %>
 

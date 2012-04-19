@@ -1,5 +1,5 @@
 module Habanero
-  module PageGraft
+  module SceneGraft
     extend ActiveSupport::Concern
 
     included do
@@ -20,14 +20,14 @@ module Habanero
 
     def draw_route(map, options = {})
       options[:constraints] = { :host => garden.site.host } unless garden.site.host.blank?
-      options[:as] = "page_#{id}"
+      options[:as] = "scene_#{id}"
       options[:defaults] = { :draw_type => self.class.name, :draw_id => id }
 
       if sites.any?
-        map.root({ :to => 'habanero/pages#show' }.merge(options))
+        map.root({ :to => 'habanero/scenes#show' }.merge(options))
       end
 
-      map.match({ qualified_path => 'habanero/pages#show' }.merge(options))
+      map.match({ qualified_path => 'habanero/scenes#show' }.merge(options))
     end
     
     def all_placements
@@ -50,7 +50,7 @@ module Habanero
       target || garden.nearest_target
     end
     
-    def is_index_page?
+    def is_index_scene?
       route.in? ['/', '/index'] or name.downcase == 'index'
     end
     

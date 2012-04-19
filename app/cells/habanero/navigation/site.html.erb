@@ -5,29 +5,29 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to @page.garden.site.name, '/', :class => 'brand' %>
+      <%= link_to @scene.garden.site.name, '/', :class => 'brand' %>
 
       <ul class="nav">
         <% @gardens.each do |s| %>
-          <% s_path = page_path(s.index_page, :id => s.index_page, :variety_type => s.class._variety) %>
+          <% s_path = scene_path(s.index_scene, :id => s.index_scene, :variety_type => s.class._variety) %>
           
           <% unless s.indexed_children.any? %>
-            <li class="<%= @page == s.index_page && 'active' %>">
+            <li class="<%= @scene == s.index_scene && 'active' %>">
               <%= link_to s, s_path %>
             </li>
             
           <% else %>
-            <li class="<%= @page == s.index_page && 'active' %> dropdown">
+            <li class="<%= @scene == s.index_scene && 'active' %> dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= s %><b class="caret"></b></a>
               
               <ul class="dropdown-menu">
                 <li>
-                  <%= link_to s.index_page, s_path %>
+                  <%= link_to s.index_scene, s_path %>
                 </li>
 
                 <% s.indexed_children.each do |ic| %>
                   <li>
-                    <%= link_to ic, page_path(ic.index_page, :id => ic.index_page, :variety_type => ic.class._variety) %>
+                    <%= link_to ic, scene_path(ic.index_scene, :id => ic.index_scene, :variety_type => ic.class._variety) %>
                   </li>
                 <% end %>
               </ul>

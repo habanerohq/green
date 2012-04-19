@@ -1,7 +1,7 @@
 <%= cell_content do %>
   <div class="btn-group">
-    <% @index_pages.each do |ip| %>
-      <%= link_to(ip.garden, page_path(ip, :id => ip, :variety_type => ip.class._variety), :class => :btn) %>
+    <% @index_scenes.each do |ip| %>
+      <%= link_to(ip.garden, scene_path(ip, :id => ip, :variety_type => ip.class._variety), :class => :btn) %>
     <% end %>
   </div>
 <% end %>

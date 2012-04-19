@@ -55,7 +55,7 @@ module Habanero
       @traits = traits_by_precedence
 
       if @targets.any? and @placement.feature.paginate?
-        @targets = @targets.page(params[:page])
+        @targets = @targets.page(params[:scene])
       end
     end
     
@@ -64,7 +64,7 @@ module Habanero
     end
     
     def variety_by_precedence
-      @grader.try(:variety) || @sieve.try(:variety) || @page.nearest_target
+      @grader.try(:variety) || @sieve.try(:variety) || @scene.nearest_target
     end
     
     def targets_by_precedence

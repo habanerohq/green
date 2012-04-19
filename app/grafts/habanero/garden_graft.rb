@@ -8,7 +8,7 @@ module Habanero
 
     module ClassMethods
       def indexed_roots
-        roots.select { |r| r.index_page.present? }
+        roots.select { |r| r.index_scene.present? }
       end
     end    
 
@@ -20,16 +20,16 @@ module Habanero
       self_and_ancestors.map{ |a| a.name.idify }.join(' ')
     end
     
-    def index_page
-      page
+    def index_scene
+      scene
     end
     
-    def page
-      pages.detect { |p| p.is_index_page? }
+    def scene
+      scenes.detect { |p| p.is_index_scene? }
     end
     
     def indexed_children
-      children.select { |c| c.index_page.present? }
+      children.select { |c| c.index_scene.present? }
     end
   end
 end

@@ -1,0 +1,19 @@
+<style type="text/css">
+  body { padding-top: 40px; }
+</style>
+
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to @scene.garden.site.name, '/', :class => 'brand' %>
+
+      <ul class="nav">
+        <% target_scenes(@targets).each do |target| %>
+          <li class="<%= @scene == target && 'active' %>">
+            <%= link_to(maybe_use_garden_if_index(target), scene_path(target, :id => target, :variety_type => target.class._variety)) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

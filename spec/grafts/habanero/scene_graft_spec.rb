@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Habanero::Page do
+describe Habanero::Scene do
   it { should belong_to(:garden) }
   it { should belong_to(:layout) }
   it { should belong_to(:target) } # needs rethinking
@@ -9,28 +9,28 @@ describe Habanero::Page do
 # it { should validate_uniqueness_of(:name).scoped_to('garden_id') }
 
   before(:each) do
-    @page = Habanero::Page.new
+    @scene = Habanero::Scene.new
   end
 
   it 'should duck type garden as parent' do
-    garden = @page.build_garden(:name => 'Foo')
-    @page.parent.should == garden
+    garden = @scene.build_garden(:name => 'Foo')
+    @scene.parent.should == garden
   end
 
   it 'should have a path' do
-    @page.route = '/dummy'
-    @page.route.should == '/dummy'
-    @page.path.should == '/dummy'
+    @scene.route = '/dummy'
+    @scene.route.should == '/dummy'
+    @scene.path.should == '/dummy'
   end
 
   it 'should have a qualified path' do
-    @page.route = '/foo'
-    @page.qualified_path.should == '/foo'
+    @scene.route = '/foo'
+    @scene.qualified_path.should == '/foo'
   end
 
   it 'should qualify path using parent' do
-    @page.build_garden(:name => 'Foo', :route => '/foo')
-    @page.route = '/bar'
-    @page.qualified_path.should == '/foo/bar'
+    @scene.build_garden(:name => 'Foo', :route => '/foo')
+    @scene.route = '/bar'
+    @scene.qualified_path.should == '/foo/bar'
   end
 end

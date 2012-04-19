@@ -34,7 +34,7 @@ class HabaneroSitePantry < Pantry::Base
         :includes => :site,
         :where => {:habanero_sites => {:name => 'Habanero'}}
       }      
-    can_stack 'Habanero::Page', 
+    can_stack 'Habanero::Scene', 
       :id_value_methods => [:name, :garden],
       :scope => {
         :includes =>  {:garden => :site},
@@ -70,7 +70,7 @@ class HabaneroSitePantry < Pantry::Base
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     can_stack 'Habanero::FeaturePlacement', 
-      :id_value_methods => [:template, :page, :feature, :region],
+      :id_value_methods => [:template, :scene, :feature, :region],
       :scope => {
         :includes => {:feature => :brand},
         :where => {:habanero_brands => {:name => 'Habanero'}}

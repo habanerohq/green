@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Habanero::Garden do
   it { should belong_to(:site) }
-  it { should have_many(:pages) }
+  it { should have_many(:scenes) }
 
   # nested set stuff
   it { should belong_to(:parent) }

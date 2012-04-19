@@ -1,19 +1,19 @@
 module Habanero  
   module TablesHelper
     def table_format(target, trait)
-      if @placement.feature.page
+      if @placement.feature.scene
 
         case
         when trait.relation == 'belongs_to'
           v = target.send(trait.method_name)
           if v.present?
             link_to format_trait(target, trait), 
-              page_path(@placement.feature.page, :id => target.send(trait.method_name), :variety_type => trait.inverse_variety)
+              scene_path(@placement.feature.scene, :id => target.send(trait.method_name), :variety_type => trait.inverse_variety)
           end
 
         when trait.type == 'Habanero::NameTrait'
           link_to_unless_current format_trait(target, trait), 
-            page_path(@placement.feature.page, :id => target, :variety_type => target.class._variety)
+            scene_path(@placement.feature.scene, :id => target, :variety_type => target.class._variety)
 
         else
           format_trait(target, trait)
@@ -29,7 +29,7 @@ module Habanero
         :class => header_classes(trait)
       }
       content_tag(:th, options) do
-        path = page_path(@page, @placement.params_key => {trait.method_name => new_sort_direction(trait)})
+        path = scene_path(@scene, @placement.params_key => {trait.method_name => new_sort_direction(trait)})
         (link_to trait.to_s, path) + sort_direction_marker(trait)
       end
     end

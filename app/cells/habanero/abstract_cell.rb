@@ -1,7 +1,7 @@
 module Habanero
   class AbstractCell < Cell::Rails
     helper 'habanero/cells'
-    helper 'habanero/pages'
+    helper 'habanero/scenes'
 
     layout 'feature'
 
