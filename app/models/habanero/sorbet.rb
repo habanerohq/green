@@ -3,7 +3,7 @@ module Habanero
   end
 end
 
-Habanero::Sorbet.class_eval { include Habanero::SorbetIce }
+Habanero::Sorbet.class_eval { include Habanero::SorbetGraft }
 
 if Habanero::Sorbet.table_exists?
   Habanero::Sorbet.namespaced('Habanero').where(:name => 'Sorbet').first.try(:adapt)

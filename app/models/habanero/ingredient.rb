@@ -101,4 +101,4 @@ if Habanero::Sorbet.table_exists?
   Habanero::Ingredient._sorbet = Habanero::Sorbet.namespaced('Habanero').where(:name => 'Ingredient').first
 end
 
-Habanero::Ingredient.class_eval { include Habanero::IngredientIce }
+Habanero::Ingredient.class_eval { include Habanero::IngredientGraft }
