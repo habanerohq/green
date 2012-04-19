@@ -3,7 +3,7 @@ module Habanero
     extend ActiveSupport::Concern
     
     def to_s_qual
-      "#{name} (#{sorbet})"
+      "#{name} (#{variety})"
     end
   end
 end

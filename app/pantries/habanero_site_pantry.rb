@@ -2,16 +2,16 @@ class HabaneroSitePantry < Pantry::Base
   
   def define_stacks
     # ugly hack to ensure that descendants reports all the expected subclasses
-    if i = Habanero::Sorbet.find_by_name('Ingredient')
+    if i = Habanero::Variety.find_by_name('Ingredient')
       i.descendants.map(&:klass)
     end
-    if i = Habanero::Sorbet.find_by_name('Scoop')
+    if i = Habanero::Variety.find_by_name('Scoop')
       i.descendants.map(&:klass)
     end
     
     refers_to 'Habanero::Brand'
-    refers_to 'Habanero::Sorbet', :id_value_methods => [:name, :brand]
-    refers_to 'Habanero::Ingredient', :id_value_methods => [:name, :sorbet]
+    refers_to 'Habanero::Variety', :id_value_methods => [:name, :brand]
+    refers_to 'Habanero::Ingredient', :id_value_methods => [:name, :variety]
 
     can_stack 'Habanero::Layout', :scope => {:where => {:name => ['Habanero', 'Kitchen']}}
     can_stack 'Habanero::LayoutRow', 
@@ -41,23 +41,23 @@ class HabaneroSitePantry < Pantry::Base
         :where => {:habanero_sites => {:name => 'Habanero'}}
       }      
     can_stack 'Habanero::Mask', 
-      :id_value_methods => [:name, :sorbet],
+      :id_value_methods => [:name, :variety],
       :scope => {
-        :includes => {:sorbet => :brand},
+        :includes => {:variety => :brand},
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
       
     can_stack 'Habanero::MaskIngredient', 
       :id_value_methods => [:mask, :ingredient],
       :scope => {
-        :includes => {:mask => {:sorbet => :brand}},
+        :includes => {:mask => {:variety => :brand}},
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     
     can_stack 'Habanero::Query', 
-      :id_value_methods => [:name, :sorbet],
+      :id_value_methods => [:name, :variety],
       :scope => {
-        :includes => {:sorbet => :brand},
+        :includes => {:variety => :brand},
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     can_stack 'Habanero::Condition', 

@@ -37,7 +37,7 @@ Spork.prefork do
     config.infer_base_class_for_anonymous_controllers = false
   end
 
-  SorbetPantry.new.use
+  VarietyPantry.new.use
 end
 
 Spork.each_run do

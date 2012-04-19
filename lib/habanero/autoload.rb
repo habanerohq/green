@@ -7,32 +7,32 @@ module Habanero
         super
 
         base.class_eval do
-          return if respond_to?(:const_missing_without_sorbet)
-          alias_method :const_missing_without_sorbet, :const_missing
-          alias_method :const_missing, :const_missing_with_sorbet
+          return if respond_to?(:const_missing_without_variety)
+          alias_method :const_missing_without_variety, :const_missing
+          alias_method :const_missing, :const_missing_with_variety
         end
       end
 
       def self.exclude_from(base)
         base.class_eval do
-          alias_method :const_missing, :const_missing_without_sorbet
-          remove_method :const_missing_without_sorbet
+          alias_method :const_missing, :const_missing_without_variety
+          remove_method :const_missing_without_variety
         end
       end
 
-      def const_missing_with_sorbet(*args)
+      def const_missing_with_variety(*args)
         const_name = args.first
         qualified_name = ActiveSupport::Dependencies.qualified_name_for(self, const_name)
 
         begin
-          return const_missing_without_sorbet(*args)
+          return const_missing_without_variety(*args)
         rescue NameError => e
           e.message =~ /#{const_name}$/ ? nil : raise
         end
 
         ActiveRecord::Base.logger.level = 2
 
-        mod = self.name != 'Object' && Habanero::Sorbet.branded(self.name).where(:name => const_name).first.try(:chill!) ||
+        mod = self.name != 'Object' && Habanero::Variety.branded(self.name).where(:name => const_name).first.try(:chill!) ||
               Habanero::Brand.where(:name => qualified_name).first.try(:chill!)
 
         # todo: take the log level from rails configuration

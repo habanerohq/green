@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Habanero::AssociationIngredient do
   before(:each) do
-    @sorbet = Habanero::Sorbet.new(
+    @variety = Habanero::Variety.new(
       :name => 'AssocDummy',
-      :parent => Habanero::Sorbet.branded('ActiveRecord').where(:name => 'Base').first,
+      :parent => Habanero::Variety.branded('ActiveRecord').where(:name => 'Base').first,
       :brand => Habanero::Brand.find_by_name('Habanero'),
       :ingredients => [
         Habanero::StringIngredient.new(:name => 'Foo')
@@ -15,16 +15,16 @@ describe Habanero::AssociationIngredient do
 
     @relation = Habanero::RelationIngredient.create!(
       :name => 'Site Dummies',
-      :sorbet => @sorbet,
+      :variety => @variety,
       :ordered => true,
       :children => [
-        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Site')),
-        Habanero::AssociationIngredient.new(:name => 'Site', :relation => 'belongs_to', :sorbet => @sorbet),
+        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Site')),
+        Habanero::AssociationIngredient.new(:name => 'Site', :relation => 'belongs_to', :variety => @variety),
       ]
     )
 
-    @sorbet.save!
-    @sorbet.chill!
+    @variety.save!
+    @variety.chill!
   end
 
   after(:each) do
@@ -74,11 +74,11 @@ describe Habanero::AssociationIngredient do
     a.macro.should == :belongs_to
   end
 
-  it 'maintains columns in the sorbet database table' do
-    ActiveRecord::Base.connection.columns(@sorbet.table_name).map(&:name).should include 'site_id'
+  it 'maintains columns in the variety database table' do
+    ActiveRecord::Base.connection.columns(@variety.table_name).map(&:name).should include 'site_id'
     Habanero::AssocDummy.new.should respond_to 'site'
 
-    ActiveRecord::Base.connection.columns(@sorbet.table_name).map(&:name).should include 'site_position'
+    ActiveRecord::Base.connection.columns(@variety.table_name).map(&:name).should include 'site_position'
     Habanero::AssocDummy.new.should respond_to 'site_position'
 
     Habanero::Site.new.should respond_to 'dummies'
@@ -91,11 +91,11 @@ describe Habanero::AssociationIngredient do
   it 'handles polymorphic associations' do
     poly = Habanero::RelationIngredient.create!(
       :name => 'Context Dummies',
-      :sorbet => @sorbet,
+      :variety => @variety,
       :children => [
-        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Brand')),
-        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :sorbet => Habanero::Sorbet.find_by_name('Layout')),
-        Habanero::AssociationIngredient.new(:name => 'Context', :relation => 'belongs_to', :sorbet => @sorbet)
+        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Brand')),
+        Habanero::AssociationIngredient.new(:name => 'Dummies', :relation => 'has_many', :variety => Habanero::Variety.find_by_name('Layout')),
+        Habanero::AssociationIngredient.new(:name => 'Context', :relation => 'belongs_to', :variety => @variety)
       ]
     )
 

@@ -4,9 +4,9 @@ module Habanero
 
     included do
       validate do |record|
-        sorbet = record.sorbet
+        variety = record.variety
 
-        if sorbet.ingredients.select { |i| i.class == self.class }.count > 1
+        if variety.ingredients.select { |i| i.class == self.class }.count > 1
           record.errors.add(:ingredients, "cannot have more than one #{self.class.name}")
         end
       end

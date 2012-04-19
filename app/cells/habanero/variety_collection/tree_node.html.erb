@@ -3,7 +3,7 @@
     <%- @targets.each do |t| -%>
       <li>
         <% if @placement.scoop.page %>
-          <%= link_to(t, page_path(@placement.scoop.page, :id => t, :sorbet_type => t.class._sorbet)) %>
+          <%= link_to(t, page_path(@placement.scoop.page, :id => t, :variety_type => t.class._variety)) %>
         <% else %>
           <%= t %>
         <% end %>
@@ -24,7 +24,7 @@
               render(
                 {:state => :tree_node}, 
                 manies, 
-                @mask.children.detect{|m| m.sorbet == i.inverse_sorbet}
+                @mask.children.detect{|m| m.variety == i.inverse_variety}
               ) unless i.polymorphic?
             end
           -%>

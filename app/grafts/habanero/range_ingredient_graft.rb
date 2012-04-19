@@ -12,7 +12,7 @@ module Habanero
 
     def create_range_bounds
         ['from', 'to'].each do |i| 
-          associated_type.klass.create!(:name => i, :sorbet => self.sorbet, :parent => self)
+          associated_type.klass.create!(:name => i, :variety => self.variety, :parent => self)
         end if associated_type
     end
   end

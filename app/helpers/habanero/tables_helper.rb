@@ -8,12 +8,12 @@ module Habanero
           v = target.send(ingredient.method_name)
           if v.present?
             link_to format_ingredient(target, ingredient), 
-              page_path(@placement.scoop.page, :id => target.send(ingredient.method_name), :sorbet_type => ingredient.inverse_sorbet)
+              page_path(@placement.scoop.page, :id => target.send(ingredient.method_name), :variety_type => ingredient.inverse_variety)
           end
 
         when ingredient.type == 'Habanero::NameIngredient'
           link_to_unless_current format_ingredient(target, ingredient), 
-            page_path(@placement.scoop.page, :id => target, :sorbet_type => target.class._sorbet)
+            page_path(@placement.scoop.page, :id => target, :variety_type => target.class._variety)
 
         else
           format_ingredient(target, ingredient)

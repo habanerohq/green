@@ -9,7 +9,7 @@
 
       <ul class="nav">
         <% @sections.each do |s| %>
-          <% s_path = page_path(s.index_page, :id => s.index_page, :sorbet_type => s.class._sorbet) %>
+          <% s_path = page_path(s.index_page, :id => s.index_page, :variety_type => s.class._variety) %>
           
           <% unless s.indexed_children.any? %>
             <li class="<%= @page == s.index_page && 'active' %>">
@@ -27,7 +27,7 @@
 
                 <% s.indexed_children.each do |ic| %>
                   <li>
-                    <%= link_to ic, page_path(ic.index_page, :id => ic.index_page, :sorbet_type => ic.class._sorbet) %>
+                    <%= link_to ic, page_path(ic.index_page, :id => ic.index_page, :variety_type => ic.class._variety) %>
                   </li>
                 <% end %>
               </ul>

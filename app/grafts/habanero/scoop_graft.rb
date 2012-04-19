@@ -4,12 +4,12 @@ module Habanero
 
     attr_accessor :search
     
-    def sorbet
-      query.try(:sorbet)
+    def variety
+      query.try(:variety)
     end
     
     def ingredients
-      mask ? mask.ingredients : sorbet.try(:primary_ingredients)
+      mask ? mask.ingredients : variety.try(:primary_ingredients)
     end
 
     def translators

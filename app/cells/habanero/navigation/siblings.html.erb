@@ -3,7 +3,7 @@
     <ul class="nav nav-pills">
       <% @pages.each do |p| %>
         <li>
-          <%= link_to(p, page_path(p, :id => p, :sorbet_type => p.class._sorbet)) %>
+          <%= link_to(p, page_path(p, :id => p, :variety_type => p.class._variety)) %>
         </li>
       <% end %>
     </ul>

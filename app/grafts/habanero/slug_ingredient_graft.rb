@@ -36,7 +36,7 @@ module Habanero
     protected
 
     def slug_ingredient_validate_scope
-      errors.add(:scope, "is not present on the target sorbet") unless scope.sorbet == target.sorbet
+      errors.add(:scope, "is not present on the target variety") unless scope.variety == target.variety
       errors.add(:scope, "is not a belongs_to association") if scope.relation != 'belongs_to'
     end
 

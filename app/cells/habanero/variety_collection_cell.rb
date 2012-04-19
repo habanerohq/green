@@ -1,5 +1,5 @@
 module Habanero
-  class SorbetCollectionCell < Habanero::AbstractCell
+  class VarietyCollectionCell < Habanero::AbstractCell
     def list(options)
       _list(options)
       render
@@ -20,12 +20,12 @@ module Habanero
           else
             k = klass_by_precedence.reflect_on_association(method.to_sym).klass
             tn = k.table_name
-            cn = @sorbet.name_ingredient_column_name
+            cn = @variety.name_ingredient_column_name
             result.includes(method).order("#{tn}.#{cn} #{direction}")
           end
         end
       else
-        @targets = @targets.order("#{@sorbet.klass.table_name}.#{@sorbet.klass.to_s_methods}")
+        @targets = @targets.order("#{@variety.klass.table_name}.#{@variety.klass.to_s_methods}")
       end
       render
     end
@@ -49,7 +49,7 @@ module Habanero
       instance_variables_from(options)
       @query = @placement.query
       @mask = @placement.scoop.mask
-      @sorbet = sorbet_by_precedence
+      @variety = variety_by_precedence
       @search = @placement.search
       @targets = targets_by_precedence
       @ingredients = ingredients_by_precedence
@@ -60,23 +60,23 @@ module Habanero
     end
     
     def klass_by_precedence
-      @query.try(:klass) || @sorbet.try(:klass)
+      @query.try(:klass) || @variety.try(:klass)
     end
     
-    def sorbet_by_precedence
-      @query.try(:sorbet) || @mask.try(:sorbet) || @page.nearest_target
+    def variety_by_precedence
+      @query.try(:variety) || @mask.try(:variety) || @page.nearest_target
     end
     
     def targets_by_precedence
-      @search.try(:query_chain) || @query.try(:evaluate, params) || (@sorbet.klass.unscoped if @sorbet.present?) || []
+      @search.try(:query_chain) || @query.try(:evaluate, params) || (@variety.klass.unscoped if @variety.present?) || []
     end
     
     def ingredients_by_precedence
-      @placement.ingredients || @sorbet.try(:all_displayable_ingredients)
+      @placement.ingredients || @variety.try(:all_displayable_ingredients)
     end
     
     def roots_only
-      @mask.sorbet.klass.respond_to?(:roots) ? @targets.where(:parent_id => nil) : @targets
+      @mask.variety.klass.respond_to?(:roots) ? @targets.where(:parent_id => nil) : @targets
     end
   end
 end

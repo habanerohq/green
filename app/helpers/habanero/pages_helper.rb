@@ -5,14 +5,14 @@ module Habanero
       #url_for(params.merge :use_route => "page_#{page.id}")
     end
     
-    def new_sorbet_page
-      Habanero::Page.find_all_by_route('/:sorbet_type/new').detect { |p| p.section.route? }
+    def new_variety_page
+      Habanero::Page.find_all_by_route('/:variety_type/new').detect { |p| p.section.route? }
     end
     
     def target_pages(targets)
       targets.map do |t|
         case
-        when t._sorbet.name == 'Page'
+        when t._variety.name == 'Page'
           t
         when t.respond_to?(:page)
           t.page

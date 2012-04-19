@@ -1,11 +1,11 @@
 namespace :habanero do
-  namespace :sorbet do
+  namespace :variety do
     task :use => :environment do
-      SorbetPantry.new.use
+      VarietyPantry.new.use
     end
 
     task :stack => :environment do
-      SorbetPantry.new.stack
+      VarietyPantry.new.stack
     end
   end
 end

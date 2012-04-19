@@ -1,12 +1,12 @@
 module Habanero
-  module SorbetGraft
+  module VarietyGraft
     extend ActiveSupport::Concern
 
     included do
       belongs_to :brand, :class_name => '::Habanero::Brand'
       has_many :ingredients,
                :class_name => '::Habanero::Ingredient',
-               :inverse_of => :sorbet,
+               :inverse_of => :variety,
                :dependent => :destroy
 
       acts_as_nested_set
@@ -85,8 +85,8 @@ module Habanero
       brand.klass.const_set(klass_name, Class.new(parent.klass))
       klass.unloadable
 
-      klass.class_attribute :_sorbet
-      klass._sorbet = self
+      klass.class_attribute :_variety
+      klass._variety = self
       klass.table_name = table_name
 
       adapt
@@ -123,8 +123,8 @@ module Habanero
     def post_create
       if !respond_to?(:suppress_automatic_naming) or (respond_to?(:suppress_automatic_naming) and !suppress_automatic_naming?)
         begin
-          ni = Habanero::NameIngredient.create!(:name => 'Name', :sorbet => self)
-          Habanero::SlugIngredient.create!(:name => 'Slug', :sorbet => self, :target => ni)
+          ni = Habanero::NameIngredient.create!(:name => 'Name', :variety => self)
+          Habanero::SlugIngredient.create!(:name => 'Slug', :variety => self, :target => ni)
         rescue ActiveRecord::UnknownAttributeError => e
           nil
         rescue NameError => e

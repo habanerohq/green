@@ -24,10 +24,10 @@ module Habanero
           options[:polymorphic] = true
         else
           options[:as] = inverse_name.attrify
-          options[:class_name] = "::#{inverse_sorbet.qualified_name}"
+          options[:class_name] = "::#{inverse_variety.qualified_name}"
         end
       else
-        options[:class_name] = "::#{inverse_sorbet.qualified_name}"
+        options[:class_name] = "::#{inverse_variety.qualified_name}"
         options[:foreign_key] = inverse_column_name unless relation == 'belongs_to'
       end
 
@@ -45,12 +45,12 @@ module Habanero
       inverse.present? or (associated_type.present? and associated_name.present?)
     end
 
-    def inverse_sorbet
-      inverse.present? ? inverse.sorbet : associated_type
+    def inverse_variety
+      inverse.present? ? inverse.variety : associated_type
     end
 
     def inverse_klass
-      inverse_sorbet.klass
+      inverse_variety.klass
     end
 
     def inverse_name
@@ -94,7 +94,7 @@ module Habanero
     end
     
     def arel_column
-      is = inverse_sorbet
+      is = inverse_variety
       is.klass.arel_table[is.name_ingredient_column_name]
     end
 
@@ -132,10 +132,10 @@ module Habanero
         end
       end
 
-      if sorbet.chilled? && inverse
-        adapt(sorbet.klass)
-        inverse.adapt(inverse_sorbet.klass)
-        inverse_sorbet.klass.reset_column_information
+      if variety.chilled? && inverse
+        adapt(variety.klass)
+        inverse.adapt(inverse_variety.klass)
+        inverse_variety.klass.reset_column_information
       end
     end
 

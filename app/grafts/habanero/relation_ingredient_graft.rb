@@ -20,8 +20,8 @@ module Habanero
 
     def create_associations
       if respond_to?(:associated_name) and respond_to?(:associated_type) and associated_type.present?
-        Habanero::AssociationIngredient.create(:parent => self, :name => self.associated_name, :relation => 'has_many', :sorbet => self.sorbet)
-        Habanero::AssociationIngredient.create(:parent => self, :name => self.name.gsub(" #{associated_name.downcase}", ''), :relation => 'belongs_to', :sorbet => self.associated_type)
+        Habanero::AssociationIngredient.create(:parent => self, :name => self.associated_name, :relation => 'has_many', :variety => self.variety)
+        Habanero::AssociationIngredient.create(:parent => self, :name => self.name.gsub(" #{associated_name.downcase}", ''), :relation => 'belongs_to', :variety => self.associated_type)
       end
     end
   end

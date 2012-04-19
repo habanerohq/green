@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(:version => 20120306055304) do
   end
 
   create_table "habanero_ingredients", :force => true do |t|
-    t.integer "sorbet_id"
+    t.integer "variety_id"
     t.string  "name"
     t.string  "type"
     t.integer "parent_id"
@@ -43,9 +43,9 @@ ActiveRecord::Schema.define(:version => 20120306055304) do
     t.string  "slug"
   end
 
-  add_index "habanero_ingredients", ["sorbet_id"], :name => "index_habanero_ingredients_on_sorbet_id"
+  add_index "habanero_ingredients", ["variety_id"], :name => "index_habanero_ingredients_on_variety_id"
 
-  create_table "habanero_sorbets", :force => true do |t|
+  create_table "habanero_varieties", :force => true do |t|
     t.integer "brand_id"
     t.string  "name"
     t.integer "parent_id"

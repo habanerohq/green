@@ -4,12 +4,12 @@
   <%- @ingredients.each do |i| -%>
     <li>
       <%= i.to_s %> 
-      <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), page_path(new_sorbet_page, :sorbet_type => i.inverse_sorbet)) %>
+      <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), page_path(new_variety_page, :variety_type => i.inverse_variety)) %>
       <%- if @target.present? -%>
         <ul>
           <%- @target.send(i.method_name).each do  |c| -%>
             <li>
-              <%= link_to(c, page_path((@placement.scoop.page || @page), :id => c, :sorbet_type => c.class._sorbet)) %>
+              <%= link_to(c, page_path((@placement.scoop.page || @page), :id => c, :variety_type => c.class._variety)) %>
             </li>
           <%- end -%>
         </ul>

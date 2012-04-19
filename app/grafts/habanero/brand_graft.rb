@@ -3,7 +3,7 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      has_many :sorbets, :class_name => '::Habanero::Sorbet', :dependent => :restrict
+      has_many :varieties, :class_name => '::Habanero::Variety', :dependent => :restrict
 
       validates :name,
                 :presence => true,

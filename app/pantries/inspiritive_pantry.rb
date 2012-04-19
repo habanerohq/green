@@ -2,7 +2,7 @@ class InspiritivePantry < Pantry::Base
   
   def define_stacks
     can_stack 'Habanero::Brand', :scope => {:where => {:name => 'Inspiritive'}}
-    can_stack 'Habanero::Sorbet', 
+    can_stack 'Habanero::Variety', 
       :id_value_methods => [:name, :brand], 
       :scope => {
         :includes => :brand,
@@ -33,9 +33,9 @@ class InspiritivePantry < Pantry::Base
     ].
     each do |i| 
       can_stack i, 
-      :id_value_methods => [:name, :sorbet, :parent],
+      :id_value_methods => [:name, :variety, :parent],
       :scope => {
-        :includes => {:sorbet => :brand},
+        :includes => {:variety => :brand},
         :where => {:habanero_brands => {:name => 'Inspiritive'}}
       }
     end

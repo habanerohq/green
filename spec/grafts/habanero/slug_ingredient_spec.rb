@@ -5,19 +5,19 @@ describe Habanero::SlugIngredient do
   it { should belong_to(:scope) }
 
   before(:each) do
-    @book = Habanero::Sorbet.new(
+    @book = Habanero::Variety.new(
       :name => 'Book',
-      :parent => Habanero::Sorbet.branded('ActiveRecord').where(:name => 'Base').first,
+      :parent => Habanero::Variety.branded('ActiveRecord').where(:name => 'Base').first,
       :brand => Habanero::Brand.find_by_name('Habanero')
     )
 
     title = Habanero::StringIngredient.new(:name => 'Title')
     slug = Habanero::SlugIngredient.new(:name => 'Slug', :target => title)
 
-    # a related sorbet with which we can test scoped slugs
-    @author = Habanero::Sorbet.new(
+    # a related variety with which we can test scoped slugs
+    @author = Habanero::Variety.new(
       :name => 'Author',
-      :parent => Habanero::Sorbet.branded('ActiveRecord').where(:name => 'Base').first,
+      :parent => Habanero::Variety.branded('ActiveRecord').where(:name => 'Base').first,
       :brand => Habanero::Brand.find_by_name('Habanero')
     )
 
@@ -26,8 +26,8 @@ describe Habanero::SlugIngredient do
     relation = Habanero::RelationIngredient.new(
       :name => 'Author Books',
       :children => [
-        Habanero::AssociationIngredient.new(:name => 'Author', :relation => 'belongs_to', :sorbet => @book),
-        Habanero::AssociationIngredient.new(:name => 'Books', :relation => 'has_many', :sorbet => @author)
+        Habanero::AssociationIngredient.new(:name => 'Author', :relation => 'belongs_to', :variety => @book),
+        Habanero::AssociationIngredient.new(:name => 'Books', :relation => 'has_many', :variety => @author)
       ]
     )
 
@@ -81,16 +81,16 @@ describe Habanero::SlugIngredient do
       @book.chill!
     end
 
-    it 'is invalid when scope ingredient does not belong to the same sorbet' do
+    it 'is invalid when scope ingredient does not belong to the same variety' do
       slug = @book.ingredients.find_by_name('Slug')
-      slug.scope = Habanero::Sorbet.find_by_name('Sorbet').ingredients.find_by_name('Brand')
+      slug.scope = Habanero::Variety.find_by_name('Variety').ingredients.find_by_name('Brand')
       slug.should_not be_valid
-      slug.errors_on(:scope).should include "is not present on the target sorbet"
+      slug.errors_on(:scope).should include "is not present on the target variety"
     end
 
     it 'is invalid when target ingredient is not a belongs_to association ingredient' do
       slug = @book.ingredients.find_by_name('Slug')
-      slug.scope = Habanero::Sorbet.find_by_name('Sorbet').ingredients.find_by_name('Ingredients')
+      slug.scope = Habanero::Variety.find_by_name('Variety').ingredients.find_by_name('Ingredients')
       slug.should_not be_valid
       slug.errors_on(:scope).should include "is not a belongs_to association"
     end

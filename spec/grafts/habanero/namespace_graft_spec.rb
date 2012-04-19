@@ -3,7 +3,7 @@ require 'spec_helper'
 module FakeBrand ; end
 
 describe Habanero::Brand do
-  it { should have_many(:sorbets) }
+  it { should have_many(:varieties) }
   it { should validate_presence_of(:name) }
   it { should validate_uniqueness_of(:name) }
 
@@ -40,8 +40,8 @@ describe Habanero::Brand do
     klass.object_id.should == object_id
   end
 
-  it 'should not destroy if it has associated sorbets' do
-    # we assume that the sorbet pantry has been loaded sucessfully as part of the spec_helper
+  it 'should not destroy if it has associated varieties' do
+    # we assume that the variety pantry has been loaded sucessfully as part of the spec_helper
     expect { Habanero::Brand.first.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
   end
 

@@ -1,16 +1,16 @@
 module Habanero
-  class SorbetCell < Habanero::AbstractCell
+  class VarietyCell < Habanero::AbstractCell
     include Habanero::PagesHelper
 
     def show(options)
       _get_started(options)
-      @target = @sorbet.klass.find(params[:id])
+      @target = @variety.klass.find(params[:id])
       render
     end
 
     def edit(options)
       _get_started(options)
-      @target = @sorbet.klass.find(params[:id])
+      @target = @variety.klass.find(params[:id])
 
       if request.delete?
         if @target.destroy
@@ -20,7 +20,7 @@ module Habanero
 
       if params[@placement.params_key] && request.put?
         @target.update_attributes(params[@placement.params_key])
-        redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
+        redirect_to page_path(@placement.scoop.page || @page, :id => @target, :variety_type => @target._variety)
       end
 
       render
@@ -28,13 +28,13 @@ module Habanero
 
     def new(options)
       _get_started(options)
-      @target = @sorbet.klass.new(params[@placement.params_key])
+      @target = @variety.klass.new(params[@placement.params_key])
 
       if params[@placement.params_key] && request.post?
         @target.transaction do
           if @target.save
             @target.post_create if @target.respond_to?(:post_create)
-            redirect_to page_path(@placement.scoop.page || @page, :id => @target, :sorbet_type => @target._sorbet)
+            redirect_to page_path(@placement.scoop.page || @page, :id => @target, :variety_type => @target._variety)
           end
         end
       end
@@ -44,9 +44,9 @@ module Habanero
     
     def connections(options)
       instance_variables_from(options)
-      @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
-      @ingredients = @sorbet.connections
-      @target = @sorbet.klass.find(params[:id]) if params[:id]
+      @variety = Habanero::Variety.find(params[:variety_type])
+      @ingredients = @variety.connections
+      @target = @variety.klass.find(params[:id]) if params[:id]
       
       render
     end
@@ -55,8 +55,8 @@ module Habanero
     
     def _get_started(options)
       instance_variables_from(options)
-      @sorbet = Habanero::Sorbet.find(params[:sorbet_type])
-      @ingredients = @placement.ingredients || @sorbet.primary_ingredients
+      @variety = Habanero::Variety.find(params[:variety_type])
+      @ingredients = @placement.ingredients || @variety.primary_ingredients
     end
   end
 end

@@ -3,7 +3,7 @@ module Habanero
     extend ActiveSupport::Concern
 
     included do
-      validates :sorbet, :presence => true
+      validates :variety, :presence => true
     end
 
     def evaluate(params = {})
@@ -12,7 +12,7 @@ module Habanero
     end
     
     def klass
-      sorbet.klass
+      variety.klass
     end
   end
 end

@@ -19,7 +19,7 @@ module Habanero
       unless @placement.scoop.title.blank?
         @placement.scoop.title.blank?
       else
-        "#{@sorbet.to_s} #{@placement.template}"
+        "#{@variety.to_s} #{@placement.template}"
       end
     end
   end

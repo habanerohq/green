@@ -4,18 +4,18 @@ describe Habanero::CategoryIngredient do
   before(:all) do
     @ingredient = Habanero::CategoryIngredient.new(:name => 'Foo Type')
 
-    @sorbet = Habanero::Sorbet.create!(
+    @variety = Habanero::Variety.create!(
       :name => 'Dummy',
-      :parent => Habanero::Sorbet.find_by_name('Base'),
+      :parent => Habanero::Variety.find_by_name('Base'),
       :brand => Habanero::Brand.find_by_name('Habanero')
     )
 
-    @sorbet.ingredients << Habanero::StringIngredient.new(:name => 'Foo')
-    @sorbet.ingredients << @ingredient
+    @variety.ingredients << Habanero::StringIngredient.new(:name => 'Foo')
+    @variety.ingredients << @ingredient
   end
 
   after(:all) do
-    Habanero::Sorbet.find_by_name('Dummy').try(:destroy)
+    Habanero::Variety.find_by_name('Dummy').try(:destroy)
   end
 
   it 'has a column name, method name and position name' do
@@ -35,7 +35,7 @@ describe Habanero::CategoryIngredient do
     a.macro.should == :belongs_to
   end
 
-  it 'maintains columns in the sorbet database table' do
+  it 'maintains columns in the variety database table' do
     ActiveRecord::Base.connection.columns('habanero_dummies').map(&:name).should include 'foo_type_id'
     Habanero::Dummy.new.should respond_to 'foo_type'
   end

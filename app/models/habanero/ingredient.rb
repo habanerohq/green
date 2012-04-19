@@ -1,7 +1,7 @@
 module Habanero
   class Ingredient < ActiveRecord::Base
 
-    belongs_to :sorbet, :inverse_of => :ingredients
+    belongs_to :variety, :inverse_of => :ingredients
 
     acts_as_nested_set
 
@@ -9,13 +9,13 @@ module Habanero
     after_save :change_columns
     after_destroy :remove_columns
 
-    # reset column information on the sorbet when necessary
+    # reset column information on the variety when necessary
     after_save :reset_columns
     after_destroy :reset_columns
 
     validates :name,
               :presence => true,
-              :uniqueness => { :scope => 'sorbet_id' }
+              :uniqueness => { :scope => 'variety_id' }
 
     unloadable
 
@@ -40,7 +40,7 @@ module Habanero
     end
     
     def arel_column
-      sorbet.klass.arel_table[method_name]
+      variety.klass.arel_table[method_name]
     end
     
     def to_conditions(params)
@@ -66,7 +66,7 @@ module Habanero
         add_column column_name, column_type
       end
 
-      adapt(sorbet.klass) if sorbet.chilled?
+      adapt(variety.klass) if variety.chilled?
     end
 
     def change_columns
@@ -80,14 +80,14 @@ module Habanero
     end
 
     def reset_columns
-      sorbet.klass.reset_column_information unless parent
+      variety.klass.reset_column_information unless parent
     end
 
     [:add_column, :remove_column, :rename_column, :'column_exists?',
      :add_index, :remove_index, :rename_index, :'index_exists?'].each do |msg|
       class_eval <<-RUBY_EVAL
         def #{msg}(*args)
-          args.unshift(sorbet.table_name)
+          args.unshift(variety.table_name)
           connection.send(:#{msg}, *args)
         end
       RUBY_EVAL
@@ -95,10 +95,10 @@ module Habanero
   end
 end
 
-if Habanero::Sorbet.table_exists?
-  Habanero::Sorbet.branded('Habanero').where(:name => 'Ingredient').first.try(:adapt)
-  Habanero::Ingredient.class_attribute :_sorbet
-  Habanero::Ingredient._sorbet = Habanero::Sorbet.branded('Habanero').where(:name => 'Ingredient').first
+if Habanero::Variety.table_exists?
+  Habanero::Variety.branded('Habanero').where(:name => 'Ingredient').first.try(:adapt)
+  Habanero::Ingredient.class_attribute :_variety
+  Habanero::Ingredient._variety = Habanero::Variety.branded('Habanero').where(:name => 'Ingredient').first
 end
 
 Habanero::Ingredient.class_eval { include Habanero::IngredientGraft }
