@@ -20,23 +20,23 @@ describe Habanero::Brand do
     @brand.qualified_name.should == 'Foo'
   end
 
-  it 'should define a constant when chilled' do
+  it 'should define a constant when germinated' do
     expect { Object.const_get(@brand.qualified_name) }.to raise_error NameError
 
-    klass = @brand.chill!
+    klass = @brand.germinate!
     Object.const_get(@brand.qualified_name).should == klass
   end
 
-  it 'should return the chilled class when #klass is called' do
+  it 'should return the germinated class when #klass is called' do
     expect { @brand.klass }.to raise_error NameError
 
-    klass = @brand.chill!
+    klass = @brand.germinate!
     @brand.klass.should == klass
   end
 
   it 'should not nuke already defined constants' do
     object_id = FakeBrand.object_id
-    klass = Habanero::Brand.new(:name => 'FakeBrand').chill!
+    klass = Habanero::Brand.new(:name => 'FakeBrand').germinate!
     klass.object_id.should == object_id
   end
 
@@ -48,7 +48,7 @@ describe Habanero::Brand do
   it 'should unload any defined constants when dependencies are cleared' do
     expect { Object.const_get(@brand.qualified_name) }.to raise_error NameError
 
-    klass = @brand.chill!
+    klass = @brand.germinate!
     Object.const_get(@brand.qualified_name).should == klass
 
     ActiveSupport::Dependencies.clear

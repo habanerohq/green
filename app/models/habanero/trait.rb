@@ -66,7 +66,7 @@ module Habanero
         add_column column_name, column_type
       end
 
-      adapt(variety.klass) if variety.chilled?
+      adapt(variety.klass) if variety.germinated?
     end
 
     def change_columns

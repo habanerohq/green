@@ -41,17 +41,17 @@ describe Habanero::Variety do
     @variety.klass_name.should == 'Foo'
   end
 
-  it 'should define a constant when chilled' do
+  it 'should define a constant when germinated' do
     expect { @fake_module.const_get(@variety.klass_name) }.to raise_error(NameError)
 
-    klass = @variety.chill!
+    klass = @variety.germinate!
     @fake_module.const_get(@variety.klass_name).should == klass
   end
 
-  it 'should return the chilled class when #klass is called' do
+  it 'should return the germinated class when #klass is called' do
     expect { @fake_module.const_get(@variety.klass_name) }.to raise_error(NameError)
 
-    klass = @variety.chill!
+    klass = @variety.germinate!
     @variety.klass.should == klass
   end
 
@@ -67,7 +67,7 @@ describe Habanero::Variety do
   it 'should unload any defined constants when dependencies are cleared' do
     expect { @fake_module.const_get(@variety.klass_name) }.to raise_error(NameError)
 
-    klass = @variety.chill!
+    klass = @variety.germinate!
     @fake_module.const_get(@variety.klass_name).should == klass
 
     ActiveSupport::Dependencies.clear
@@ -88,9 +88,9 @@ describe Habanero::Variety do
       :brand => Habanero::Brand.find_by_name('Habanero')
     )
 
-    variety.chill!
-    variety.should be_chilled
+    variety.germinate!
+    variety.should be_germinated
     variety.destroy
-    variety.should_not be_chilled
+    variety.should_not be_germinated
   end
 end

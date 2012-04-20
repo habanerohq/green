@@ -16,8 +16,8 @@ module Habanero
       name # todo: qualify as class name etc.
     end
 
-    def chill!
-      unless chilled?
+    def germinate!
+      unless germinated?
         Object.const_set(qualified_name, Module.new).tap do |klass|
           klass.unloadable
         end
@@ -26,7 +26,7 @@ module Habanero
       Object.const_get(qualified_name)
     end
 
-    def chilled?
+    def germinated?
       Object.constants.include?(qualified_name)
     end
 

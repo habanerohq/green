@@ -35,7 +35,7 @@ describe Habanero::SlugTrait do
     @author.traits = [name]
 
     @book.save!
-    @book.chill!
+    @book.germinate!
   end
 
   after(:each) do
@@ -78,7 +78,7 @@ describe Habanero::SlugTrait do
       )
 
       @book.brand.klass.send :remove_const, 'Book'
-      @book.chill!
+      @book.germinate!
     end
 
     it 'is invalid when scope trait does not belong to the same variety' do

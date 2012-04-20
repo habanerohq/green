@@ -12,7 +12,7 @@ describe Habanero::NameTrait do
 
     @variety.traits << @trait
 
-    @variety.chill!
+    @variety.germinate!
   end
 
   after(:all) do

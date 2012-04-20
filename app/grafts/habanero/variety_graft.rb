@@ -79,8 +79,8 @@ module Habanero
       name
     end
 
-    def chill!
-      return klass if chilled?
+    def germinate!
+      return klass if germinated?
 
       brand.klass.const_set(klass_name, Class.new(parent.klass))
       klass.unloadable
@@ -102,7 +102,7 @@ module Habanero
       klass
     end
 
-    def chilled?
+    def germinated?
       brand.klass.constants.include?(klass_name)
     end
 
@@ -143,7 +143,7 @@ module Habanero
     end
 
     def remove_const
-      brand.klass.send(:remove_const, klass_name) if chilled?
+      brand.klass.send(:remove_const, klass_name) if germinated?
     end
   end
 end

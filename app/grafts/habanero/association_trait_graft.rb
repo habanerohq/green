@@ -132,7 +132,7 @@ module Habanero
         end
       end
 
-      if variety.chilled? && inverse
+      if variety.germinated? && inverse
         adapt(variety.klass)
         inverse.adapt(inverse_variety.klass)
         inverse_variety.klass.reset_column_information

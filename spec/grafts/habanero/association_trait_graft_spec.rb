@@ -24,7 +24,7 @@ describe Habanero::AssociationTrait do
     )
 
     @variety.save!
-    @variety.chill!
+    @variety.germinate!
   end
 
   after(:each) do
