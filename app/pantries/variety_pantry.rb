@@ -1,6 +1,7 @@
-class VarietyPantry < Pantry::Base
-  
+class VarietyPantry < Pantry::Base  
   def define_stacks
+    refers_to 'Habanero::Category', :id_value_methods => [:name, :parent]
+    
     can_stack 'Habanero::Brand', :scope => {:where => {:name => ['Habanero', 'ActiveRecord']}}
     can_stack 'Habanero::Variety', 
       :id_value_methods => [:name, :brand], 
@@ -40,5 +41,4 @@ class VarietyPantry < Pantry::Base
       }
     end
   end
-
 end
