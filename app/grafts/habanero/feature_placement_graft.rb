@@ -2,8 +2,8 @@ module Habanero
   module FeaturePlacementGraft
     extend ActiveSupport::Concern
 
-    def region_name
-      region ? region.name.attrify.to_sym : :content
+    def bed_name
+      bed ? bed.name.attrify.to_sym : :content
     end
 
     def grader

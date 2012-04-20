@@ -2,7 +2,7 @@ module Habanero
   module PlacementsHelper
     def arrange(scene)
       scene.all_placements.each do |p|
-        content_for(p.region_name) { place(p) }
+        content_for(p.bed_name) { place(p) }
       end
     end
 

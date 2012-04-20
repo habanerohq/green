@@ -11,8 +11,8 @@
 <div class="<%= layout_class(@scene.layout) %>">
   <% @scene.layout.rows.each do |r| %>
     <div class="<%= row_class(r) %>">
-      <% r.regions.each do |reg| %>
-        <%= content_for_region(reg) %>
+      <% r.beds.each do |reg| %>
+        <%= content_for_bed(reg) %>
       <% end %>      
     </div>
   <% end %>

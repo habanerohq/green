@@ -1,5 +1,5 @@
 module Habanero
-  module RegionGraft
+  module BedGraft
     extend ActiveSupport::Concern
     
     def to_s
