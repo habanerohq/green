@@ -13,7 +13,7 @@ class HabaneroSitePantry < Pantry::Base
     refers_to 'Habanero::Variety', :id_value_methods => [:name, :brand]
     refers_to 'Habanero::Trait', :id_value_methods => [:name, :variety]
 
-    can_stack 'Habanero::Layout', :scope => {:where => {:name => ['Habanero', 'Nursery']}}
+    can_stack 'Habanero::Layout', :scope => {:where => {:name => ['Habanero', 'Shed']}}
     can_stack 'Habanero::LayoutRow', 
       :id_value_methods => [:name, :layout], 
       :scope => {
