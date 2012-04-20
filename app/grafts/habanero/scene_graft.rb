@@ -9,8 +9,8 @@ module Habanero
     end
 
     module ClassMethods
-      def draw_routes(map)
-        where('route is not null').order('garden_position').reject { |p| p.route.blank? or p.garden.try(:route).blank? }.each { |p| p.draw_route(map) }
+      def label_signposts(map)
+        where('signpost is not null').order('garden_position').reject { |p| p.signpost.blank? or p.garden.try(:signpost).blank? }.each { |p| p.label_signpost(map) }
       end
     end
 
@@ -18,7 +18,7 @@ module Habanero
       garden
     end
 
-    def draw_route(map, options = {})
+    def label_signpost(map, options = {})
       options[:constraints] = { :host => garden.site.host } unless garden.site.host.blank?
       options[:as] = "scene_#{id}"
       options[:defaults] = { :draw_type => self.class.name, :draw_id => id }
@@ -51,7 +51,7 @@ module Habanero
     end
     
     def is_index_scene?
-      route.in? ['/', '/index'] or name.downcase == 'index'
+      signpost.in? ['/', '/index'] or name.downcase == 'index'
     end
     
     def to_s_qual

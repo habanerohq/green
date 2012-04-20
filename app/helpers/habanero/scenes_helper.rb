@@ -2,11 +2,11 @@ module Habanero
   module ScenesHelper
     def scene_path(scene, params = {})
       send "scene_#{scene.id}_path", params
-      #url_for(params.merge :use_route => "scene_#{scene.id}")
+      #url_for(params.merge :use_signpost => "scene_#{scene.id}")
     end
     
     def new_variety_scene
-      Habanero::Scene.find_all_by_route('/:variety_type/new').detect { |p| p.garden.route? }
+      Habanero::Scene.find_all_by_signpost('/:variety_type/new').detect { |p| p.garden.signpost? }
     end
     
     def target_scenes(targets)

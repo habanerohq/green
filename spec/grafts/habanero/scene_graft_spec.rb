@@ -18,19 +18,19 @@ describe Habanero::Scene do
   end
 
   it 'should have a path' do
-    @scene.route = '/dummy'
-    @scene.route.should == '/dummy'
+    @scene.signpost = '/dummy'
+    @scene.signpost.should == '/dummy'
     @scene.path.should == '/dummy'
   end
 
   it 'should have a qualified path' do
-    @scene.route = '/foo'
+    @scene.signpost = '/foo'
     @scene.qualified_path.should == '/foo'
   end
 
   it 'should qualify path using parent' do
-    @scene.build_garden(:name => 'Foo', :route => '/foo')
-    @scene.route = '/bar'
+    @scene.build_garden(:name => 'Foo', :signpost => '/foo')
+    @scene.signpost = '/bar'
     @scene.qualified_path.should == '/foo/bar'
   end
 end

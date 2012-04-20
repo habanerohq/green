@@ -1,5 +1,5 @@
 module Habanero
-  module RouteTraitGraft
+  module SignpostTraitGraft
     extend ActiveSupport::Concern
 
     def adapt(klass)
@@ -10,7 +10,7 @@ module Habanero
       extend ActiveSupport::Concern
 
       def path
-        route || ''
+        signpost || ''
       end
 
       def qualified_path
@@ -21,12 +21,12 @@ module Habanero
         end
       end
 
-      def draw_route(map)
+      def label_signpost(map)
       end
 
       module ClassMethods
-        def draw_routes(map)
-          all.each { |t| t.draw_route(map) }
+        def label_signposts(map)
+          all.each { |t| t.label_signpost(map) }
         end
       end
     end

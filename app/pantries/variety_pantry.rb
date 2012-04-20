@@ -30,7 +30,7 @@ class VarietyPantry < Pantry::Base
       'Habanero::AssociationTrait', 
       'Habanero::SlugTrait',
       'Habanero::CategoryTrait',
-      'Habanero::RouteTrait'
+      'Habanero::SignpostTrait'
     ].
     each do |i| 
       can_stack i, 

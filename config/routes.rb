@@ -56,7 +56,7 @@ Sorbet2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
 
-  if Habanero::Variety.table_exists? and Habanero::Variety.find_by_name('RouteTrait')
-    Habanero::RouteTrait.all.each { |i| i.variety.klass.draw_routes(self) }
+  if Habanero::Variety.table_exists? and Habanero::Variety.find_by_name('SignpostTrait')
+    Habanero::SignpostTrait.all.each { |i| i.variety.klass.label_signposts(self) }
   end
 end
