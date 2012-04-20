@@ -30,14 +30,14 @@ module Habanero
       render
     end
 
-    def tree(options)
+    def trellis(options)
       _list(options)
       @highlighter = @placement.feature.highlighter
       @targets = roots_only
       render
     end
 
-    def tree_node(targets, highlighter)
+    def trellis_node(targets, highlighter)
       @highlighter = highlighter
       @targets = targets
       render

@@ -10,7 +10,7 @@
       </li>
       
       <%- if t.respond_to?(:children)  -%>
-          <%= render({:state => :tree_node}, t.children, @highlighter) -%>
+          <%= render({:state => :trellis_node}, t.children, @highlighter) -%>
       <%- end -%>
 
       <%- @highlighter.highlighted_traits.each do |mi| -%>
@@ -22,7 +22,7 @@
               manies = t.send(i.method_name)
               manies = manies.reject { |m| m.respond_to?(:parent_id) && m.parent_id }
               render(
-                {:state => :tree_node}, 
+                {:state => :trellis_node}, 
                 manies, 
                 @highlighter.children.detect{|m| m.variety == i.inverse_variety}
               ) unless i.polymorphic?
