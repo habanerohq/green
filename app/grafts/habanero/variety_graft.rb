@@ -30,15 +30,15 @@ module Habanero
     end
 
     def primary_traits
-      primary_sieve.present? ? primary_sieve.traits : all_displayable_traits
+      primary_highlighter.present? ? primary_highlighter.traits : all_displayable_traits
     end
 
-    def primary_sieve
-      all_sieves.detect { |m| m.primary? }
+    def primary_highlighter
+      all_highlighters.detect { |m| m.primary? }
     end
     
-    def all_sieves
-      self_and_ancestors.includes(:sieves).map(&:sieves).flatten.reverse
+    def all_highlighters
+      self_and_ancestors.includes(:highlighters).map(&:highlighters).flatten.reverse
     end
     
     def all_traits

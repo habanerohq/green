@@ -1,5 +1,5 @@
 module Habanero
-  module SieveTraitGraft
+  module TraitHighlightGraft
     extend ActiveSupport::Concern
 
     def to_s

@@ -10,10 +10,10 @@
       </li>
       
       <%- if t.respond_to?(:children)  -%>
-          <%= render({:state => :tree_node}, t.children, @sieve) -%>
+          <%= render({:state => :tree_node}, t.children, @highlighter) -%>
       <%- end -%>
 
-      <%- @sieve.sieve_traits.each do |mi| -%>
+      <%- @highlighter.highlighted_traits.each do |mi| -%>
           <%= 
             i = mi.trait
             unless i.relation == 'has_many'
@@ -24,11 +24,11 @@
               render(
                 {:state => :tree_node}, 
                 manies, 
-                @sieve.children.detect{|m| m.variety == i.inverse_variety}
+                @highlighter.children.detect{|m| m.variety == i.inverse_variety}
               ) unless i.polymorphic?
             end
           -%>
-      <%- end if @sieve.present? -%>
+      <%- end if @highlighter.present? -%>
     <%- end -%>
   </ul>
 <% end %>

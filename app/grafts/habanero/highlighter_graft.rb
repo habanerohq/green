@@ -1,9 +1,9 @@
 module Habanero
-  module SieveGraft
+  module HighlighterGraft
     extend ActiveSupport::Concern
     
     def traits
-      sieve_traits.map(&:trait)
+      highlighted_traits.map(&:trait)
     end
   end
 end

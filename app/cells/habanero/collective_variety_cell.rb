@@ -32,13 +32,13 @@ module Habanero
 
     def tree(options)
       _list(options)
-      @sieve = @placement.feature.sieve
+      @highlighter = @placement.feature.highlighter
       @targets = roots_only
       render
     end
 
-    def tree_node(targets, sieve)
-      @sieve = sieve
+    def tree_node(targets, highlighter)
+      @highlighter = highlighter
       @targets = targets
       render
     end
@@ -48,7 +48,7 @@ module Habanero
     def _list(options)
       instance_variables_from(options)
       @grader = @placement.grader
-      @sieve = @placement.feature.sieve
+      @highlighter = @placement.feature.highlighter
       @variety = variety_by_precedence
       @search = @placement.search
       @targets = targets_by_precedence
@@ -64,7 +64,7 @@ module Habanero
     end
     
     def variety_by_precedence
-      @grader.try(:variety) || @sieve.try(:variety) || @scene.nearest_target
+      @grader.try(:variety) || @highlighter.try(:variety) || @scene.nearest_target
     end
     
     def targets_by_precedence
@@ -76,7 +76,7 @@ module Habanero
     end
     
     def roots_only
-      @sieve.variety.klass.respond_to?(:roots) ? @targets.where(:parent_id => nil) : @targets
+      @highlighter.variety.klass.respond_to?(:roots) ? @targets.where(:parent_id => nil) : @targets
     end
   end
 end

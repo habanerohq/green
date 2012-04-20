@@ -9,7 +9,7 @@ module Habanero
     end
     
     def traits
-      sieve ? sieve.traits : variety.try(:primary_traits)
+      highlighter ? highlighter.traits : variety.try(:primary_traits)
     end
 
     def translators

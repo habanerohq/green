@@ -40,17 +40,17 @@ class HabaneroSitePantry < Pantry::Base
         :includes =>  {:garden => :site},
         :where => {:habanero_sites => {:name => 'Habanero'}}
       }      
-    can_stack 'Habanero::Sieve', 
+    can_stack 'Habanero::Highlighter', 
       :id_value_methods => [:name, :variety],
       :scope => {
         :includes => {:variety => :brand},
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
       
-    can_stack 'Habanero::SieveTrait', 
-      :id_value_methods => [:sieve, :trait],
+    can_stack 'Habanero::TraitHighlight', 
+      :id_value_methods => [:highlighter, :trait],
       :scope => {
-        :includes => {:sieve => {:variety => :brand}},
+        :includes => {:highlighter => {:variety => :brand}},
         :where => {:habanero_brands => {:name => 'Habanero'}}
       }
     
