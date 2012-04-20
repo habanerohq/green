@@ -1,6 +1,6 @@
 module Habanero  
-  module TablesHelper
-    def table_format(target, trait)
+  module GridsHelper
+    def grid_format(target, trait)
       if @placement.feature.scene
 
         case
@@ -24,7 +24,7 @@ module Habanero
       end
     end
 
-    def table_header(trait)
+    def grid_header(trait)
       options = {
         :class => header_classes(trait)
       }

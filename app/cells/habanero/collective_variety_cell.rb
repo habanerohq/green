@@ -10,7 +10,7 @@ module Habanero
       render
     end
 
-    def table(options)
+    def grid(options)
       _list(options)
       if @targets.any? and data = params[@placement.params_key]
         @targets = data.reduce(@targets) do |result, (method, direction)|
