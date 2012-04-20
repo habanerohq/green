@@ -15,7 +15,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: variety2_development
+  database: sorbet2_development
   pool: 5
   username: habanero
   password:
@@ -41,7 +41,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: variety2_test
+  database: sorbet2_test
   pool: 5
   username: habanero
   password:
@@ -50,7 +50,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: variety2_production
+  database: sorbet2_production
   pool: 5
   username: habanero
   password:

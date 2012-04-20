@@ -1,6 +1,6 @@
 # Be sure to restart your server when you modify this file.
 
-Sorbet2::Application.config.session_store :cookie_store, :key => '_variety2_session'
+Sorbet2::Application.config.session_store :cookie_store, :key => '_sorbet2_session'
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
