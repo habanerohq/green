@@ -1,6 +1,10 @@
 module Habanero
   module ScenesHelper
-    def scene_path(scene, params = {})
+    def scene_path(scene, *args)
+      options = args.extract_options!
+      target = args.first || scene
+      params = (target ? {:variety_type => target.class._variety, :id => target} : {}).merge(options)
+      
       send "scene_#{scene.id}_path", params
       #url_for(params.merge :use_signpost => "scene_#{scene.id}")
     end

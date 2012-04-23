@@ -10,7 +10,7 @@
       <ul class="nav">
         <% target_scenes(@targets).each do |target| %>
           <li class="<%= @scene == target && 'active' %>">
-            <%= link_to(maybe_use_garden_if_index(target), scene_path(target, :id => target, :variety_type => target.class._variety)) %>
+            <%= link_to maybe_use_garden_if_index(target), scene_path(target) %>
           </li>
         <% end %>
       </ul>

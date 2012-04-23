@@ -3,7 +3,7 @@
     <ul class="nav nav-pills">
       <% @scenes.each do |p| %>
         <li>
-          <%= link_to(p, scene_path(p, :id => p, :variety_type => p.class._variety)) %>
+          <%= link_to p, scene_path(p) %>
         </li>
       <% end %>
     </ul>

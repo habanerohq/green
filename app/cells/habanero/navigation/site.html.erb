@@ -27,7 +27,7 @@
 
                 <% s.indexed_children.each do |ic| %>
                   <li>
-                    <%= link_to ic, scene_path(ic.index_scene, :id => ic.index_scene, :variety_type => ic.class._variety) %>
+                    <%= link_to ic, scene_path(ic) %>
                   </li>
                 <% end %>
               </ul>

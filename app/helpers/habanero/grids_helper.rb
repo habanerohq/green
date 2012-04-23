@@ -8,12 +8,12 @@ module Habanero
           v = target.send(trait.method_name)
           if v.present?
             link_to format_trait(target, trait), 
-              scene_path(@placement.feature.scene, :id => target.send(trait.method_name), :variety_type => trait.inverse_variety)
+              scene_path(@placement.feature.scene, target.send(trait.method_name))
           end
 
         when trait.type == 'Habanero::NameTrait'
           link_to_unless_current format_trait(target, trait), 
-            scene_path(@placement.feature.scene, :id => target, :variety_type => target.class._variety)
+            scene_path(@placement.feature.scene, target)
 
         else
           format_trait(target, trait)

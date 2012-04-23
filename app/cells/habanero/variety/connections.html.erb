@@ -9,7 +9,7 @@
         <ul>
           <%- @target.send(i.method_name).each do  |c| -%>
             <li>
-              <%= link_to(c, scene_path((@placement.feature.scene || @scene), :id => c, :variety_type => c.class._variety)) %>
+              <%= link_to c, scene_path((@placement.feature.scene || @scene), c) %>
             </li>
           <%- end -%>
         </ul>
