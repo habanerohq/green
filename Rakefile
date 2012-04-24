@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Sorbet2::Application.load_tasks
+Green::Application.load_tasks

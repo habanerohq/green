@@ -7,7 +7,7 @@ describe Habanero::ScenesHelper do
     @garden = @scene.build_garden :name => 'Bar', :signpost => '/bar'
     @site = @garden.build_site :name => 'Baz'
 
-    Sorbet2::Application.routes.draw do
+    Green::Application.routes.draw do
       # this has to be scene, not @scene, probably due to how the block is eval'd
       scene.label_signpost(self)
     end
