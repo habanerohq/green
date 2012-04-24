@@ -1,11 +1,11 @@
 module Jalapeno
   module AddressGraft
     extend ActiveSupport::Concern
-    include GeoKit::Geocoders
+#    include GeoKit::Geocoders
 
     included do
-      acts_as_mappable :default_units => :kms
-      before_validation :geocode
+#      acts_as_mappable :default_units => :kms
+#      before_validation :geocode
     end
 
     def geocode
