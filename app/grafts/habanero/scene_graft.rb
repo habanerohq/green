@@ -26,8 +26,13 @@ module Habanero
       if sites.any?
         map.root({ :to => 'habanero/scenes#show' }.merge(options))
       end
-
-      map.match({ qualified_path => 'habanero/scenes#show' }.merge(options))
+      
+      qp = qualified_path
+      map.match({ qp => 'habanero/scenes#show' }.merge(options))
+      
+      if signpost =~ /:variety_type/
+        map.match({ qp.gsub(':variety_type', ':scope_id/:variety_type') => 'habanero/scenes#show' }.merge(options).merge(:as => "scoped_scene_#{id}"))
+      end
     end
     
     def all_placements

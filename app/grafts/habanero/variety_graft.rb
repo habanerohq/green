@@ -70,6 +70,18 @@ module Habanero
     def name_trait_column_name
       name_trait.try(:method_name) || (respond_to?(:name) ? :name : :id)
     end
+    
+    def slug_trait
+      all_traits.detect { |i| i.type == 'Habanero::SlugTrait' }
+    end
+    
+    def slug_scope
+      slug_trait.try(:scope)
+    end
+    
+    def scoped_slug?
+      slug_scope.present?
+    end
 
     def table_name
       base.qualified_name.pluralize.attrify

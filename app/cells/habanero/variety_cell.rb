@@ -3,14 +3,14 @@ module Habanero
     include Habanero::ScenesHelper
 
     def show(options)
-      _get_started(options)
-      @target = @variety.klass.find(params[:id])
+      get_started(options)
+      @target = find_target
       render
     end
 
     def edit(options)
-      _get_started(options)
-      @target = @variety.klass.find(params[:id])
+      get_started(options)
+      @target = find_target
 
       if request.delete?
         if @target.destroy
@@ -27,7 +27,7 @@ module Habanero
     end
 
     def new(options)
-      _get_started(options)
+      get_started(options)
       @target = @variety.klass.new(params[@placement.params_key])
 
       if params[@placement.params_key] && request.post?
@@ -46,17 +46,28 @@ module Habanero
       instance_variables_from(options)
       @variety = Habanero::Variety.find(params[:variety_type])
       @traits = @variety.connections
-      @target = @variety.klass.find(params[:id]) if params[:id]
+      @target = find_target
       
       render
     end
     
     protected
     
-    def _get_started(options)
+    def get_started(options)
       instance_variables_from(options)
       @variety = Habanero::Variety.find(params[:variety_type])
       @traits = @placement.traits || @variety.primary_traits
+    end
+    
+    def find_target
+      if params[:id]
+        if params[:scope_id] and (ss = @variety.slug_scope)
+          scope_klass = ss.inverse_variety.klass
+          @variety.klass.joins(ss.method_name.to_sym).where(:slug => params[:id], scope_klass.table_name => {:slug => params[:scope_id]}).first
+        else
+          @variety.klass.find(params[:id])
+        end
+      end
     end
   end
 end
