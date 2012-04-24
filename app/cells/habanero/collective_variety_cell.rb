@@ -55,7 +55,7 @@ module Habanero
       @traits = traits_by_precedence
 
       if @targets.any? and @placement.feature.paginate?
-        @targets = @targets.page(params[:scene])
+        @targets = @targets.page(params[:page])
       end
     end
     
