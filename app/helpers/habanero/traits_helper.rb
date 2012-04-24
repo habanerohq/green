@@ -37,32 +37,15 @@ module Habanero
 
     def format_habanero_nest_trait(target, trait)
       trait_span(trait) do 
-        v = target.parent.to_s
+        v = target.parent
         link_to v, scene_path(@placement.feature.scene, :id => v, :variety_type => trait.variety) if v
       end
-=begin
-      trait_span(trait) do 
-        content_tag(:dl) do
-          content_tag(:dt, 'parent') << content_tag(:dd, target.parent.to_s) <<
-          content_tag(:dt, 'children') << content_tag(:dd, target.children.map(&:to_s).join(', '))
-        end
-      end
-=end
     end
 
     def format_habanero_association_trait(target, trait)
       if trait.relation == 'has_many'
         trait_span(trait) do 
           value_for(target, trait).map(&:to_s).join(', ')
-=begin
-          content_tag(:dl) do
-            value_for(target, trait).inject('') do |m, o|
-              m << 
-              content_tag(:dt, o.to_s) <<
-              content_tag(:dd, (o.documentation if o.respond_to?(:documentation)))
-            end.html_safe
-          end
-=end
         end
       else
         v = value_for(target, trait)
