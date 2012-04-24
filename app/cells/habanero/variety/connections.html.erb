@@ -1,19 +1,21 @@
 <%= cell_title('connections') %>
 
-<ul>
-  <%- @traits.each do |i| -%>
-    <li>
-      <%= i.to_s %> 
-      <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), scene_path(new_variety_scene, :variety_type => i.inverse_variety)) %>
-      <%- if @target.present? -%>
-        <ul>
-          <%- @target.send(i.method_name).each do  |c| -%>
-            <li>
-              <%= link_to c, scene_path((@placement.feature.scene || @scene), c) %>
-            </li>
-          <%- end -%>
-        </ul>
-      <%- end -%>
-    </li>
-  <%- end -%>
-</ul>
+<% unless @target.class.name == 'Habanero::SlugTrait'%>
+  <ul>
+    <%- @traits.each do |i| -%>
+      <li>
+        <%= i.to_s %> 
+        <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), scene_path(new_variety_scene, :variety_type => i.inverse_variety)) %>
+        <%- if @target.present? -%>
+          <ul>
+            <%- @target.send(i.method_name).each do  |c| -%>
+              <li>
+                <%= link_to c, scene_path((@placement.feature.scene || @scene), c) %>
+              </li>
+            <%- end -%>
+          </ul>
+        <%- end -%>
+      </li>
+    <%- end -%>
+  </ul>
+<% end %>
