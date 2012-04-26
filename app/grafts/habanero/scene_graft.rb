@@ -9,8 +9,24 @@ module Habanero
     end
 
     module ClassMethods
+
       def label_signposts(map)
-        where('signpost is not null').order('garden_position').reject { |p| p.signpost.blank? or p.garden.try(:signpost).blank? }.each { |p| p.label_signpost(map) }
+        candidates = where('signpost is not null').order('garden_position').reject { |c| c.signpost.blank? or c.garden.try(:signpost).blank? }
+        
+        candidates.each do |c| 
+          if c.sites.any?
+            map.root({ :to => 'habanero/scenes#show' }.merge(c.signpost_options))
+          end
+
+          map.match({ c.qualified_path => 'habanero/scenes#show' }.merge(c.signpost_options))
+        end
+        
+        candidates.select { |c| c.signpost =~ /:variety_type/ }.each do |c| 
+          map.match(
+            { c.qualified_path.gsub(':variety_type', ':scope_id/:variety_type') => 'habanero/scenes#show' }.
+            merge(c.signpost_options).
+            merge(:as => "scoped_scene_#{c.id}"))
+        end
       end
     end
 
@@ -18,21 +34,11 @@ module Habanero
       garden
     end
 
-    def label_signpost(map, options = {})
+    def signpost_options(options = {})
       options[:constraints] = { :host => garden.site.host } unless garden.site.host.blank?
       options[:as] = "scene_#{id}"
       options[:defaults] = { :draw_type => self.class.name, :draw_id => id }
-
-      if sites.any?
-        map.root({ :to => 'habanero/scenes#show' }.merge(options))
-      end
-      
-      qp = qualified_path
-      map.match({ qp => 'habanero/scenes#show' }.merge(options))
-      
-      if signpost =~ /:variety_type/
-        map.match({ qp.gsub(':variety_type', ':scope_id/:variety_type') => 'habanero/scenes#show' }.merge(options).merge(:as => "scoped_scene_#{id}"))
-      end
+      options
     end
     
     def all_placements
