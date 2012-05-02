@@ -44,6 +44,7 @@ gem 'kaminari'
 gem 'simple_form'
 gem 'commonjs', '0.2.0'
 gem 'acts-as-taggable-on', '~> 2.2.2'
+gem 'rdiscount'
 # gem 'geokit-rails3'
 
 group :development, :test do

@@ -1,5 +1,7 @@
 module Habanero  
   module TraitsHelper
+    include ContentHelper
+    
     def format_habanero_category_trait(target, trait)
       if v = value_for(target, trait)
         trait_span(trait) do
@@ -27,6 +29,14 @@ module Habanero
     def format_habanero_range_trait(target, trait)
       trait_span(trait) do
         trait.children.map { |c| target.send(c.method_name) }.join('...')
+      end
+    end
+
+    def format_habanero_text_trait(target, trait)
+      if v = value_for(target, trait)
+        trait_span(trait) do
+          to_content(@placement, v)
+        end
       end
     end
 

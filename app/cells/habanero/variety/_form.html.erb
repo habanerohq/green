@@ -7,11 +7,11 @@
   <%= f.error_notification %>
 
   <% @traits.each do |trait| -%>
-    <%= f.input trait.method_name, :trait => trait %>
+    <%= f.input trait.method_name, :trait => trait.maybe_with_html_disabled(@placement) %>
   <% end %>
 
   <div class="form-actions">
-    <%= f.submit :class => 'btn btn-primary' -%>
+    <%= f.submit :class => "btn btn-primary #{html_enabled_submit_class}" -%>
 
     <% if @target.persisted? %>
       <%= link_to 'Delete', '',
@@ -21,3 +21,26 @@
     <% end %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    jQuery('.wymeditor').wymeditor({
+      stylesheet: 'styles.css',
+      skin: 'silver',
+      postInit: function(wym) {
+          wym.hovertools();
+          wym.resizable();
+      },
+      boxHtml:  "<div class='wym_box'>"
+              + "<div class='wym_area_top'>"
+              + WYMeditor.TOOLS
+              + "</div>"
+              + "<div class='wym_area_main'>"
+              + WYMeditor.HTML
+              + WYMeditor.IFRAME
+              + WYMeditor.STATUS
+              + "</div>"
+              + "</div>"
+    });
+  });
+</script>

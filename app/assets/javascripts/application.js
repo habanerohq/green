@@ -7,5 +7,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+//= require wymeditor/jquery.wymeditor.js
 //= require_tree .
 

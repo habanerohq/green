@@ -58,7 +58,11 @@ module Habanero
     def apply_inclusions(grader_chain)
       grader_chain
     end
-
+    
+    def maybe_with_html_disabled(context)
+      self # nothing to do at the abtract level
+    end
+    
     protected
 
     def add_columns

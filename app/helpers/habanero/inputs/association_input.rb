@@ -20,7 +20,12 @@ module Habanero
       private
 
       def collection
-        trait.inverse_klass.default_order
+        klass = trait.inverse_klass
+        if klass.respond_to?(:default_order)
+          trait.inverse_klass.default_order
+        else
+          trait.inverse_klass.unscoped
+        end
       end
     end
   end

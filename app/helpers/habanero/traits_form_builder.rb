@@ -1,6 +1,7 @@
 module Habanero
   class TraitsFormBuilder < ::SimpleForm::FormBuilder
     # todo: somehow dynamically loop through all availble inputs here
+    map_type :'habanero/text_trait',        :to => Habanero::Inputs::TextInput
     map_type :'habanero/association_trait', :to => Habanero::Inputs::AssociationInput
     map_type :'habanero/nest_trait',        :to => Habanero::Inputs::NestInput
     map_type :'habanero/category_trait',    :to => Habanero::Inputs::CategoryInput

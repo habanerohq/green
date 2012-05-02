@@ -17,6 +17,10 @@ module Habanero
     def traits
       feature.traits
     end
+    
+    def no_html?
+      read_attribute(:no_html) || feature.no_html?
+    end
 
    def prepare_search(params, scene)
       if data = params[params_key]
