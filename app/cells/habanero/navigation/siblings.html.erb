@@ -3,7 +3,13 @@
     <ul class="nav nav-pills">
       <% @scenes.each do |p| %>
         <li>
-          <%= link_to p, scene_path(p) %>
+          <%= 
+            begin 
+              link_to p, scene_path(p)
+            rescue ActionController::RoutingError
+              link_to p, :anchor => ''
+            end
+          %>
         </li>
       <% end %>
     </ul>
