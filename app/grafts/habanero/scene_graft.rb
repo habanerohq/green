@@ -65,6 +65,10 @@ module Habanero
       signpost.in? ['/', '/index'] or name.downcase == 'index'
     end
     
+    def edit_scene
+      self.class.where(:signpost => "#{signpost}/edit").first
+    end
+    
     def to_s_qual
       "#{name} (#{garden})"
     end    

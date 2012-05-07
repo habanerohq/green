@@ -10,7 +10,7 @@
 <% end %>
 
 <% if @placement.feature.scene %>
-  <%= link_to "#{scene_path(@placement.feature.scene)}/edit".gsub('/edit/edit', '/edit'), :class => 'btn' do %>
+  <%= link_to scene_path(@placement.feature.scene.edit_scene, @target), :class => 'btn' do %>
     <i class="icon-pencil"></i>
     Edit
   <% end %>
