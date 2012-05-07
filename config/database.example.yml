@@ -15,7 +15,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: green2_development
+  database: green_development
   pool: 5
   username: habanero
   password:
@@ -41,7 +41,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: green2_test
+  database: green_test
   pool: 5
   username: habanero
   password:
@@ -50,7 +50,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: green2_production
+  database: green_production
   pool: 5
   username: habanero
   password:
