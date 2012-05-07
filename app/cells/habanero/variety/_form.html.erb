@@ -21,26 +21,3 @@
     <% end %>
   </div>
 <% end %>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    jQuery('.wymeditor').wymeditor({
-      stylesheet: 'styles.css',
-      skin: 'silver',
-      postInit: function(wym) {
-          wym.hovertools();
-          wym.resizable();
-      },
-      boxHtml:  "<div class='wym_box'>"
-              + "<div class='wym_area_top'>"
-              + WYMeditor.TOOLS
-              + "</div>"
-              + "<div class='wym_area_main'>"
-              + WYMeditor.HTML
-              + WYMeditor.IFRAME
-              + WYMeditor.STATUS
-              + "</div>"
-              + "</div>"
-    });
-  });
-</script>
