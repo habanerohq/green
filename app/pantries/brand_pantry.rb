@@ -4,9 +4,15 @@ class BrandPantry < Pantry::Base
   end
   
   def define_stacks
-    refers_to 'Habanero::Category', :id_value_methods => [:name, :parent]
-    
     can_stack 'Habanero::Brand', :scope => {:where => {:name => brand_name}}
+
+    can_stack 'Habanero::Category', 
+      :id_value_methods => [:name, :parent],
+      :scope => {
+        :includes => :brand,
+        :where => {:habanero_brands => {:name => brand_name}}
+      }
+
     can_stack 'Habanero::Variety', 
       :id_value_methods => [:name, :brand], 
       :scope => {
