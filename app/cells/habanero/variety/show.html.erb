@@ -2,7 +2,7 @@
 
 <%= cell_content do %>
   <dl>
-    <% @traits.each do |i| %>
+    <% @traits.compact.each do |i| %>
       <dt><%= i.name %></dt>
       <dd><%= format_trait(@target, i) %></dd>
     <% end %>

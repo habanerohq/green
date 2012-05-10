@@ -25,7 +25,7 @@ module Habanero
           end
         end
       else
-        @targets = @targets.order("#{@variety.klass.table_name}.#{@variety.klass.to_s_methods}")
+        @targets = @targets.order("#{@variety.klass.table_name}.#{@variety.klass.to_s_methods}") if @variety.klass.respond_to?(:to_s_methods)
       end
       render
     end
