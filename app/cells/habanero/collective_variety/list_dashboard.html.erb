@@ -1,7 +1,7 @@
-<%= cell_title(collection_title) %>
+<%= cell_title(@variety.to_s.pluralize) %>
 
 <%= cell_content do %>
-  <ol>
+  <ul>
     <% @targets.each do |t| %>
       <li>
         <% if @placement.feature.scene %>

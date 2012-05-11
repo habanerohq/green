@@ -35,7 +35,7 @@ module Habanero
     end
 
     def signpost_options(options = {})
-      options[:constraints] = { :host => garden.site.host } unless garden.site.host.blank?
+      options[:constraints] = { :host => Habanero::Site.current.host } unless Habanero::Site.current.blank?
       options[:as] = "scene_#{id}"
       options[:defaults] = { :draw_type => self.class.name, :draw_id => id }
       options
@@ -63,6 +63,10 @@ module Habanero
     
     def is_index_scene?
       signpost.in? ['/', '/index'] or name.downcase == 'index'
+    end
+    
+    def edit_scene
+      self.class.where(:signpost => "#{signpost}/edit").first
     end
     
     def to_s_qual

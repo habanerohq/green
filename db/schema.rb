@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120426134422) do
+ActiveRecord::Schema.define(:version => 20120509015300) do
 
   create_table "cellar_items", :force => true do |t|
     t.integer  "record_id"
@@ -31,10 +31,7 @@ ActiveRecord::Schema.define(:version => 20120426134422) do
   create_table "habanero_brands", :force => true do |t|
     t.string "name"
     t.string "slug"
-    t.text   "documentation"
   end
-
-  add_index "habanero_brands", ["slug"], :name => "index_habanero_brands_on_slug", :unique => true
 
   create_table "habanero_traits", :force => true do |t|
     t.integer "variety_id"
@@ -44,28 +41,8 @@ ActiveRecord::Schema.define(:version => 20120426134422) do
     t.integer "lft"
     t.integer "rgt"
     t.string  "slug"
-    t.string  "sort_direction"
-    t.string  "relation"
-    t.string  "format"
-    t.text    "documentation"
-    t.boolean "derived"
-    t.boolean "nullable"
-    t.boolean "sortable"
-    t.boolean "ordered"
-    t.integer "limit"
-    t.integer "precision"
-    t.integer "scale"
-    t.integer "default"
-    t.integer "scope_id"
-    t.integer "target_id"
-    t.integer "category_id"
-    t.boolean "primary"
-    t.integer "associated_type_id"
-    t.string  "associated_name"
-    t.boolean "polymorphic"
   end
 
-  add_index "habanero_traits", ["slug"], :name => "index_habanero_traits_on_slug"
   add_index "habanero_traits", ["variety_id"], :name => "index_habanero_traits_on_variety_id"
 
   create_table "habanero_varieties", :force => true do |t|
@@ -75,12 +52,8 @@ ActiveRecord::Schema.define(:version => 20120426134422) do
     t.integer "lft"
     t.integer "rgt"
     t.string  "slug"
-    t.text    "documentation"
-    t.integer "category_id"
     t.boolean "suppress_automatic_naming"
   end
-
-  add_index "habanero_varieties", ["slug"], :name => "index_habanero_varieties_on_slug"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"

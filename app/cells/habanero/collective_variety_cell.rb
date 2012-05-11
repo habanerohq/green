@@ -5,6 +5,11 @@ module Habanero
       render
     end
 
+    def list_dashboard(options)
+      _list(options)
+      render
+    end
+
     def search(options)
       _list(options)
       render
@@ -25,7 +30,7 @@ module Habanero
           end
         end
       else
-        @targets = @targets.order("#{@variety.klass.table_name}.#{@variety.klass.to_s_methods}")
+        @targets = @targets.order("#{@variety.klass.table_name}.#{@variety.klass.to_s_methods}") if @variety.klass.respond_to?(:to_s_methods)
       end
       render
     end
@@ -64,7 +69,7 @@ module Habanero
     end
     
     def variety_by_precedence
-      @grader.try(:variety) || @highlighter.try(:variety) || @scene.nearest_target
+      @grader.try(:variety) || @highlighter.try(:variety) || @placement.feature.try(:variety) || @scene.nearest_target
     end
     
     def targets_by_precedence

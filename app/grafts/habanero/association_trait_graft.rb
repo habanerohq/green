@@ -62,7 +62,7 @@ module Habanero
     end
 
     def polymorphic?
-      read_attribute(:polymorphic) or siblings.count > 1
+      read_attribute(:polymorphic) or (parent.present? and siblings.count > 1)
     end
 
     def columns_required?
@@ -120,10 +120,10 @@ module Habanero
       if columns_required?
         begin
           add_column column_name, column_type unless column_exists?(column_name)
+          add_column "#{name.attrify}_type", :string if polymorphic?
         rescue Exception => e
-          puts self.inspect
+          puts "?? #{self.inspect}"
         end
-        add_column "#{name.attrify}_type", :string if polymorphic?
 
         if ordered?
           unless column_exists?(position_name)
@@ -132,7 +132,7 @@ module Habanero
         end
       end
 
-      if variety.germinated? && inverse
+      if variety.try(:germinated?) && inverse
         adapt(variety.klass)
         inverse.adapt(inverse_variety.klass)
         inverse_variety.klass.reset_column_information
@@ -146,7 +146,11 @@ module Habanero
     end
 
     def remove_columns
-      remove_column(column_name) if columns_required?
+      if columns_required?
+        remove_column(column_name)
+        remove_column("#{name.attrify}_type") if polymorphic?
+        remove_column(position_name) if ordered?
+      end
     end
   end
 end

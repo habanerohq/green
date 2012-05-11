@@ -1,5 +1,5 @@
 module Habanero
-  module BedGraft
+  module LayoutRowGraft
     extend ActiveSupport::Concern
     
     def to_s_qual

@@ -5,7 +5,7 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to @scene.garden.site.name, '/', :class => 'brand' %>
+      <%= link_to Habanero::Site.current.name, '/', :class => 'brand' %>
 
       <ul class="nav">
         <% target_scenes(@targets).each do |target| %>

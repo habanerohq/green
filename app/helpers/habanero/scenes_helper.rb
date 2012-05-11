@@ -13,7 +13,11 @@ module Habanero
     end
     
     def new_variety_scene
-      Habanero::Scene.find_all_by_signpost('/:variety_type/new').detect { |p| p.garden.signpost? }
+      specific_route = "/#{@variety.to_s.downcase}/:variety_type/new"
+      general_route = '/:variety_type/new'
+      
+      ss = Habanero::Scene.where('signpost = ? or signpost = ?' , specific_route, general_route)
+      ss.detect { |s| s.signpost == specific_route } || ss.detect { |s| s.signpost == general_route && s.garden.signpost? }
     end
     
     def target_scenes(targets)

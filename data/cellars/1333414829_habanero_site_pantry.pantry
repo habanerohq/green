@@ -1,2 +1,0 @@
-{"class_name":"Habanero::Category","attributes":{"name":"Address Usage","slug":"address-usage","id":13},"action":"update","foreign_values":{},"id_values":{"name":"Address Usage"},"old_attributes":null,"pantry":{}}
-{"class_name":"Habanero::Category","attributes":{"name":"Service delivery","slug":"service-delivery","id":14,"parent_id":13},"action":"update","foreign_values":{"parent":{"name":"Address Usage"}},"id_values":{"name":"Service delivery","parent":{"name":"Address Usage"}},"old_attributes":null,"pantry":{}}

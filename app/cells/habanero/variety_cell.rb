@@ -63,7 +63,7 @@ module Habanero
       if params[:id]
         if params[:scope_id] and (ss = @variety.slug_scope)
           scope_klass = ss.inverse_variety.klass
-          @variety.klass.joins(ss.method_name.to_sym).where(:slug => params[:id], scope_klass.table_name => {:slug => params[:scope_id]}).first
+          @variety.klass.joins(ss.method_name.to_sym).readonly(false).where(:slug => params[:id], scope_klass.table_name => {:slug => params[:scope_id]}).first
         else
           @variety.klass.find(params[:id])
         end
