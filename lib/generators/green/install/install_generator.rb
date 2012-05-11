@@ -13,15 +13,13 @@ DESC
         @source_root ||= File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
       end
 
-      def self.next_migration_number(dirname) # :nodoc:
-        Time.now.strftime("%Y%m%d%H%M%S")
-      end
-
-      def copy_initializer
-      end
-
-      def setup_routes
-        route('Green.routes(self)')
+      def self.next_migration_number(path)
+        unless @prev_migration_nr
+          @prev_migration_nr = Time.now.utc.strftime("%Y%m%d%H%M%S").to_i
+        else
+          @prev_migration_nr += 1
+        end
+        @prev_migration_nr.to_s
       end
 
       def create_migrations
