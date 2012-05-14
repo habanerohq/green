@@ -35,7 +35,7 @@ module Habanero
     end
 
     def signpost_options(options = {})
-      options[:constraints] = { :host => Habanero::Site.current.host } unless Habanero::Site.current.blank?
+      options[:constraints] = { :host => Habanero::Site.current.host } unless Habanero::Site.current.blank? or Rails.env.development?
       options[:as] = "scene_#{id}"
       options[:defaults] = { :draw_type => self.class.name, :draw_id => id }
       options
