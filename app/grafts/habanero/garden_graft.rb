@@ -6,12 +6,6 @@ module Habanero
       validates :name, :presence => true
     end    
 
-    module ClassMethods
-      def indexed_roots
-        roots.select { |r| r.index_scene.present? }
-      end
-    end    
-
     def nearest_target
       target || parent.try(:nearest_target)
     end

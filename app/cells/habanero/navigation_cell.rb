@@ -4,7 +4,12 @@ module Habanero
   
     def site(options)
       instance_variables_from(options)
-      @gardens = Habanero::Garden.indexed_roots
+      @gardens = if (s = Habanero::Site.current).present?
+        s.gardens.map(&:garden)
+      else
+        []
+      end    
+
       render
     end
     
