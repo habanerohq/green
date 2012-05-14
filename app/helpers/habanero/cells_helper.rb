@@ -5,7 +5,7 @@ module Habanero
     include GridsHelper
 
     def cell_div(options={}, &block)
-      options.reverse_merge!(:id => @placement.feature.name.idify, :class => "cell #{cell_id.idify} #{@placement.template}")
+      options.reverse_merge!(:id => @feature.name.idify, :class => "cell #{cell_id.idify} #{@placement.template}")
       content_tag(:div, options, &block)
     end
 
@@ -20,7 +20,7 @@ module Habanero
     end
 
     def h(offset, &block)
-      level = "h#{@placement.feature.level + offset}"
+      level = "h#{@feature.level + offset}"
       content_tag(level, &block)
     end
 

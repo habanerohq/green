@@ -20,7 +20,7 @@ module Habanero
 
       if params[@placement.params_key] && request.put?
         @target.update_attributes(params[@placement.params_key])
-        redirect_to scene_path(@placement.feature.scene || @scene, @target)
+        redirect_to scene_path(@feature.scene || @scene, @target)
       end
 
       render
@@ -34,7 +34,7 @@ module Habanero
         @target.transaction do
           if @target.save
             @target.post_create if @target.respond_to?(:post_create)
-            redirect_to scene_path(@placement.feature.scene || @scene, @target)
+            redirect_to scene_path(@feature.scene || @scene, @target)
           end
         end
       end

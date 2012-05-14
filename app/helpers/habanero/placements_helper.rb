@@ -11,6 +11,7 @@ module Habanero
                   placement.template.present? ? placement.template : 'show',
                   :scene => @scene,
                   :placement => placement,
+                  :feature => placement.feature,
                   :target => @target
       )
     end

@@ -1,17 +1,17 @@
 module Habanero  
   module GridsHelper
     def grid_format(target, trait)
-      if @placement.feature.scene
+      if @feature.scene
 
         case
         when trait.relation == 'belongs_to'
           v = target.send(trait.method_name)
           if v.present?
-            link_to v, scene_path(@placement.feature.scene, target.send(trait.method_name))
+            link_to v, scene_path(@feature.scene, target.send(trait.method_name))
           end
 
         when trait.type == 'Habanero::NameTrait'
-          link_to_unless_current target.send(trait.method_name), scene_path(@placement.feature.scene, target)
+          link_to_unless_current target.send(trait.method_name), scene_path(@feature.scene, target)
 
         else
           format_trait(target, trait)

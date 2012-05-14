@@ -2,8 +2,8 @@
   <ul>
     <%- @targets.each do |t| -%>
       <li>
-        <% if @placement.feature.scene %>
-          <%= link_to t, scene_path(@placement.feature.scene, t) %>
+        <% if @placement.scene %>
+          <%= link_to t, scene_path(@feature.scene, t) %>
         <% else %>
           <%= t %>
         <% end %>

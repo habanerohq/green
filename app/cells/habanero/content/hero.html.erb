@@ -1,9 +1,9 @@
 <div class="hero-unit">
   <% if @feature.title.present? %>
-    <h1><%= @placement.feature.title %></h1>
+    <h1><%= @feature.title %></h1>
   <% end %>
 
   <%= cell_content do %>
-    <p><%= @placement.feature.body %></p>
+    <p><%= @feature.body %></p>
   <% end %>
 </div>

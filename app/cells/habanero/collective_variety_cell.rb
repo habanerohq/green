@@ -37,7 +37,7 @@ module Habanero
 
     def trellis(options)
       _list(options)
-      @highlighter = @placement.feature.highlighter
+      @highlighter = @feature.highlighter
       @targets = roots_only
       render
     end
@@ -53,13 +53,13 @@ module Habanero
     def _list(options)
       instance_variables_from(options)
       @grader = @placement.grader
-      @highlighter = @placement.feature.highlighter
+      @highlighter = @feature.highlighter
       @variety = variety_by_precedence
       @search = @placement.search
       @targets = targets_by_precedence
       @traits = traits_by_precedence
 
-      if @targets.any? and @placement.feature.paginate?
+      if @targets.any? and @feature.paginate?
         @targets = @targets.page(params[:page])
       end
     end
@@ -69,7 +69,7 @@ module Habanero
     end
     
     def variety_by_precedence
-      @grader.try(:variety) || @highlighter.try(:variety) || @placement.feature.try(:variety) || @scene.nearest_target
+      @grader.try(:variety) || @highlighter.try(:variety) || @feature.try(:variety) || @scene.nearest_target
     end
     
     def targets_by_precedence
