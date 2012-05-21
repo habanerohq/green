@@ -35,7 +35,7 @@ module Habanero
     def format_habanero_text_trait(target, trait)
       if v = value_for(target, trait)
         trait_span(trait) do
-          to_content(@placement, v)
+          to_content(@feature, v)
         end
       end
     end
@@ -53,7 +53,7 @@ module Habanero
     end
 
     def format_habanero_association_trait(target, trait)
-      if trait.relation == 'has_many'
+      if trait.relation =~ /many/
         trait_span(trait) do 
           value_for(target, trait).map(&:to_s).join(', ')
         end

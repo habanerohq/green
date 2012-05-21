@@ -8,11 +8,19 @@
         <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), scene_path(new_variety_scene, :variety_type => i.inverse_variety)) %>
         <%- if @target.present? -%>
           <ul>
-            <%- @target.send(i.method_name).each do  |c| -%>
-              <li>
-                <%= link_to c, scene_path((@feature.scene || @scene), c) %>
-              </li>
-            <%- end -%>
+            <% if i.relation =~ /many/ %>
+              <%- @target.send(i.method_name).each do  |c| -%>
+                <li>
+                  <%= link_to c, scene_path((@feature.scene || @scene), c) %>
+                </li>
+              <%- end -%>
+            <% else %>
+              <%- if @target.send(i.method_name).present? -%>
+                <li>
+                  <%= format_trait(@target, i) -%>
+                </li>
+              <% end %>
+            <% end %>
           </ul>
         <%- end -%>
       </li>

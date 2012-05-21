@@ -16,7 +16,7 @@
       <%- @highlighter.highlighted_traits.each do |mi| -%>
           <%= 
             i = mi.trait
-            unless i.relation == 'has_many'
+            unless i.relation =~ /has/
               format_trait(t, i)
             else
               manies = t.send(i.method_name)
