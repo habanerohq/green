@@ -1,7 +1,7 @@
 <%= cell_title(@target) %>
 
 <%= cell_content do %>
-  <dl class="dl-horizontal">
+  <dl>
     <% @traits.compact.each do |i| %>
       <dt><%= i.name %></dt>
       <dd><%= format_trait(@target, i) %></dd>
