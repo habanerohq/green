@@ -4,7 +4,7 @@ module Habanero
       def input
         @builder.grouped_collection_select(
           trait.method_name, collection,
-          :children, :name, :id, :name,
+          :children, :name, :id, :to_s,
           input_options, input_html_options
         )
       end

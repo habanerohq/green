@@ -14,12 +14,8 @@ module Habanero
 
     def adapt(klass)
       klass.class_eval <<-RUBY_EVAL
-        def _to_s
-          #{(self.children.map(&:method_name) << self.method_name).join(' << ')}.underscore.humanize
-        end
-
-        def self.to_s_methods
-          '#{self.children.map(&:method_name) << self.method_name}'.split(' ')
+        def self.to_s_method_names
+          '#{(self.children.map(&:method_name) << self.method_name).join(', ')}'
         end
       RUBY_EVAL
 
@@ -31,7 +27,7 @@ module Habanero
     
       module ClassMethods
         def default_order
-          order(to_s_methods)
+          order(to_s_method_names)
         end      
       end
 
@@ -39,8 +35,8 @@ module Habanero
         _to_s
       end
 
-      def to_s_qual
-        to_s
+      def _to_s
+        self.class.to_s_method_names.split(', ').map { |m| self.send(m) }.join(' ')
       end
     end    
   end

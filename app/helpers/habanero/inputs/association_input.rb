@@ -6,7 +6,7 @@ module Habanero
         case trait.relation.to_sym
         when :belongs_to
           @builder.collection_select(
-            trait.column_name, collection, :id, :to_s_qual,
+            trait.column_name, collection, :id, display_method,
             input_options, input_html_options
           )
         end
@@ -14,18 +14,25 @@ module Habanero
 
       def input_options
         options.reverse_merge :include_blank => true,
-                              :prompt => "-- Select #{trait.inverse_klass.name} --"
+                              :prompt => "-- Select #{collection_klass.try(:name)} --"
       end
 
       private
 
       def collection
-        klass = trait.inverse_klass
-        if klass.respond_to?(:default_order)
-          trait.inverse_klass.default_order
+        if collection_klass.respond_to?(:default_order)
+          collection_klass.default_order
         else
-          trait.inverse_klass.unscoped
+          collection_klass.try(:unscoped) || []
         end
+      end
+      
+      def collection_klass
+        trait.polymorphic? ? @builder.object.send(trait.polymorph_name).try(:constantize) : trait.inverse_klass
+      end
+      
+      def display_method
+        collection_klass.method_defined?(:to_s_qual) ? :to_s_qual : :to_s
       end
     end
   end

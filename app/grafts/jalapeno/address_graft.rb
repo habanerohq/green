@@ -20,6 +20,22 @@ module Jalapeno
       end
     end
 
+    def to_s_qual
+      [
+        property_name,
+        to_s
+      ].compact.join(', ')
+    end
+    
+    def to_s
+      [
+        ("#{street_number} #{street_name}" if street_name.present?),
+        city,
+        "#{state} #{zip}",
+        country
+      ].compact.join(', ')
+    end
+
     module ClassMethods
       def distance_to_zoom(kilometers)
         14 - Math.log2(kilometers.to_f).floor if kilometers
