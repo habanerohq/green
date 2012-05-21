@@ -1,14 +1,14 @@
 module Habanero
   module ContentHelper
-    def placement_content(placement)
-      to_content(placement, placement.feature.body)
+    def feature_content(feature)
+      to_content(feature, feature.body)
     end
 
-    def to_content(placement, content)
-      if bf = placement.feature.body_format
+    def to_content(feature, content)
+      if bf = feature.body_format
         self.send("to_#{bf.abbreviation}_content", content)
       else
-         placement.no_html? ? content : content.html_safe
+         @placement.no_html? ? content : content.try(:html_safe)
       end
     end
 
