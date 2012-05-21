@@ -42,11 +42,11 @@ module Habanero
     end
     
     def has_inverse?
-      inverse.present? or (associated_type.present? and associated_name.present?)
+      (parent.present? and inverse.present?) or (associated_type.present? and associated_name.present?)
     end
 
     def inverse_variety
-      inverse.present? ? inverse.variety : associated_type
+      (parent.present? and inverse.present?) ? inverse.variety : associated_type
     end
 
     def inverse_klass
@@ -71,6 +71,14 @@ module Habanero
 
     def column_name
       "#{method_name}_id"
+    end
+
+    def polymorph_name
+      "#{method_name}_type"
+    end
+
+    def old_column_name
+      "#{name_was.attrify}_id"
     end
 
     def inverse_column_name
@@ -112,7 +120,7 @@ module Habanero
       if relation == 'belongs_to'
         siblings.detect.first unless polymorphic?
       else
-        siblings.detect { |s| s.relation == 'belongs_to' }
+        siblings.detect { |s| s.parent == parent and s.relation == 'belongs_to' }
       end
     end
 
@@ -120,7 +128,7 @@ module Habanero
       if columns_required?
         begin
           add_column column_name, column_type unless column_exists?(column_name)
-          add_column "#{name.attrify}_type", :string if polymorphic?
+          add_column polymorph_name, :string if polymorphic?
         rescue Exception => e
           puts "?? #{self.inspect}"
         end
@@ -141,14 +149,14 @@ module Habanero
 
     def change_columns
       if columns_required? and name_was and name_changed?
-        rename_column "#{name_was.attrify}_id", column_name
+        rename_column old_column_name, column_name
       end
     end
 
     def remove_columns
       if columns_required?
         remove_column(column_name)
-        remove_column("#{name.attrify}_type") if polymorphic?
+        remove_column(polymorph_name) if polymorphic?
         remove_column(position_name) if ordered?
       end
     end
