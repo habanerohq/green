@@ -48,8 +48,8 @@ module Habanero
     def displayable_traits(ingreds = nil)
       (ingreds || traits).
       reject do |i| 
-        i.type.in? ['Habanero::RelationTrait', 'Habanero::SlugTrait'] or
-          (i.type == 'Habanero::AssociationTrait' and i.relation == 'has_many')
+        i.type.in? ['Habanero::RelationTrait', 'Habanero::SlugTrait', 'Habanero::RangeTrait'] or
+          (i.type == 'Habanero::AssociationTrait' and i.relation =~ /has/)
       end
     end
 

@@ -5,6 +5,7 @@ module Habanero
     map_type :'habanero/association_trait', :to => Habanero::Inputs::AssociationInput
     map_type :'habanero/nest_trait',        :to => Habanero::Inputs::NestInput
     map_type :'habanero/category_trait',    :to => Habanero::Inputs::CategoryInput
+    map_type :'habanero/range_trait',       :to => Habanero::Inputs::RangeInput
 
     def input(attribute_name, options={}, &block)
       if trait = options[:trait]
