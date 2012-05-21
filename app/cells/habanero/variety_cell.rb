@@ -2,6 +2,12 @@ module Habanero
   class VarietyCell < Habanero::AbstractCell
     include Habanero::ScenesHelper
 
+    def paragraphs(options)
+      get_started(options)
+      @target = find_target
+      render
+    end
+
     def show(options)
       get_started(options)
       @target = find_target

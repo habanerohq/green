@@ -1,0 +1,7 @@
+<%= cell_title(@target) %>
+
+<%= cell_content do %>
+  <% @traits.compact.each do |i| %>
+    <p><%= format_trait(@target, i) %></p>
+  <% end %>
+<% end %>
