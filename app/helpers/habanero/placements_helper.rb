@@ -17,8 +17,11 @@ module Habanero
     end
     
     def collection_title
-      unless @placement.feature.title.blank?
-        @placement.feature.title.blank?
+      case
+      when @placement.feature.title.present?
+        @placement.feature.title
+      when !@scene.signpost.include?(':variety')
+        @placement.feature.name
       else
         "#{@variety.to_s} #{@placement.template}"
       end
