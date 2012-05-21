@@ -35,5 +35,21 @@ module Habanero
     def cell_bottom(&block)
       content_tag(:div, :class => 'bottom', &block)
     end
+    
+    def list_label(target)
+      if @label_trait.present?
+        format_trait(target, @label_trait)
+      else
+        target.to_s
+      end
+    end
+    
+    def list_link(target)
+      if @label_trait.present? and @label_trait.relation == 'belongs_to'
+        value_for(target, @label_trait)
+      else
+        target
+      end
+    end
   end
 end

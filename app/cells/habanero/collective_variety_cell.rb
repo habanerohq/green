@@ -2,11 +2,13 @@ module Habanero
   class CollectiveVarietyCell < Habanero::AbstractCell
     def list(options)
       _list(options)
+      @label_trait = @highlighter.try(:traits).try(:first)
       render
     end
 
     def list_dashboard(options)
       _list(options)
+      @label_trait = @highlighter.traits.first if @highlighter.present?
       render
     end
 
@@ -30,7 +32,7 @@ module Habanero
           end
         end
       else
-        @targets = @targets.order("#{@variety.klass.table_name}.#{@variety.klass.to_s_methods}") if @variety.klass.respond_to?(:to_s_methods)
+        @targets = @targets.order("#{@variety.klass.table_name}.#{@variety.klass.to_s_method_names}") if @variety.klass.respond_to?(:to_s_method_names)
       end
       render
     end

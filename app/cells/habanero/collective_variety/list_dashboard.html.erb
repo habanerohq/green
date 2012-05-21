@@ -1,11 +1,11 @@
 <%= cell_title(@variety.to_s.pluralize) %>
 
 <%= cell_content do %>
-  <ul>
+  <ul class="unstyled">
     <% @targets.each do |t| %>
       <li>
         <% if @feature.scene %>
-          <%= link_to t, scene_path(@feature.scene, t) %>
+          <%= link_to @label, scene_path(@feature.scene, t) %>
         <% else %>
           <%= t %>
         <% end %>
