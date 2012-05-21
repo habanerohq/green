@@ -1,0 +1,17 @@
+  <div class="carousel-inner">
+    <% @features.each do |f| %>
+      <div class="item">
+        <%= 
+          render_cell(f.cell_type,
+                      f.template.present? ? f.template : 'show',
+                      :scene => @scene,
+                      :placement => @placement,
+                      :feature => f,
+                      :target => @target
+          )
+        %>
+      </div>
+    <% end %>
+  </div>
+  <a class="carousel-control left" href="#<%= @feature.name.idify %>" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#<%= @feature.name.idify %>" data-slide="next">&rsaquo;</a>
