@@ -1,19 +1,17 @@
-<style type="text/css">
-  body { padding-top: 40px; }
-</style>
-
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <%= link_to(Habanero::Site.current.name, '/', :class => 'brand') if Habanero::Site.current %>
-
-      <ul class="nav">
-        <% target_scenes(@targets).each do |target| %>
-          <li class="<%= @scene == target && 'active' %>">
-            <%= link_to maybe_use_garden_if_index(target), scene_path(target) %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+<%= cell_content do %>
+  <div class="subnav">
+    <ul class="nav nav-pills">
+      <% @targets.each do |p| %>
+        <li>
+          <%= 
+            begin 
+              link_to p, scene_path(p), :class => :btn
+            rescue ActionController::RoutingError
+              link_to p, :anchor => '', :class => :btn
+            end
+          %>
+        </li>
+      <% end %>
+    </ul>
   </div>
-</div>
+<% end %>

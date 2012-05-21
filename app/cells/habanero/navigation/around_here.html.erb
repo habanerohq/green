@@ -5,9 +5,9 @@
         <li>
           <%= 
             begin 
-              link_to p, scene_path(p)
+              link_to p, scene_path(p), :class => :btn
             rescue ActionController::RoutingError
-              link_to p, :anchor => ''
+              link_to p, :anchor => '', :class => :btn
             end
           %>
         </li>

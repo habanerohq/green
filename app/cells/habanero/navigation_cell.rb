@@ -13,15 +13,22 @@ module Habanero
       render
     end
     
-    def subgardens(options)
+    def around_here(options)
+      instance_variables_from(options)
+      @scenes = @scene.garden.scenes
+      render
+    end
+    
+    def near_signpost(options)
       instance_variables_from(options)
       @index_scenes = @scene.garden.siblings.map { |s| s.index_scene }.compact
       render
     end
     
-    def siblings(options)
+    def previous_signpost(options)
       instance_variables_from(options)
-      @scenes = @scene.garden.scenes
+      g = @scene.garden.ancestors.try(:first) || @scene.garden
+      @index_scenes = g.siblings.map { |s| s.index_scene }.compact
       render
     end
   end
