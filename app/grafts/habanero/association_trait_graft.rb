@@ -85,6 +85,10 @@ module Habanero
       inverse.present? ? inverse.column_name : "#{associated_name.attrify}_id"
     end
 
+    def inverse_method_name
+      inverse.present? ? inverse.method_name : associated_name.attrify
+    end
+
     def method_name
       name.attrify
     end

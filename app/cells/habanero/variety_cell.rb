@@ -2,6 +2,18 @@ module Habanero
   class VarietyCell < Habanero::AbstractCell
     include Habanero::ScenesHelper
 
+    def siblings(options)
+      get_started(options)
+      @target = find_target
+      @sibling_trait = @traits.first
+      @targets = if @sibling_trait.relation == 'belongs_to'
+        @target.send(@sibling_trait.method_name).send(@sibling_trait.inverse_method_name) - [@target]
+      else
+        []
+      end
+      render 
+    end
+
     def paragraphs(options)
       get_started(options)
       @target = find_target
