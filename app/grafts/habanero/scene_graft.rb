@@ -50,7 +50,11 @@ module Habanero
     end
 
     def layout_name
-      (layout.template_name || layout.name.attrify) if layout
+      (nearest_layout.template_name || nearest_layout.name.attrify) if nearest_layout
+    end
+
+    def nearest_layout
+      layout || template.try(:nearest_layout)
     end
 
     def target_class

@@ -8,8 +8,8 @@
 
 <body class="scene <%= @scene.garden.names_idified %> <%= @scene.name.idify %>">
 
-<div class="<%= layout_class(@scene.layout) %>">
-  <% @scene.layout.rows.each do |r| %>
+<div class="<%= layout_class(@scene.nearest_layout) %>">
+  <% @scene.nearest_layout.rows.each do |r| %>
     <div class="<%= row_class(r) %>">
       <% r.beds.each do |reg| %>
         <%= content_for_bed(reg) %>
