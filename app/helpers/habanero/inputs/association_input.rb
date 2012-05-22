@@ -20,15 +20,41 @@ module Habanero
       private
 
       def collection
-        if collection_klass.respond_to?(:default_order)
-          collection_klass.default_order
+        if collection_klass
+          result = collection_klass.default_order if collection_klass.respond_to?(:default_order)
+          sg = scope_guess
+          result = result.where(sg) if sg
+          result
         else
-          collection_klass.try(:unscoped) || []
+          []
         end
       end
       
       def collection_klass
-        trait.polymorphic? ? @builder.object.send(trait.polymorph_name).try(:constantize) : trait.inverse_klass
+        trait.polymorphic? ? target.send(trait.polymorph_name).try(:constantize) : trait.inverse_klass
+      end
+      
+      def scope_guess
+        s = trait.inverse_variety.traits.find_by_type('Habanero::SlugTrait')
+        if s.try(:scope).present?
+          {s.scope.column_name => scope_value_guess(s.scope.column_name)}
+        end
+      end
+      
+      def scope_value_guess(scope_column_name)
+        if target.class.respond_to?(scope_column_name) and (result = target.send(scope_column_name).present?)
+          result
+        else
+          target.class.reflect_on_all_associations(:belongs_to).
+          map do |a| 
+            target.send(a.name)
+          end.
+          compact.
+          map do |a|
+            a.send(scope_column_name) if a.respond_to?(scope_column_name)
+          end.
+          compact
+        end
       end
       
       def display_method

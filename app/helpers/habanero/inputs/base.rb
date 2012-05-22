@@ -6,6 +6,10 @@ module Habanero
       def trait
         options[:trait]
       end
+      
+      def target
+        @builder.object
+      end
     end
   end
 end
