@@ -8,7 +8,7 @@
         <%=
           if @target
               link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), 
-                scene_path(new_variety_scene, :variety_type => i.inverse_variety, :scope => {i.inverse_column_name => @target.id})) 
+                scene_path(new_variety_scene, :variety_type => i.inverse_variety, :context => {i.inverse_column_name => @target.id})) 
           end
         %>
         <%- if @target.present? -%>
@@ -37,7 +37,7 @@
         <%=
           if @target
               link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), 
-                scene_path(new_variety_scene, :variety_type => @target.class._variety, :scope => {:parent_id => @target.id})) 
+                scene_path(new_variety_scene, :variety_type => @target.class._variety, :context => {:parent_id => @target.id})) 
           end
         %>
         <ul>
