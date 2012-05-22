@@ -46,7 +46,7 @@ module Habanero
 
     def new(options)
       get_started(options)
-      @target = @variety.klass.new(params[@placement.params_key])
+      @target = @variety.klass.new(params[@placement.params_key] || params[:scope])
 
       if params[@placement.params_key] && request.post?
         @target.transaction do

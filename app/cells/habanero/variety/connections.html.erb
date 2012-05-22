@@ -4,8 +4,13 @@
   <ul>
     <%- @traits.each do |i| -%>
       <li>
-        <%= i.to_s %> 
-        <%= link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), scene_path(new_variety_scene, :variety_type => i.inverse_variety)) %>
+        <%= i.to_s.downcase %> 
+        <%=
+          if @target
+              link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), 
+                scene_path(new_variety_scene, :variety_type => i.inverse_variety, :scope => {i.inverse_column_name => @target.id})) 
+          end
+        %>
         <%- if @target.present? -%>
           <ul>
             <% if i.relation =~ /many/ %>
@@ -23,6 +28,25 @@
             <% end %>
           </ul>
         <%- end -%>
+      </li>
+    <%- end -%>
+    
+    <%- if @target.present? and @target.respond_to?(:children) -%>
+      <li>
+        children
+        <%=
+          if @target
+              link_to(content_tag(:i, nil, :class => 'icon-plus-sign'), 
+                scene_path(new_variety_scene, :variety_type => @target.class._variety, :scope => {:parent_id => @target.id})) 
+          end
+        %>
+        <ul>
+          <%- @target.children.each do  |c| -%>
+            <li>
+              <%= link_to c, scene_path((@feature.scene || @scene), c) %>
+            </li>
+          <%- end -%>
+        </ul>
       </li>
     <%- end -%>
   </ul>
