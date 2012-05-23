@@ -21,9 +21,10 @@ module Habanero
 
       def collection
         if collection_klass
-          result = collection_klass.default_order if collection_klass.respond_to?(:default_order)
-          sg = scope_guess
-          result = result.where(sg) if sg
+          result = collection_klass.unscoped
+          result = result.default_order if collection_klass.respond_to?(:default_order)
+#          sg = scope_guess
+#          result = result.where(sg) if sg
           result
         else
           []
@@ -35,25 +36,34 @@ module Habanero
       end
       
       def scope_guess
-        s = trait.inverse_variety.traits.find_by_type('Habanero::SlugTrait')
+        s = trait.scope || trait.inverse_variety.traits.find_by_type('Habanero::SlugTrait')
         if s.try(:scope).present?
-          {s.scope.column_name => scope_value_guess(s.scope.column_name)}
+          {s.scope.column_name => scope_value_guess(s.scope.method_name)}
         end
       end
       
-      def scope_value_guess(scope_column_name)
-        if target.class.respond_to?(scope_column_name) and (result = target.send(scope_column_name).present?)
+      def scope_value_guess(scope_method_name)
+        # try sending the scope_column_name to target object of the form
+        if target.class.respond_to?(scope_method_name) and (result = target.send(scope_method_name).present?)
           result
         else
+          # find the objects returned by all belongs_to associations on the target object
           target.class.reflect_on_all_associations(:belongs_to).
           map do |a| 
             target.send(a.name)
           end.
           compact.
+          # try sending the scope_column_name to those
           map do |a|
-            a.send(scope_column_name) if a.respond_to?(scope_column_name)
+            a.send(scope_method_name) if a.respond_to?(scope_method_name)
           end.
           compact
+=begin
+          compact.
+          map do |a|
+            a.try(:self_and_ancsestors) || a
+          end.flatten
+=end
         end
       end
       
