@@ -48,7 +48,7 @@ module Habanero
     end
     
     def condition_predicate
-      Habanero::Catagory.find_by_abbreviation('matches')
+      Habanero::Category.find_by_abbreviation('matches')
     end
     
     def condition_value(params)

@@ -19,7 +19,7 @@ module Habanero
     end
     
     def condition_predicate
-      Habanero::Catagory.find_by_abbreviation('eq')
+      Habanero::Category.find_by_abbreviation('eq')
     end
 
     protected
