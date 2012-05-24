@@ -48,7 +48,13 @@ module Habanero
     def format_habanero_nest_trait(target, trait)
       trait_span(trait) do 
         v = target.parent
-        link_to v, scene_path(@feature.scene, :id => v, :variety_type => trait.variety) if v
+        if v.present?
+          if @feature.scene
+            link_to v, scene_path(@feature.scene, :id => v, :variety_type => trait.variety) if v
+          else
+            v
+          end
+        end
       end
     end
 
@@ -59,8 +65,17 @@ module Habanero
         end
       else
         v = value_for(target, trait)
-        link_to v, scene_path(@feature.scene, :id => v, :variety_type => trait.inverse_variety) if v
+        if v.present?
+          if @feature.scene
+            link_to v, scene_path(@feature.scene, :id => v, :variety_type => trait.inverse_variety)
+          else
+            v
+          end
+        end
       end
+    end
+    
+    def maybe_build_link(target, trait)
     end
 
     def format_trait(target, trait)
@@ -88,5 +103,6 @@ module Habanero
     def trait_input_options(trait)
       options = [trait.column_name]
     end
+
   end
 end
