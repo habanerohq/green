@@ -6,11 +6,14 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require twitter/bootstrap
 //= require wymeditor/jquery.wymeditor.js
 //= require_tree .
 
 $(document).ready(function() {
+  $('.date_input').datepicker();	
+	
   jQuery('.wymeditor').wymeditor({
     stylesheet: 'styles.css',
     skin: 'silver',
