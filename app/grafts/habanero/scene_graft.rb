@@ -48,6 +48,10 @@ module Habanero
     def inherited_placements
       template.try(:all_placements) || []
     end
+    
+    def inherited_placement?(placement)
+      !placements.include?(placement)
+    end
 
     def layout_name
       (nearest_layout.template_name || nearest_layout.name.attrify) if nearest_layout

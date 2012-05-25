@@ -1,0 +1,29 @@
+<%= cell_title("Layout plan for #{@target}") %>
+
+<div class="layout-look btn" style="width: 100%">
+  <p>Layout: <%= @target.nearest_layout.to_s %></p>
+
+  <% @target.nearest_layout.rows.each do |r| %>
+    <div class="row-look btn" style="width: 100%;">
+      <p>Row: <%= r.to_s %></p>
+
+      <% r.beds.reverse.each do |b| %>
+        <div class="bed-look btn" style="float:right; width: <%= (100 * b.span / 12) - 3.5 %>%">
+          <p>Bed: <%= b.to_s %></p>
+
+          <% ps = @placements.select { |p| p.bed == b } %>
+
+          <% if ps.any? %>
+            <% ps.each do |p| %>
+              <div class="placement-look btn <%= @target.inherited_placement?(p) ? 'btn-warning' : 'btn-success' %>" style="width: 100%">
+                <p><%= p.feature.to_s %>.<%= p.template %></p>
+              </div>
+            <% end %>
+          <% else %>
+            <p>(empty)</p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
