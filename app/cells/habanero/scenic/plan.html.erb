@@ -3,7 +3,7 @@
 <div class="layout-look btn" style="width: 100%">
   <p>Layout: <%= @target.nearest_layout.to_s %></p>
 
-  <% @target.nearest_layout.rows.each do |r| %>
+  <% @layout.rows.each do |r| %>
     <div class="row-look btn" style="width: 100%;">
       <p>Row: <%= r.to_s %></p>
 
@@ -25,5 +25,5 @@
         </div>
       <% end %>
     </div>
-  <% end %>
+  <% end if @layout %>
 </div>
