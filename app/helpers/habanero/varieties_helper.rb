@@ -41,5 +41,11 @@ module Habanero
         end
       end
     end
+      
+    def connector_context_params(target, trait)
+      { trait.inverse_column_name => target.id }.tap do |h|
+        h[trait.inverse_polymorph_name] = trait.variety.qualified_name if trait.polymorphic?
+      end
+    end
   end
 end

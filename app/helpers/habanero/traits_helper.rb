@@ -67,7 +67,7 @@ module Habanero
         v = value_for(target, trait)
         if v.present?
           if @feature.scene
-            link_to v, scene_path(@feature.scene, :id => v, :variety_type => trait.inverse_variety)
+            link_to v, scene_path(@feature.scene, :id => v, :variety_type => v._variety)
           else
             v
           end
@@ -97,7 +97,7 @@ module Habanero
     end
 
     def value_for(target, trait)
-      target.send(trait.name.attrify)
+      target.send(trait.method_name.attrify)
     end
 
     def trait_input_options(trait)

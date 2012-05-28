@@ -14,7 +14,7 @@ module Habanero
     end
 
     def adapt(klass)
-      return nil if klass.reflect_on_association(name.attrify.to_sym) or !has_inverse?
+      return nil if klass.reflect_on_association(name.attrify.to_sym) or !(has_inverse? or polymorphic?)
 
       options = {}
 
@@ -33,7 +33,7 @@ module Habanero
 
       options.merge!(:order => inverse_position_name) if relation =~ /many/ and ordered?
 
-#        puts "#{klass} #{relation}, #{name.attrify.to_sym}, #{options.inspect}" # todo: log me!
+      # puts "#{klass} #{relation}, #{name.attrify.to_sym}, #{options.inspect}" # todo: log me!
       klass.send relation, name.attrify.to_sym, options
 
       if ordered? and relation == 'belongs_to'
@@ -73,10 +73,6 @@ module Habanero
       "#{method_name}_id"
     end
 
-    def polymorph_name
-      "#{method_name}_type"
-    end
-
     def old_column_name
       "#{name_was.attrify}_id"
     end
@@ -85,12 +81,20 @@ module Habanero
       inverse.present? ? inverse.column_name : "#{associated_name.attrify}_id"
     end
 
+    def method_name
+      name.attrify
+    end
+
     def inverse_method_name
       inverse.present? ? inverse.method_name : associated_name.attrify
     end
 
-    def method_name
-      name.attrify
+    def polymorph_name
+      "#{method_name}_type"
+    end
+
+    def inverse_polymorph_name
+      inverse.present? ? inverse.polymorph_name : "#{associated_name.attrify}_type"
     end
 
     def position_name
@@ -122,7 +126,7 @@ module Habanero
 
     def inverse
       if relation == 'belongs_to'
-        siblings.detect.first unless polymorphic?
+        siblings.first unless polymorphic?
       else
         siblings.detect { |s| s.parent == parent and s.relation == 'belongs_to' }
       end

@@ -5,10 +5,13 @@ module Habanero
       def input
         case trait.relation.to_sym
         when :belongs_to
-          @builder.collection_select(
-            trait.column_name, collection, :id, display_method,
-            input_options, input_html_options
-          )
+          [
+            @builder.collection_select(
+              trait.column_name, collection, :id, :to_s_qual,
+              input_options, input_html_options
+            ),
+            (@builder.hidden_field(trait.polymorph_name, input_html_options) if trait.polymorphic?)
+          ].compact.join
         end
       end
 
@@ -65,10 +68,6 @@ module Habanero
           end.flatten
 =end
         end
-      end
-      
-      def display_method
-        collection_klass.method_defined?(:to_s_qual) ? :to_s_qual : :to_s
       end
     end
   end

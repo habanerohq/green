@@ -2,13 +2,13 @@
 
 <% unless @target.class.name == 'Habanero::SlugTrait'%>
     <%- @traits.each do |i| -%>
-      <%= create_connector(i.inverse_variety, i.to_s.downcase, :context => {i.inverse_column_name => @target.id}) if @target %>
+      <%= create_connector(i.inverse_variety, i.to_s.downcase, :context => connector_context_params(@target, i)) if @target %>
       <%- if @target.present? -%>
         <ul>
           <% if i.relation =~ /many/ %>
             <%- @target.send(i.method_name).each do  |c| -%>
               <li>
-                <%= link_to c, scene_path((@feature.scene || @scene), c) %>
+                <%= link_to c.to_s_qual, scene_path((@feature.scene || @scene), c) %>
               </li>
             <%- end -%>
           <% else %>

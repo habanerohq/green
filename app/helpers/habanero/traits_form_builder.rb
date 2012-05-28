@@ -11,6 +11,11 @@ module Habanero
     def input(attribute_name, options={}, &block)
       if trait = options[:trait]
         options.reverse_merge! default_trait_options(trait)
+        
+        if trait.polymorphic?
+          v = object.send(trait.method_name)
+          options[:label] = v._variety.name if v.present?
+        end
       end
 
       super
