@@ -103,6 +103,8 @@ module Habanero
 
       adapt
 
+      klass.send :include, Habanero::Graft
+
       begin
         # fixme: syntax errors (at least) in the ice are ignored and results in failing
         #        to include the ice at all, silently

@@ -3,7 +3,7 @@ module Jalapeno
     extend ActiveSupport::Concern
     
     def to_s_qual
-      "#{to_s} (#{type.constantize._variety.to_s})"
+      "#{type.constantize._variety.to_s} #{to_s}"
     end
     
     def to_s

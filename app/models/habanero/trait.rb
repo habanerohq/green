@@ -1,5 +1,6 @@
 module Habanero
   class Trait < ActiveRecord::Base
+    include Habanero::Graft
 
     belongs_to :variety, :inverse_of => :traits
 
