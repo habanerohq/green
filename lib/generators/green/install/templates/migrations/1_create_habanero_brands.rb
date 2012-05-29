@@ -3,6 +3,7 @@ class CreateHabaneroBrands < ActiveRecord::Migration
     create_table "habanero_brands", :force => true do |t|
       t.string "name"
       t.string "slug"
+      t.text "documentation"
     end
 
     add_index "habanero_brands", "slug"
