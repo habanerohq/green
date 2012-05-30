@@ -47,10 +47,6 @@ module Habanero
     def new(options)
       get_started(options)
       @target = @variety.klass.new(params[@placement.params_key] || params[:context])
-      
-      @traits.select { |t| t.relation == 'belongs_to' }.each do |t|
-        @target.send("#{t.column_name}=", session[t.name.downcase])
-      end
 
       if params[@placement.params_key] && request.post?
         @target.transaction do
