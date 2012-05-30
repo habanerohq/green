@@ -14,7 +14,10 @@ module Habanero
     
     def snaffle_session
       if vt = params[:variety_type] and v = params[:id]
-        session[vt] = Habanero::Variety.find(vt).klass.find(v).id
+        begin
+          session[vt] = Habanero::Variety.find(vt).klass.find(v).id
+        rescue ActiveRecord::RecordNotFound
+        end
       end
     end
   end
