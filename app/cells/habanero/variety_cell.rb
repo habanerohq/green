@@ -30,15 +30,14 @@ module Habanero
       get_started(options)
       @target = find_target
 
-      if request.delete?
+      case
+      when request.delete?
         if @target.destroy
           # todo: redirect somewhere
         end
-      end
-
-      if params[@placement.params_key] && request.put?
+      when got_data_from_a_form?
         @target.update_attributes(params[@placement.params_key])
-        redirect_to scene_path(@feature.scene || @scene, @target)
+        redirect_to scene_path(next_scene, @target)
       end
 
       render
@@ -46,17 +45,16 @@ module Habanero
 
     def new(options)
       get_started(options)
-      @target = @variety.klass.new(params[@placement.params_key] || params[:context])
-      
-      @traits.select { |t| t.relation == 'belongs_to' }.each do |t|
-        @target.send("#{t.column_name}=", session[t.name.downcase])
-      end
 
-      if params[@placement.params_key] && request.post?
+      unless got_data_from_a_form? 
+        @target = @variety.klass.new(params[:context])
+        maybe_populate_target_from_session
+      else  
+        @target = @variety.klass.new(params[@placement.params_key])
         @target.transaction do
           if @target.save
             @target.post_create if @target.respond_to?(:post_create)
-            redirect_to scene_path(@feature.scene || @scene, @target)
+            redirect_to scene_path(next_scene, @target)
           end
         end
       end
@@ -91,5 +89,19 @@ module Habanero
         end
       end
     end
+    
+    def got_data_from_a_form?
+      params[@placement.params_key] && request.post?
+    end  
+    
+    def maybe_populate_target_from_session
+      @traits.select { |t| t.relation == 'belongs_to' }.each do |t|
+        @target.send("#{t.column_name}=", session[t.name.downcase]) if session[t.name.downcase].present?
+      end
+    end 
+    
+    def next_scene
+      @feature.scene || @scene
+    end 
   end
 end
