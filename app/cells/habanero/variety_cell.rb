@@ -35,7 +35,7 @@ module Habanero
         if @target.destroy
           # todo: redirect somewhere
         end
-      when got_data_from_a_form?
+      when params[@placement.params_key] && request.put?
         @target.update_attributes(params[@placement.params_key])
         redirect_to scene_path(next_scene, @target)
       end
@@ -46,7 +46,7 @@ module Habanero
     def new(options)
       get_started(options)
 
-      unless got_data_from_a_form? 
+      unless params[@placement.params_key] && request.post?
         @target = @variety.klass.new(params[:context])
         maybe_populate_target_from_session
       else  
@@ -90,10 +90,6 @@ module Habanero
       end
     end
     
-    def got_data_from_a_form?
-      params[@placement.params_key] && request.post?
-    end  
-    
     def maybe_populate_target_from_session
       @traits.select { |t| t.relation == 'belongs_to' }.each do |t|
         @target.send("#{t.column_name}=", session[t.name.downcase]) if session[t.name.downcase].present?
@@ -101,7 +97,7 @@ module Habanero
     end 
     
     def next_scene
-      @feature.scene || @scene
+      @feature.scene || @variety.scene
     end 
   end
 end

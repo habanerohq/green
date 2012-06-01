@@ -9,9 +9,7 @@
   </dl>
 <% end %>
 
-<% if @feature.scene %>
-  <%= link_to scene_path(@feature.scene.edit_scene, @target), :class => 'btn' do %>
-    <i class="icon-pencil"></i>
-    Edit
-  <% end %>
+<%= link_to scene_path(@variety.scene(:edit), @target), :class => 'btn' do %>
+  <i class="icon-pencil"></i>
+  Edit
 <% end %>

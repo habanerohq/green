@@ -49,11 +49,7 @@ module Habanero
       trait_span(trait) do 
         v = target.parent
         if v.present?
-          if @feature.scene
-            link_to v, scene_path(@feature.scene, :id => v, :variety_type => trait.variety) if v
-          else
-            v
-          end
+          link_to v, scene_path(v._variety.scene, :id => v, :variety_type => trait.variety)
         end
       end
     end
@@ -66,11 +62,7 @@ module Habanero
       else
         v = value_for(target, trait)
         if v.present?
-          if @feature.scene
-            link_to v, scene_path(@feature.scene, :id => v, :variety_type => v._variety)
-          else
-            v
-          end
+          link_to v, scene_path(v._variety.scene, :id => v, :variety_type => v._variety)
         end
       end
     end

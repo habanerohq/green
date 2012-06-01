@@ -4,11 +4,7 @@
   <ul class="unstyled">
     <% @targets.each do |t| %>
       <li>
-        <% if @feature.scene %>
-          <%= link_to t, scene_path(@feature.scene, list_link(t)) %>
-        <% else %>
-          <%= t %>
-        <% end %>
+        <%= link_to t, scene_path(@variety.scene, list_link(t)) %>
       </li>
     <% end %>
   </ul>

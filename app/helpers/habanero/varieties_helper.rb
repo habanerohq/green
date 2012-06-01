@@ -1,8 +1,8 @@
 module Habanero  
-  module VarietiesHelper    
+  module VarietiesHelper      
     def create_another_button(variety)
       if variety.leaf?
-        link_to "Create another #{variety}", scene_path(new_variety_scene, :variety_type => variety), :class => 'btn'
+        link_to "Create another #{variety}", scene_path(variety.scene(:new), :variety_type => variety), :class => 'btn'
       else
         content_tag(:div, :class => 'btn-group') do
           content_tag(:button, 'Create another ...', :class => 'btn') <<
@@ -11,7 +11,7 @@ module Habanero
           end <<
           content_tag(:ul, :class => 'dropdown-menu') do
             variety.descendants.sort_by(&:to_s).map do |v|
-              link_to v.to_s, scene_path(new_variety_scene, :variety_type => v)
+              link_to v.to_s, scene_path(variety.scene(:new), :variety_type => v)
             end.join.html_safe
           end
         end
@@ -22,7 +22,7 @@ module Habanero
       if variety.leaf?
         options.merge!(:variety_type => variety)
         content_tag(:div, :class => 'btn-group') do
-          link_to scene_path(new_variety_scene, options), :class => :btn do
+          link_to scene_path(variety.scene(:new), options), :class => :btn do
             (label << ' ' << content_tag(:span, '', :class => 'icon-plus-sign')).html_safe
           end
         end
@@ -35,7 +35,7 @@ module Habanero
           content_tag(:ul, :class => 'dropdown-menu') do
             variety.descendants.sort_by(&:to_s).map do |v|
               o = options.merge(:variety_type => v)
-              link_to v.to_s, scene_path(new_variety_scene, o)
+              link_to v.to_s, scene_path(variety.scene(:new), o)
             end.join.html_safe
           end
         end

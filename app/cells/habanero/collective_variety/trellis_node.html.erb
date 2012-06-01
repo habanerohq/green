@@ -3,7 +3,7 @@
     <%- @targets.each do |t| -%>
       <li>
         <% if @placement.scene %>
-          <%= link_to t, scene_path(@feature.scene, t) %>
+          <%= link_to t, scene_path(@variety.scene, t) %>
         <% else %>
           <%= t %>
         <% end %>

@@ -8,7 +8,7 @@
           <% if i.relation =~ /many/ %>
             <%- @target.send(i.method_name).each do  |c| -%>
               <li>
-                <%= link_to c.to_s_qual, scene_path((@feature.scene || @scene), c) %>
+                <%= link_to c.to_s_qual, scene_path(c._variety.scene, c) %>
               </li>
             <%- end -%>
           <% else %>
@@ -27,7 +27,7 @@
       <ul>
         <%- @target.children.each do  |c| -%>
           <li>
-            <%= link_to c, scene_path((@feature.scene || @scene), c) %>
+            <%= link_to c, scene_path(c._variety.scene, c) %>
           </li>
         <%- end -%>
       </ul>

@@ -83,6 +83,25 @@ module Habanero
       slug_scope.present?
     end
 
+    def scene(action = nil)
+      sp = case 
+      when action.blank?
+        '/:variety_type/:id'
+      when action.to_s == 'new'
+        '/:variety_type/new'
+      else
+        "/:variety_type/:id/#{action}"
+      end
+      
+      scenes.detect { |s| s.signpost == sp } ||
+        all_scenes.detect { |s| s.signpost == sp } ||
+        (Habanero::Variety.find_by_name('Variety').scene(action) unless name == 'Variety')
+    end
+    
+    def all_scenes
+      self_and_ancestors.map(&:scenes).flatten
+    end
+
     def table_name
       base.qualified_name.pluralize.attrify
     end
