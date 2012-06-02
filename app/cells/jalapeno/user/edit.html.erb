@@ -1,0 +1,35 @@
+<%= cell_title("#{@variety} editor") %>
+
+<%= cell_content do %>
+  <%= simple_form_for(@target, :as => @placement.params_key,
+        :url => '', # use the scene or the current scene
+        :method => (@target.new_record? ? :post : :put),
+        :builder => Habanero::TraitsFormBuilder,
+        :html => { :class => 'form-horizontal' }) do |f| -%>
+
+    <%= f.error_notification %>
+
+    <% @traits.each do |trait| -%>
+      <%= f.input trait.method_name, :trait => trait.maybe_with_html_disabled(@placement) %>
+    <% end %>
+
+    <div class="inputs">
+      <%= f.input :username, :required => true, :autofocus => true %>
+      <%= f.input :email, :required => true %>
+      <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
+      <%= f.input :password_confirmation, :required => false %>
+      <%= f.input :current_password, :hint => "we need the current password to confirm your changes", :required => true %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit :class => "btn btn-primary #{html_enabled_submit_class}" -%>
+
+      <% if @target.persisted? %>
+        <%= link_to 'Delete', '',
+          :class => 'btn btn-danger',
+          :confirm => 'Are you sure?',
+          :method => :delete %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

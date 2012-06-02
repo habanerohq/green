@@ -46,6 +46,7 @@ gem 'commonjs', '0.2.0'
 gem 'acts-as-taggable-on', '~> 2.2.2'
 gem 'rdiscount'
 # gem 'geokit-rails3'
+gem 'devise', '~> 2.1'
 
 group :development, :test do
   gem 'rspec-rails'

@@ -100,10 +100,6 @@ module Habanero
   end
 end
 
-if Habanero::Variety.table_exists?
-  Habanero::Variety.branded('Habanero').where(:name => 'Trait').first.try(:adapt)
-  Habanero::Trait.class_attribute :_variety
-  Habanero::Trait._variety = Habanero::Variety.branded('Habanero').where(:name => 'Trait').first
-end
+Green.germinate_model('Habanero', 'Trait')
 
 Habanero::Trait.class_eval { include Habanero::TraitGraft }

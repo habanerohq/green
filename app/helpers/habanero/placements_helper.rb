@@ -7,13 +7,17 @@ module Habanero
     end
 
     def place(placement)
-      render_cell(placement.feature.cell_type,
-                  placement.template.present? ? placement.template : 'show',
-                  :scene => @scene,
-                  :placement => placement,
-                  :feature => placement.feature,
-                  :target => @target
-      )
+      begin
+        render_cell(placement.feature.cell_type,
+                    placement.template.present? ? placement.template : 'show',
+                    :scene => @scene,
+                    :placement => placement,
+                    :feature => placement.feature,
+                    :target => @target
+        )
+      rescue
+        render 'placement_error', {:placement => placement}
+      end
     end
     
     def collection_title

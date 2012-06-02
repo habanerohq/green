@@ -30,4 +30,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'commonjs', '0.2.0' # todo: confirm this is required
   s.add_dependency 'acts-as-taggable-on', '2.2.2'
   s.add_dependency 'rdiscount', '1.6.8'
+  s.add_dependency 'devise', '~> 2.1'
 end
