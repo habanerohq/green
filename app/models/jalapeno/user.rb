@@ -4,17 +4,7 @@ module Jalapeno
     
     modules = Jalapeno::AuthenticationDeployment.first.active_modules
     devise *modules
-=begin
-    devise :database_authenticatable, 
-      :token_authenticatable, 
-      #:confirmable, 
-      :recoverable, 
-      :registerable, 
-      :rememberable, 
-      :trackable, 
-      :validatable,
-      :authentication_keys => [:login]
-=end
+
     attr_accessor :login
     attr_accessible :context_id, 
       :context_type, 
@@ -32,8 +22,10 @@ module Jalapeno
       else
         where(conditions).first
       end
-    end    
+    end
   end
 end
+
+Jalapeno::User.class_eval { include Jalapeno::UserGraft }
 
 Green.germinate_model('Jalapeno', 'User')

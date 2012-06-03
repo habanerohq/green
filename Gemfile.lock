@@ -41,6 +41,7 @@ GEM
       activerecord (>= 3.0.0)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
+    cancan (1.6.7)
     cells (3.8.3)
       actionpack (~> 3.0)
       railties (~> 3.0)
@@ -183,6 +184,7 @@ DEPENDENCIES
   acts-as-taggable-on (~> 2.2.2)
   acts_as_list
   awesome_nested_set
+  cancan
   cells
   coffee-rails (~> 3.2.1)
   commonjs (= 0.2.0)

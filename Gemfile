@@ -47,6 +47,7 @@ gem 'acts-as-taggable-on', '~> 2.2.2'
 gem 'rdiscount'
 # gem 'geokit-rails3'
 gem 'devise', '~> 2.1'
+gem 'cancan'
 
 group :development, :test do
   gem 'rspec-rails'
