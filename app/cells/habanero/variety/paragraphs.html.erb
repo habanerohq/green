@@ -1,5 +1,10 @@
 <%= cell_title(@target) %>
 
+<%= link_to scene_path(@variety.scene(:edit), @target), :class => 'btn' do %>
+  <i class="icon-pencil"></i>
+  Edit
+<% end %>
+
 <%= cell_content do %>
   <% @traits.compact.each do |i| %>
     <p><%= format_trait(@target, i) %></p>
