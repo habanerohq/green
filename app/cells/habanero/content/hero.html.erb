@@ -3,7 +3,5 @@
     <h1><%= @feature.title %></h1>
   <% end %>
 
-  <%= cell_content do %>
-    <p><%= @feature.body %></p>
-  <% end %>
+  <%= cell_content { feature_content(@feature) } %>
 </div>
