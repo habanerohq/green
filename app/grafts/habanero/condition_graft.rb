@@ -8,6 +8,7 @@ module Habanero
       column = trait.arel_column
       self.value = params["#{trait.method_name}"] if params["#{trait.method_name}"] 
       self.value = "%#{value}%" if predicate.abbreviation.include?('match')
+      self.value = value.split('; ') if predicate.abbreviation.include?('in')
       chain = trait.apply_inclusions(chain)
       chain.where(column.send(predicate.abbreviation, value))
     end
