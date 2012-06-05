@@ -1,5 +1,10 @@
 module Habanero
   class CollectiveSceneCell < Habanero::CollectiveVarietyCell
+    def thumbnails(options)
+      _list(options)
+      render
+    end
+
     def button_group(options)
       _list(options)
       render

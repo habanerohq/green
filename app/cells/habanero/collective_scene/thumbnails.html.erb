@@ -1,0 +1,9 @@
+<%= cell_content do %>
+  <ul class="thumbnails">
+    <% @targets.each do |t| %>
+      <li class="span<%= @placement.span %>">
+        <%= link_to t, scene_path(t), :class => :thumbnail %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
