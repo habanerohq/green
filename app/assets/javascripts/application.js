@@ -13,7 +13,12 @@
 
 $(document).ready(function() {
   $('.date_input').datepicker();	
+
+	$('.draggable').draggable();
+	$('.droppable').droppable();
 	
+	$('.sortable').sortable()	
+				
   jQuery('.wymeditor').wymeditor({
     stylesheet: 'styles.css',
     skin: 'silver',

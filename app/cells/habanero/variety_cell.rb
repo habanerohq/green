@@ -37,6 +37,7 @@ module Habanero
         end
       when params[@placement.params_key] && request.put?
         @target.update_attributes(params[@placement.params_key])
+        yield if block_given?
         redirect_to scene_path(next_scene, @target)
       end
 
@@ -54,6 +55,7 @@ module Habanero
         @target.transaction do
           if @target.save
             @target.post_create if @target.respond_to?(:post_create)
+            yield if block_given?
             redirect_to scene_path(next_scene, @target)
           end
         end
