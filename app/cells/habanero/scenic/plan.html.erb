@@ -35,7 +35,7 @@
   		items: 'div:not(.unsortable, p)',
 
   		update: function(event, ui) {
-  			$.get('/habanero/scenes/sort', 
+  			$.put('/habanero/scenes/sort', 
 		      $(this).sortable('serialize') +
     			  '&id=' + $(this).attr('target') +
     			  '&variety_type=' + $(this).attr('klass') +
