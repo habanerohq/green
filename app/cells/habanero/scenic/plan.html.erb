@@ -8,16 +8,15 @@
       <p>Row: <%= r.to_s %></p>
 
       <% r.beds.each do |b| %>
-        <div class="sortable bed-look btn" klass="<%= b.class.name %>" target="<%= b.best_id %>" relation="placements" style="float:left; width: <%= (100 * b.span / 12) - 4 %>%">
+        <div class="sortable bed-look btn" klass="<%= b.class.name %>" target="<%= b.best_id %>" relation="placements" style="float:left; width: <%= (100 * b.span / 12) - 4.5 %>%">
           <p>
             Bed: <%= b.to_s %>
           </p>
 
         <% ps = @placements.select { |p| p.bed == b } %>
-
           <% if ps.any? %>
             <% ps.each do |p| %>
-              <div klass="<%= p.class.name %>" id="<%= p.class.name.underscore.pluralize %>_<%= p.id %>" class="placement-plan btn <%= @target.inherited_placement?(p) ? 'btn-warning unsortable' : 'btn-success' %>">
+              <div klass="<%= p.class.name %>" id="<%= p.class.name.underscore.pluralize %>_<%= p.id %>" class="placement-plan btn <%= @target.inherited_placement?(p) ? 'btn-warning unsortable' : 'btn-success' %>" >
                 <p><%= p.to_s %></p>
               </div>
             <% end %>
@@ -35,7 +34,7 @@
   		items: 'div:not(.unsortable, p)',
 
   		update: function(event, ui) {
-  			$.put('/habanero/scenes/sort', 
+  			$.post('/habanero/scenes/sort', 
 		      $(this).sortable('serialize') +
     			  '&id=' + $(this).attr('target') +
     			  '&variety_type=' + $(this).attr('klass') +

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   namespace :habanero do
-    match '/scenes/sort' => 'scenes#sort', :via => :put
+    match '/scenes/sort' => 'scenes#sort', :via => :post
   end
   
 end
