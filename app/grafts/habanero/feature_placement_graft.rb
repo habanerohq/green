@@ -39,7 +39,7 @@ module Habanero
     end
 
     def to_s
-      "#{template} on #{scene}"
+      "#{feature}.#{template}"
     end
   end
 end

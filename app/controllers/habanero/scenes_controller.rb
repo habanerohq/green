@@ -9,6 +9,21 @@ module Habanero
       
       render :layout => @scene.layout_name
     end
+
+    def sort
+      context_klass = params[:variety_type].constantize
+      context = context_klass.find(params[:id])
+      trait = context_klass._variety.traits.find_by_name(params[:relation])
+
+      params[trait.inverse_klass.name.underscore.pluralize].each_with_index do |oid, i|
+        o = trait.inverse_klass.find(oid)
+        o.send("#{trait.inverse_position_name}=", i + 1)
+        o.send("#{trait.inverse_method_name}=", context)
+        o.save!
+      end
+
+      render :nothing => true
+    end
     
     protected
     
