@@ -8,7 +8,7 @@
       <p>Row: <%= r.to_s %></p>
 
       <% r.beds.each do |b| %>
-        <div class="sortable bed-look btn" klass="<%= b.class.name %>" target="<%= b.best_id %>" relation="placements" style="float:left; width: <%= (100 * b.span / 12) - 4.5 %>%">
+        <div class="sortable bed-look btn" klass="<%= b.class.name %>" target="<%= b.best_id %>" relation="placements" style="float:left; width: <%= (100 * b.span / 12) - 5 %>%">
           <p>
             Bed: <%= b.to_s %>
           </p>
