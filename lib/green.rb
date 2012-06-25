@@ -7,6 +7,7 @@ require 'simple_form'
 require 'acts-as-taggable-on'
 require 'less-rails-bootstrap'
 require 'devise'
+require 'carrierwave'
 require 'green/engine'
 
 module Green  

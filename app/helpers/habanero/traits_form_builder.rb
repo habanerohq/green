@@ -7,6 +7,9 @@ module Habanero
     map_type :'habanero/date_trait',        :to => Habanero::Inputs::DateInput
     map_type :'habanero/nest_trait',        :to => Habanero::Inputs::NestInput
     map_type :'habanero/range_trait',       :to => Habanero::Inputs::RangeInput
+    # stuff that this file has no right to know!
+    map_type :'tabasco/picture_trait',      :to => Tabasco::Inputs::PictureInput
+    
 
     def input(attribute_name, options={}, &block)
       if trait = options[:trait]

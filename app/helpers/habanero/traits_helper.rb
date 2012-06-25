@@ -1,6 +1,7 @@
 module Habanero  
   module TraitsHelper
     include ContentHelper
+    include Tabasco::TraitsHelper # TODO ... we have to do this dynamically, coz we shouldn;t know what brands may be extending formatting
     
     def format_habanero_category_trait(target, trait)
       if v = value_for(target, trait)

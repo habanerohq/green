@@ -32,4 +32,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'rdiscount', '1.6.8'
   s.add_dependency 'devise', '~> 2.1'
   s.add_dependency 'cancan'
+  s.add_dependency 'carrierwave'
 end

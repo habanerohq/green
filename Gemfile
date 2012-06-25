@@ -48,6 +48,7 @@ gem 'rdiscount'
 # gem 'geokit-rails3'
 gem 'devise', '~> 2.1'
 gem 'cancan'
+gem 'carrierwave'
 
 group :development, :test do
   gem 'rspec-rails'

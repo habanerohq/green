@@ -5,7 +5,7 @@ module Tabasco
     extend ActiveSupport::Concern
 
     def adapt(klass)
-      klass.send :mount_uploader, column_name, GalleryUploader
+      klass.send :mount_uploader, column_name.to_sym, GalleryUploader
     end
   end
 end
