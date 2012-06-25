@@ -126,7 +126,7 @@ module Habanero
 
       begin
         # fixme: syntax errors (at least) in the ice are ignored and results in failing
-        #        to include the ice at all, silently
+        #        to include the graft at all, silently
         klass.send :include, "#{qualified_name}Graft".constantize
       rescue NameError => e
         e.message =~ /#{qualified_name}Graft$/ ? nil : raise
