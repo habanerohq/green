@@ -1,3 +1,4 @@
+<div id="<%= @feature.name.idify %>-div" class="carousel slide">
   <div class="carousel-inner">
     <% @features.each do |f| %>
       <div class="item">
@@ -13,5 +14,6 @@
       </div>
     <% end %>
   </div>
-  <a class="carousel-control left" href="#<%= @feature.name.idify %>" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" href="#<%= @feature.name.idify %>" data-slide="next">&rsaquo;</a>
+  <a class="carousel-control left" href="#<%= @feature.name.idify %>-div" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#<%= @feature.name.idify %>-div" data-slide="next">&rsaquo;</a>
+</div>
