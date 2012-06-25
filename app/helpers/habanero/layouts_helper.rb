@@ -5,7 +5,7 @@ module Habanero
     end
 
     def row_class(row)
-      row.fluid? ? 'row-fluid' : 'row'
+      "#{row.fluid? ? 'row-fluid' : 'row'} #{row.name.idify}"
     end
 
     def content_for_bed(bed, options = {})
