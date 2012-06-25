@@ -125,10 +125,12 @@ module Habanero
     end
 
     def inverse
-      if relation == 'belongs_to'
-        siblings.first unless polymorphic?
-      else
-        siblings.detect { |s| s.parent == parent and s.relation == 'belongs_to' }
+      if parent.present?
+        if relation == 'belongs_to'
+          siblings.first unless polymorphic?
+        else
+          siblings.detect { |s| s.parent == parent and s.relation == 'belongs_to' }
+        end
       end
     end
 
