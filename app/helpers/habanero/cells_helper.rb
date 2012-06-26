@@ -4,6 +4,7 @@ module Habanero
     include TraitsHelper
     include GridsHelper
     include VarietiesHelper
+    include NavigationHelper
 
     def cell_div(options={}, &block)
       options.reverse_merge!(:id => @feature.name.idify, :class => "cell #{cell_id.idify} #{@placement.template}")
