@@ -5,6 +5,11 @@ module Habanero
 
     layout 'feature'
 
+    def show(options)
+      instance_variables_from(options)
+      render
+    end
+
     protected
 
     def instance_variables_from(options)

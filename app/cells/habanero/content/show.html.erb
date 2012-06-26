@@ -1,2 +1,15 @@
 <%= cell_title @feature.title %>
-<%= cell_content { feature_content(@feature) } %>
+<%= cell_content do %>
+  <%= feature_content(@feature) %>
+  
+  <% @feature.children.each do |c| %>
+    <%= render_cell(c.cell_type,
+                'show',
+                :scene => @scene,
+                :placement => @placement,
+                :feature => c,
+                :target => @target
+                )
+    %>
+  <% end %>
+<% end %>
