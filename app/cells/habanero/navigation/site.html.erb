@@ -5,7 +5,7 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to(Habanero::Site.current.name, '/', :class => 'brand') if Habanero::Site.current %>
+      <%= link_to(brand_link_value, '/', :class => 'brand') if Habanero::Site.current %>
 
       <ul class="nav">
         <% @gardens.each do |s| %>
