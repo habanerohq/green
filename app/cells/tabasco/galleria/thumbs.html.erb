@@ -1,7 +1,7 @@
 <%= cell_content do %>
   <% @pictures.each do |p| %>
     <div style="float: left;">
-      <%= link_to image_tag(p.image_url), scene_path(p._variety.scene, p) %>
+      <%= link_to image_tag(p.image_url, :alt => p.name, :title => p.caption), scene_path(p._variety.scene, p) %>
     </div>
   <% end %>
 <% end %>
