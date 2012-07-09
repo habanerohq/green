@@ -14,10 +14,10 @@ class GreenBootstrapPantry < Pantry::Base
     
     [
       'Habanero::StringTrait', 
-      'Habanero::TextTrait', 
-      'Habanero::BlobTrait', 
       'Habanero::TrueFalseTrait',
       'Habanero::IntegerTrait', 
+      'Habanero::TextTrait', 
+      'Habanero::BlobTrait', 
       'Habanero::DecimalTrait', 
       'Habanero::NumberTrait', 
       'Habanero::PercentageTrait', 
@@ -32,7 +32,11 @@ class GreenBootstrapPantry < Pantry::Base
       'Habanero::AssociationTrait', 
       'Habanero::SlugTrait',
       'Habanero::TagTrait',
-      'Habanero::SignpostTrait'
+      'Habanero::SignpostTrait',
+      'Habanero::FileTrait',
+      'Tabasco::PictureTrait',
+      'Habanero::ColorTrait',
+      'Habanero::ScreenDimensionTrait'      
     ].
     each do |i| 
       can_stack i, 
@@ -76,7 +80,12 @@ class GreenBootstrapPantry < Pantry::Base
         :includes => {:layout => :brand},
         :where => {:habanero_brands => {:name => brand_name}}
       }
-
+    can_stack 'Habanero::Theme', 
+      :id_value_methods => [:name, :brand, :parent],
+      :scope => {
+        :includes => :brand,
+        :where => {:habanero_brands => {:name => brand_name}}
+      }      
     can_stack 'Habanero::Garden', 
       :id_value_methods => [:name, :brand, :parent],
       :scope => {

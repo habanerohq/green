@@ -22,10 +22,10 @@ class BrandPantry < Pantry::Base
     
     [
       'Habanero::StringTrait', 
+      'Habanero::TrueFalseTrait',
+      'Habanero::IntegerTrait', 
       'Habanero::TextTrait', 
       'Habanero::BlobTrait', 
-      'Habanero::TrueFalseTrait', 
-      'Habanero::IntegerTrait', 
       'Habanero::DecimalTrait', 
       'Habanero::NumberTrait', 
       'Habanero::PercentageTrait', 
@@ -39,9 +39,13 @@ class BrandPantry < Pantry::Base
       'Habanero::RelationTrait', 
       'Habanero::AssociationTrait', 
       'Habanero::SlugTrait',
-      'Habanero::CategoryTrait',
       'Habanero::TagTrait',
-      'Habanero::SignpostTrait'
+      'Habanero::CategoryTrait',
+      'Habanero::SignpostTrait',
+      'Habanero::FileTrait',
+      'Tabasco::PictureTrait',
+      'Habanero::ColorTrait',
+      'Habanero::ScreenDimensionTrait'      
     ].
     each do |i| 
       can_stack i, 
@@ -71,6 +75,13 @@ class BrandPantry < Pantry::Base
         :includes => {:layout => :brand},
         :where => {:habanero_brands => {:name => brand_name}}
       }
+
+    can_stack 'Habanero::Theme', 
+      :id_value_methods => [:name, :brand, :parent],
+      :scope => {
+        :includes => :brand,
+        :where => {:habanero_brands => {:name => brand_name}}
+      }      
 
     can_stack 'Habanero::Garden', 
       :id_value_methods => [:name, :brand, :parent],
@@ -108,6 +119,19 @@ class BrandPantry < Pantry::Base
       :id_value_methods => [:grader, :trait],
       :scope => {
         :includes => {:grader => {:variety => :brand}},
+        :where => {:habanero_brands => {:name => brand_name}}
+      }
+
+    can_stack 'Tabasco::Gallery',
+      :id_value_methods => [:name, :brand],
+      :scope => {
+        :includes => :brand,
+        :where => {:habanero_brands => {:name => brand_name}}
+      }
+    can_stack 'Tabasco::Picture', 
+      :id_value_methods => [:name, :gallery], 
+      :scope => {
+        :includes => {:gallery => :brand},
         :where => {:habanero_brands => {:name => brand_name}}
       }
 
