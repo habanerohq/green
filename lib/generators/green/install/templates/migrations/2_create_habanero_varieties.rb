@@ -8,6 +8,7 @@ class CreateHabaneroVarieties < ActiveRecord::Migration
       t.integer "rgt"
       t.string  "slug"
       t.boolean "suppress_automatic_naming"
+      t.text "documentation"
     end
 
     add_index "habanero_varieties", "slug"
