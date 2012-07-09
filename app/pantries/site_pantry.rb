@@ -9,6 +9,9 @@ class SitePantry < Pantry::Base
     refers_to 'Habanero::Garden', 
       :id_value_methods => [:name, :brand, :parent]
 
+    refers_to 'Habanero::Theme', 
+      :id_value_methods => [:name, :brand, :parent]
+
     refers_to 'Habanero::Scene', 
       :id_value_methods => [:name, :garden]
 

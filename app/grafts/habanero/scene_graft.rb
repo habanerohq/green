@@ -68,6 +68,10 @@ module Habanero
     def nearest_target
       target || garden.nearest_target
     end
+
+    def nearest_theme
+      theme || garden.nearest_theme
+    end
     
     def is_index_scene?
       signpost.in? ['/', '/index'] or name.downcase == 'index'

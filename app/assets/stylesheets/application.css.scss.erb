@@ -8,6 +8,9 @@
  *= require_tree . 
 */
 
+<% environment.context_class.instance_eval { include Habanero::ThemesHelper } %>
+<%= current_theme.to_sass %>
+
 .sortable p, .sortable .placement-plan {
 	cursor: move;
 }
