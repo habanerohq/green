@@ -2,8 +2,10 @@ module Jalapeno
   class User < ActiveRecord::Base
     include Habanero::Graft
     
-    modules = Jalapeno::AuthenticationDeployment.first.active_modules
-    devise *modules
+    if connection.table_exists?('jalapeno_authentication_deployments') and (ad = Jalapeno::AuthenticationDeployment.first)
+      ams = ad.active_modules
+      devise *ams
+    end
 
     attr_accessor :login
     attr_accessible :context_id, 
