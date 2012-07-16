@@ -15,7 +15,7 @@ module Habanero
 
       def qualified_path
         @qualified_path ||= if respond_to?(:parent) && parent && parent.respond_to?(:qualified_path)
-          parent.qualified_path << path # code for qualifiying path here
+          parent.qualified_path + path # code for qualifiying path here
         else
           path
         end
